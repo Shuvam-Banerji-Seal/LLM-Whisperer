@@ -1,0 +1,23 @@
+environment: dev
+owner: llm-whisperer-core
+
+storage:
+  dataset_root: s3://llm-whisperer-dev/datasets
+  model_root: s3://llm-whisperer-dev/models
+  run_root: s3://llm-whisperer-dev/runs
+
+compute:
+  default_device: cuda
+  max_gpu_count: 2
+
+network:
+  offline_mode: false
+  allow_external_downloads: true
+
+registry:
+  mlflow_tracking_uri: ${MLFLOW_TRACKING_URI_DEV}
+
+feature_flags:
+  enable_experimental_tools: true
+  enable_auto_eval: true
+  enable_strict_safety_gate: true

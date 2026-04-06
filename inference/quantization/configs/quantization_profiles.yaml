@@ -1,0 +1,36 @@
+profiles:
+  bnb_int8:
+    method: bitsandbytes
+    load_in_8bit: true
+    llm_int8_enable_fp32_cpu_offload: false
+    expected_memory_reduction: medium
+
+  bnb_nf4:
+    method: bitsandbytes
+    load_in_4bit: true
+    bnb_4bit_quant_type: nf4
+    bnb_4bit_use_double_quant: true
+    bnb_4bit_compute_dtype: bfloat16
+    expected_memory_reduction: high
+
+  gptq_4bit:
+    method: gptq
+    bits: 4
+    group_size: 128
+    desc_act: false
+    dataset: c4
+    expected_memory_reduction: high
+
+  awq_4bit:
+    method: awq
+    bits: 4
+    version: gemm
+    do_fuse: false
+    fuse_max_seq_len: 4096
+    expected_memory_reduction: high
+
+  gguf_q4_k_m:
+    method: gguf
+    quant_type: Q4_K_M
+    with_imatrix: true
+    expected_memory_reduction: high

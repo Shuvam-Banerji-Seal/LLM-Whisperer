@@ -1,0 +1,42 @@
+version: 1
+workflow_id: rag_improvement
+entry_role: orchestrator
+inputs: [baseline_metrics, corpus_manifest, target_queries]
+steps:
+  - id: baseline_eval
+    role: researcher
+    prompt: prompts/tasks/rag_improvement.task.md
+    outputs: [baseline_recall_at_k, baseline_groundedness, baseline_latency]
+
+  - id: diagnose
+    role: planner
+    depends_on: [baseline_eval]
+    outputs: [hypotheses, experiment_plan]
+
+  - id: apply_retrieval_change
+    role: implementer
+    depends_on: [diagnose]
+    outputs: [retrieval_update]
+
+  - id: apply_generation_change
+    role: implementer
+    depends_on: [diagnose]
+    outputs: [generation_update]
+
+  - id: compare_eval
+    role: reviewer
+    depends_on: [apply_retrieval_change, apply_generation_change]
+    outputs: [delta_metrics, recommendation]
+
+  - id: safety
+    role: safety
+    depends_on: [compare_eval]
+    outputs: [policy_status]
+
+gates:
+  - id: promote_gate
+    requires:
+      - compare_eval.delta_metrics.recall_at_k >= 0.05
+      - compare_eval.delta_metrics.groundedness >= 0.03
+      - compare_eval.delta_metrics.latency_regression <= 0.10
+      - safety.policy_status == pass

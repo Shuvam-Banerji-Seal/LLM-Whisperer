@@ -1,0 +1,46 @@
+version: 1
+workflow_id: incident_response
+entry_role: orchestrator
+inputs: [incident_signal, service_context]
+steps:
+  - id: triage
+    role: planner
+    prompt: prompts/tasks/incident_response.task.md
+    outputs: [severity, blast_radius, immediate_actions]
+
+  - id: contain
+    role: implementer
+    depends_on: [triage]
+    outputs: [containment_actions, containment_status]
+
+  - id: root_cause_hypothesis
+    role: researcher
+    depends_on: [contain]
+    outputs: [candidate_causes, confidence]
+
+  - id: mitigate
+    role: implementer
+    depends_on: [root_cause_hypothesis]
+    outputs: [mitigation_patch, rollback_plan]
+
+  - id: verify
+    role: reviewer
+    depends_on: [mitigate]
+    outputs: [service_health, residual_risk]
+
+  - id: safety
+    role: safety
+    depends_on: [verify]
+    outputs: [policy_status]
+
+  - id: postmortem
+    role: orchestrator
+    depends_on: [safety]
+    outputs: [timeline, lessons, followup_actions]
+
+gates:
+  - id: closure_gate
+    requires:
+      - verify.service_health == restored
+      - safety.policy_status in [pass, needs_human_review]
+      - postmortem_complete == true

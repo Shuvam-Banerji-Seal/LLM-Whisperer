@@ -1,0 +1,614 @@
+# Memory System Profiles Configuration
+# ==============================================================================
+# Comprehensive memory management system configurations for LLM agents
+# Documentation: https://python.langchain.com/docs/modules/memory/
+# GitHub: https://github.com/langchain-ai/langchain
+#
+# This configuration defines memory strategies for:
+# - Conversation history management
+# - Summary-based memory
+# - Vector-based semantic memory
+# - Entity extraction and tracking
+# - Persistent memory backends
+# ==============================================================================
+
+version: 1.0.0
+
+# ==============================================================================
+# BUFFER MEMORY SETTINGS
+# ==============================================================================
+# Short-term memory for recent interactions
+# Docs: https://python.langchain.com/docs/modules/memory/types/buffer
+buffer_memory:
+  # Default buffer memory configuration
+  default:
+    enabled: true
+    
+    # Type of buffer memory
+    type: ConversationBufferMemory
+    
+    # Maximum number of messages to keep
+    max_messages: 20
+    
+    # Maximum tokens to keep in buffer
+    max_tokens: 4096
+    
+    # Input/output key names
+    input_key: input
+    output_key: output
+    
+    # Return messages as list
+    return_messages: true
+    
+    # Human/AI prefixes for formatting
+    human_prefix: Human
+    ai_prefix: AI
+  
+  # Lightweight profile: minimal memory footprint
+  lightweight:
+    enabled: true
+    type: ConversationBufferMemory
+    max_messages: 5
+    max_tokens: 1024
+    return_messages: true
+  
+  # Balanced profile: optimal for most use cases
+  balanced:
+    enabled: true
+    type: ConversationBufferMemory
+    max_messages: 20
+    max_tokens: 8192
+    return_messages: true
+  
+  # Heavy profile: extensive conversation history
+  heavy:
+    enabled: true
+    type: ConversationBufferMemory
+    max_messages: 100
+    max_tokens: 32768
+    return_messages: true
+
+# ==============================================================================
+# WINDOW BUFFER MEMORY
+# ==============================================================================
+# Keep only recent messages within a sliding window
+# Docs: https://python.langchain.com/docs/modules/memory/types/buffer_window
+window_buffer:
+  default:
+    enabled: true
+    type: ConversationBufferWindowMemory
+    
+    # Number of previous interactions to keep
+    k: 5
+    
+    # Return as formatted string or messages
+    return_messages: true
+    
+    # Input/output key names
+    input_key: input
+    output_key: output
+    
+    # Human/AI prefixes
+    human_prefix: Human
+    ai_prefix: AI
+  
+  # Conversation summary window
+  summary_window:
+    enabled: true
+    type: ConversationBufferWindowMemory
+    k: 10
+    return_messages: true
+    
+    # Include token count tracking
+    track_tokens: true
+    max_tokens: 2048
+
+# ==============================================================================
+# SUMMARY MEMORY SETTINGS
+# ==============================================================================
+# Compress conversation history into summaries
+# Docs: https://python.langchain.com/docs/modules/memory/types/summary
+summary_memory:
+  default:
+    enabled: true
+    type: ConversationSummaryMemory
+    
+    # LLM to use for summarization
+    # Use a fast/cheap model for summaries
+    llm_model: gpt-3.5-turbo
+    
+    # Summary buffer (keep last N messages unsummarized)
+    buffer_size: 3
+    
+    # Max tokens for summary
+    max_summary_tokens: 2048
+    
+    # Return format
+    return_messages: true
+    
+    # Input/output keys
+    input_key: input
+    output_key: output
+  
+  # Lightweight: aggressive summarization
+  lightweight:
+    enabled: true
+    type: ConversationSummaryMemory
+    llm_model: gpt-3.5-turbo
+    buffer_size: 1
+    max_summary_tokens: 512
+    return_messages: true
+  
+  # Balanced: moderate summarization
+  balanced:
+    enabled: true
+    type: ConversationSummaryMemory
+    llm_model: gpt-3.5-turbo
+    buffer_size: 5
+    max_summary_tokens: 2048
+    return_messages: true
+  
+  # Heavy: minimal summarization
+  heavy:
+    enabled: true
+    type: ConversationSummaryMemory
+    llm_model: gpt-3.5-turbo
+    buffer_size: 20
+    max_summary_tokens: 8192
+    return_messages: true
+
+# ==============================================================================
+# VECTOR STORE MEMORY (SEMANTIC/RETRIEVAL MEMORY)
+# ==============================================================================
+# Store and retrieve conversation messages based on semantic similarity
+# Docs: https://python.langchain.com/docs/modules/memory/types/vectorstore
+vector_store_memory:
+  default:
+    enabled: true
+    type: VectorStoreRetrieverMemory
+    
+    # Vector store backend
+    vector_store:
+      type: faiss  # Options: faiss, chroma, pinecone, weaviate, milvus, qdrant
+      
+      # FAISS (Facebook AI Similarity Search) - local, fast
+      faiss:
+        enabled: true
+        dimension: 1536  # OpenAI embeddings
+        metric: l2  # cosine, l2, ip
+        index_path: ./data/faiss_index
+        
+        # Index parameters
+        nprobe: 8  # Number of cells probed during search
+      
+      # Chroma - local vector DB with persistence
+      chroma:
+        enabled: true
+        persist_directory: ./data/chroma
+        collection_name: conversations
+        
+        # Metadata filtering
+        metadata_columns: ["timestamp", "user_id", "conversation_id"]
+      
+      # Pinecone - cloud vector database
+      pinecone:
+        enabled: false
+        api_key_env: PINECONE_API_KEY
+        environment: us-west1-gcp
+        index_name: langchain-memory
+        namespace: default
+      
+      # Weaviate - graph-based vector store
+      weaviate:
+        enabled: false
+        url: http://localhost:8080
+        api_key_env: WEAVIATE_API_KEY
+    
+    # Embedding model for vectorization
+    embedding_model: openai
+    embedding:
+      model: text-embedding-3-small
+      dimension: 1536
+      batch_size: 20
+    
+    # Retrieval settings
+    retrieval:
+      # Number of similar memories to retrieve
+      k: 3
+      
+      # Similarity threshold (0-1)
+      threshold: 0.6
+      
+      # Search type: similarity, mmr (max marginal relevance)
+      search_type: similarity
+      
+      # MMR diversity factor (0-1, only if search_type: mmr)
+      diversity_factor: 0.5
+    
+    # Memory management
+    max_memories: 1000
+    retention_days: 90
+    
+    # Input/output keys
+    input_key: input
+    output_key: output
+    return_messages: true
+  
+  # Lightweight: minimal embeddings
+  lightweight:
+    enabled: true
+    vector_store:
+      type: faiss
+      faiss:
+        dimension: 384  # Smaller embeddings
+    embedding:
+      model: all-MiniLM-L6-v2
+      dimension: 384
+    retrieval:
+      k: 1
+      threshold: 0.7
+    max_memories: 100
+  
+  # Balanced: standard configuration
+  balanced:
+    enabled: true
+    vector_store:
+      type: chroma
+      chroma:
+        persist_directory: ./data/chroma
+    embedding:
+      model: text-embedding-3-small
+      dimension: 1536
+    retrieval:
+      k: 3
+      threshold: 0.6
+      search_type: similarity
+    max_memories: 1000
+  
+  # Heavy: comprehensive memory with MMR
+  heavy:
+    enabled: true
+    vector_store:
+      type: weaviate
+      weaviate:
+        url: http://localhost:8080
+    embedding:
+      model: text-embedding-3-large
+      dimension: 3072
+    retrieval:
+      k: 5
+      search_type: mmr
+      diversity_factor: 0.5
+    max_memories: 10000
+
+# ==============================================================================
+# ENTITY MEMORY
+# ==============================================================================
+# Extract and track important entities (people, places, dates, etc.)
+# Docs: https://python.langchain.com/docs/modules/memory/types/entity
+entity_memory:
+  default:
+    enabled: true
+    type: ConversationEntityMemory
+    
+    # LLM for entity extraction
+    llm_model: gpt-3.5-turbo
+    
+    # Entity types to extract
+    entity_types:
+      - PERSON
+      - ORGANIZATION
+      - LOCATION
+      - DATE
+      - PRODUCT
+      - EVENT
+    
+    # Store entity relationships
+    track_relationships: true
+    
+    # Max entities to track
+    max_entities: 50
+    
+    # Return format
+    return_messages: true
+    
+    # Input/output keys
+    input_key: input
+    output_key: output
+  
+  # Lightweight: basic entity tracking
+  lightweight:
+    enabled: true
+    type: ConversationEntityMemory
+    llm_model: gpt-3.5-turbo
+    entity_types:
+      - PERSON
+      - ORGANIZATION
+    track_relationships: false
+    max_entities: 20
+  
+  # Heavy: comprehensive entity tracking
+  heavy:
+    enabled: true
+    type: ConversationEntityMemory
+    llm_model: gpt-4-turbo
+    entity_types:
+      - PERSON
+      - ORGANIZATION
+      - LOCATION
+      - DATE
+      - PRODUCT
+      - EVENT
+      - MONEY
+      - PERCENT
+      - FACILITY
+    track_relationships: true
+    max_entities: 200
+
+# ==============================================================================
+# KNOWLEDGE GRAPH MEMORY
+# ==============================================================================
+# Build structured knowledge graphs from conversations
+knowledge_graph:
+  default:
+    enabled: false
+    type: ConversationKnowledgeGraphMemory
+    
+    # Graph backend
+    graph_backend:
+      type: neo4j  # Options: neo4j, gremlin
+      
+      # Neo4j configuration
+      neo4j:
+        uri: bolt://localhost:7687
+        username_env: NEO4J_USERNAME
+        password_env: NEO4J_PASSWORD
+        database: neo4j
+    
+    # LLM for relationship extraction
+    llm_model: gpt-4-turbo
+    
+    # Node types
+    node_types:
+      - PERSON
+      - PLACE
+      - THING
+      - CONCEPT
+    
+    # Relationship types
+    relationship_types:
+      - KNOWS
+      - WORKS_AT
+      - LOCATED_IN
+      - CREATED
+      - RELATED_TO
+    
+    # Graph queries
+    max_graph_depth: 2
+    max_nodes: 500
+
+# ==============================================================================
+# PERSISTENCE BACKENDS
+# ==============================================================================
+# Configure how memory is persisted across sessions
+persistence:
+  # Enable persistence
+  enabled: true
+  
+  # Default persistence type
+  default_backend: sqlite
+  
+  # SQLite backend (local, file-based)
+  sqlite:
+    enabled: true
+    path: ./data/memory.db
+    
+    # Auto-vacuum for optimization
+    auto_vacuum: true
+    
+    # Cleanup old records
+    cleanup:
+      enabled: true
+      older_than_days: 30
+  
+  # PostgreSQL backend (production)
+  postgres:
+    enabled: false
+    connection_string_env: DATABASE_URL
+    
+    # Connection pooling
+    pool_size: 10
+    max_overflow: 20
+    
+    # Table naming
+    table_prefix: memory_
+    
+    # Cleanup
+    cleanup:
+      enabled: true
+      older_than_days: 90
+      batch_size: 1000
+  
+  # Redis backend (fast, ephemeral)
+  redis:
+    enabled: false
+    host: localhost
+    port: 6379
+    db: 0
+    password_env: REDIS_PASSWORD
+    
+    # TTL for memory entries
+    ttl_seconds: 86400  # 24 hours
+    
+    # Serialization
+    serializer: json  # json, pickle
+  
+  # MongoDB backend (flexible schema)
+  mongodb:
+    enabled: false
+    connection_string_env: MONGODB_URL
+    database: memory_store
+    
+    # Collections
+    collections:
+      conversations: conversation_memory
+      entities: entity_memory
+      vectors: vector_memory
+    
+    # TTL index
+    ttl_seconds: 2592000  # 30 days
+  
+  # File-based backend (simple, local)
+  file:
+    enabled: false
+    directory: ./data/memory
+    
+    # Compression
+    compress: true
+    compression_format: gzip
+
+# ==============================================================================
+# MEMORY CLEANUP & MAINTENANCE
+# ==============================================================================
+cleanup:
+  # Automatic cleanup schedule
+  enabled: true
+  
+  # Cleanup interval (hours)
+  interval_hours: 24
+  
+  # Retention policies
+  retention_policy:
+    # Keep conversations for N days
+    conversation_retention_days: 90
+    
+    # Keep entity history for N days
+    entity_retention_days: 180
+    
+    # Keep vector embeddings for N days
+    vector_retention_days: 60
+  
+  # Size-based cleanup
+  max_memory_size_mb: 1000
+  
+  # Cleanup actions
+  actions:
+    - prune_old_messages
+    - cleanup_orphaned_entities
+    - compress_embeddings
+    - archive_to_cold_storage
+
+# ==============================================================================
+# MEMORY PROFILES (PRESET CONFIGURATIONS)
+# ==============================================================================
+# Quick-select profiles for common scenarios
+profiles:
+  # Lightweight: minimal memory overhead
+  # Use case: simple chatbots, token-constrained environments
+  lightweight:
+    buffer_memory: lightweight
+    summary_memory: lightweight
+    vector_store_memory: lightweight
+    entity_memory: lightweight
+    persistence:
+      enabled: true
+      default_backend: sqlite
+    cleanup:
+      interval_hours: 48
+      conversation_retention_days: 7
+  
+  # Balanced: optimal for most use cases
+  # Use case: general-purpose agents, standard chatbots
+  balanced:
+    buffer_memory: balanced
+    summary_memory: balanced
+    vector_store_memory: balanced
+    entity_memory: default
+    persistence:
+      enabled: true
+      default_backend: postgres
+    cleanup:
+      interval_hours: 24
+      conversation_retention_days: 30
+  
+  # Heavy: comprehensive memory system
+  # Use case: research agents, long-running conversations, complex reasoning
+  heavy:
+    buffer_memory: heavy
+    summary_memory: heavy
+    vector_store_memory: heavy
+    entity_memory: heavy
+    knowledge_graph:
+      enabled: true
+    persistence:
+      enabled: true
+      default_backend: mongodb
+    cleanup:
+      interval_hours: 12
+      conversation_retention_days: 90
+
+# ==============================================================================
+# MEMORY SECURITY & PRIVACY
+# ==============================================================================
+security:
+  # Encrypt sensitive data in memory
+  encryption:
+    enabled: true
+    algorithm: AES-256-GCM
+    key_env: MEMORY_ENCRYPTION_KEY
+  
+  # Data masking for sensitive information
+  data_masking:
+    enabled: true
+    patterns:
+      - email: "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b"
+      - phone: "\\d{3}-\\d{3}-\\d{4}"
+      - ssn: "\\d{3}-\\d{2}-\\d{4}"
+      - credit_card: "\\d{4}[\\s-]?\\d{4}[\\s-]?\\d{4}[\\s-]?\\d{4}"
+  
+  # Access control
+  access_control:
+    enabled: true
+    require_authentication: true
+  
+  # Audit logging
+  audit_logging:
+    enabled: true
+    log_file: ./logs/memory_audit.log
+
+# ==============================================================================
+# PERFORMANCE TUNING
+# ==============================================================================
+performance:
+  # Batch operations for efficiency
+  batch_operations: true
+  batch_size: 32
+  
+  # Caching for frequently accessed memories
+  memory_cache:
+    enabled: true
+    size_mb: 100
+    ttl_seconds: 3600
+  
+  # Index optimization
+  indexing:
+    enabled: true
+    # Create indices on commonly queried fields
+    indexed_fields:
+      - timestamp
+      - user_id
+      - conversation_id
+  
+  # Parallel operations
+  parallelization:
+    enabled: true
+    max_workers: 4
+
+# ==============================================================================
+# ENVIRONMENT OVERRIDE
+# ==============================================================================
+# Use environment variables to override settings
+# Format: MEMORY_{PROFILE}_{SECTION}_{KEY}
+environment_override:
+  enabled: true
+  prefix: MEMORY_

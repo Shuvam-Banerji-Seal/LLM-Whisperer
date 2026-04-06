@@ -1,0 +1,16 @@
+profile: prod
+routing_override:
+  default_route: general_medium_risk
+runtime_override:
+  execution:
+    max_concurrency: 3
+    step_timeout_sec: 240
+  budgets:
+    max_cost_usd_per_task: 12
+  observability:
+    log_level: info
+
+tool_policy_override:
+  enable_terminal_writes_with_approval: true
+  allow_network_research: true
+  require_safety_gate_for_high_risk: true

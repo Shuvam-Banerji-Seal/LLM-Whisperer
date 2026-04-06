@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BenchmarkRequestTrace",
+  "type": "object",
+  "required": ["request_id", "model", "endpoint", "payload"],
+  "properties": {
+    "request_id": { "type": "string" },
+    "model": { "type": "string" },
+    "endpoint": { "type": "string" },
+    "payload": { "type": "object" },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": true
+}

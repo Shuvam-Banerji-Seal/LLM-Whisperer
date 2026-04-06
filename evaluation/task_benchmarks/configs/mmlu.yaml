@@ -1,0 +1,71 @@
+# MMLU (Massive Multitask Language Understanding) Configuration
+
+description: |
+  MMLU is a massive multitask language understanding benchmark covering 57 diverse tasks.
+  It tests knowledge across a wide range of subjects from elementary mathematics
+  to advanced professional topics.
+
+dimensions:
+  - STEM: mathematics, computer science, physics, chemistry, biology
+  - Humanities: history, philosophy, art, music, literature
+  - Social Sciences: economics, psychology, law, politics
+  - Other: world languages, business, medicine
+
+dataset:
+  source: "huggingface_datasets"
+  name: "lukaemon/mmlu"
+  split: "test"
+  subset: "all"
+
+evaluation:
+  type: "multiple_choice"
+  scoring:
+    method: "exact_match"
+    normalize_case: true
+    ignore_punctuation: true
+  instructions: |
+    Answer the following multiple choice question. Provide the letter of the
+    correct answer (A, B, C, or D).
+
+  answer_format: "letter"
+
+prompt_template: |
+  Question: {question}
+
+  A) {option_a}
+  B) {option_b}
+  C) {option_c}
+  D) {option_d}
+
+  Answer: 
+
+expected_output_format: "letter"
+max_tokens: 10
+temperature: 0.0
+
+metrics:
+  - name: "accuracy"
+    type: "percentage"
+    description: "Percentage of correct answers"
+  - name: "average_score"
+    type: "float"
+    description: "Average score across all subjects"
+  - name: "subject_scores"
+    type: "dict"
+    description: "Scores broken down by subject category"
+
+quality_gates:
+  - metric: "accuracy"
+    threshold: 0.85
+    condition: "greater_than_or_equal"
+    description: "Minimum accuracy requirement"
+  - metric: "average_score"
+    threshold: 0.88
+    condition: "greater_than_or_equal"
+    description: "Frontier model benchmark"
+
+notes: |
+  - This benchmark is highly saturated (88%+ for frontier models)
+  - Best used for general knowledge assessment rather than differentiation
+  - Subject breakdown helps identify knowledge gaps
+  - Consider using GPQA for more challenging graduate-level evaluation

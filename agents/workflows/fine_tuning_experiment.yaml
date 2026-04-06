@@ -1,0 +1,37 @@
+version: 1
+workflow_id: fine_tuning_experiment
+entry_role: orchestrator
+inputs: [experiment_brief, dataset_refs, base_model_profile]
+steps:
+  - id: design
+    role: planner
+    prompt: prompts/tasks/fine_tuning_experiment.task.md
+    outputs: [hypothesis, success_metrics, run_matrix]
+
+  - id: data_audit
+    role: safety
+    depends_on: [design]
+    outputs: [data_risks, allowed_status]
+
+  - id: train
+    role: implementer
+    depends_on: [data_audit]
+    when: data_audit.allowed_status == pass
+    outputs: [run_artifacts, training_logs]
+
+  - id: eval
+    role: reviewer
+    depends_on: [train]
+    outputs: [quality_scores, regression_flags]
+
+  - id: compare_to_baseline
+    role: researcher
+    depends_on: [eval]
+    outputs: [delta_report]
+
+gates:
+  - id: registry_gate
+    requires:
+      - delta_report.primary_metric_improvement >= 0.02
+      - eval.regression_flags == 0
+      - eval.quality_scores.safety >= 4.5

@@ -1,0 +1,23 @@
+environment: local
+owner: shuvam
+
+storage:
+  dataset_root: ./artifacts/datasets
+  model_root: ./artifacts/models
+  run_root: ./artifacts/runs
+
+compute:
+  default_device: cuda
+  max_gpu_count: 1
+
+network:
+  offline_mode: false
+  allow_external_downloads: true
+
+registry:
+  mlflow_tracking_uri: file:./artifacts/mlruns
+
+feature_flags:
+  enable_experimental_tools: true
+  enable_auto_eval: true
+  enable_strict_safety_gate: false

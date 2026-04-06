@@ -1,0 +1,30 @@
+cases:
+  - case_id: rag_001_recall_grounding
+    workflow: rag_improvement
+    objective: Improve retrieval quality and groundedness for policy QA
+    input:
+      query_set: policy_qa_v2
+    pass_criteria:
+      - recall_at_5 improves by at least 5 percent
+      - groundedness improves by at least 3 percent
+    fail_criteria:
+      - citations refer to chunks not returned by retriever
+    scoring:
+      deterministic_checks: [recall_threshold_met, citation_chunk_exists]
+      llm_judge_rubric: grounded_answer_v1
+      min_score: 4.2
+
+  - case_id: rag_002_latency_guard
+    workflow: rag_improvement
+    objective: Improve quality without unacceptable latency regression
+    input:
+      query_set: customer_support_live_set
+    pass_criteria:
+      - p95 latency regression is at most 10 percent
+      - answer quality does not regress
+    fail_criteria:
+      - p95 latency regression exceeds threshold
+    scoring:
+      deterministic_checks: [latency_regression_within_bound, quality_non_regression]
+      llm_judge_rubric: grounded_answer_v1
+      min_score: 4.0

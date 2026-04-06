@@ -1,0 +1,191 @@
+# AGNO Runtime Configuration
+# 
+# This configuration file defines runtime settings for AGNO agents
+# in production environments.
+#
+# Reference: https://docs.agno.com/agent-os/overview
+# Reference: https://docs.agno.com/deploy/overview
+
+# Server Configuration
+server:
+  # Server host and port
+  host: "127.0.0.1"
+  port: 8000
+  
+  # Number of worker processes
+  workers: 4
+  
+  # Reload on code changes (development only)
+  reload: false
+  
+  # SSL/TLS configuration
+  ssl:
+    enabled: false
+    certfile: null
+    keyfile: null
+
+# Database Configuration
+# Used for session storage, memory persistence, and audit logs
+database:
+  # Database type: sqlite, postgresql, mysql
+  type: "sqlite"
+  
+  # SQLite specific
+  sqlite:
+    db_file: "agno.db"
+    check_same_thread: true
+  
+  # PostgreSQL specific
+  postgresql:
+    host: "localhost"
+    port: 5432
+    database: "agno"
+    user: "agno_user"
+    password: "${DB_PASSWORD}"
+  
+  # Connection pooling
+  pool:
+    min_size: 5
+    max_size: 20
+    connection_timeout: 30
+
+# Session Management
+session:
+  # Session timeout in hours
+  timeout_hours: 24
+  
+  # Session cleanup interval (minutes)
+  cleanup_interval: 60
+  
+  # Persist sessions across restarts
+  persistent: true
+  
+  # Per-user session limits
+  max_sessions_per_user: 10
+
+# Logging Configuration
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: "INFO"
+  
+  # Log file location
+  file: "logs/agno.log"
+  
+  # Maximum log file size (MB)
+  max_file_size: 100
+  
+  # Number of backup log files to keep
+  backup_count: 5
+  
+  # Log format
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# API Configuration
+api:
+  # API version
+  version: "v1"
+  
+  # Enable API documentation
+  docs_enabled: true
+  
+  # Documentation URL
+  docs_url: "/docs"
+  
+  # Rate limiting
+  rate_limit:
+    enabled: true
+    requests_per_minute: 60
+    requests_per_hour: 1000
+
+# Agent Configuration Defaults
+agent:
+  # Default model for agents
+  default_model: "claude-3-5-sonnet-20241022"
+  
+  # Default model provider
+  default_provider: "anthropic"
+  
+  # Add chat history to context by default
+  add_history_to_context: true
+  
+  # Maximum messages to keep in history
+  max_history_messages: 100
+  
+  # Format responses as markdown
+  markdown: true
+  
+  # Enable streaming responses
+  streaming: true
+
+# Monitoring and Tracing
+monitoring:
+  # Enable native tracing
+  tracing_enabled: true
+  
+  # Tracing backend: datadog, jaeger, otel
+  tracing_backend: "otel"
+  
+  # Metrics collection
+  metrics:
+    enabled: true
+    export_interval: 60
+  
+  # Health check endpoint
+  health_check:
+    enabled: true
+    path: "/health"
+    interval: 30
+
+# Security Settings
+security:
+  # API key authentication
+  api_key_auth:
+    enabled: true
+    header_name: "X-API-Key"
+  
+  # CORS settings
+  cors:
+    enabled: true
+    allow_origins: ["http://localhost:3000", "https://app.example.com"]
+    allow_credentials: true
+    allow_methods: ["GET", "POST", "PUT", "DELETE"]
+  
+  # Request validation
+  validate_requests: true
+  
+  # Response sanitization
+  sanitize_responses: true
+
+# Feature Flags
+features:
+  # Enable experimental features
+  experimental: false
+  
+  # Enable approval workflows
+  approval_workflows: true
+  
+  # Enable human-in-the-loop
+  human_in_the_loop: true
+  
+  # Enable feedback loops
+  feedback_loops: true
+
+# Performance Tuning
+performance:
+  # Maximum concurrent requests
+  max_concurrent_requests: 100
+  
+  # Request timeout (seconds)
+  request_timeout: 300
+  
+  # Cache settings
+  cache:
+    enabled: true
+    backend: "memory"  # memory, redis
+    ttl: 3600
+  
+  # Worker pool settings
+  worker_pool:
+    min_workers: 2
+    max_workers: 10
+    queue_size: 1000

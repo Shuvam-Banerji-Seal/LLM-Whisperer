@@ -1,0 +1,18 @@
+scenarios:
+  quick_smoke:
+    workload: workloads/chat_small.jsonl
+    concurrency: 2
+    max_requests: 10
+    timeout_s: 45
+
+  latency_profile:
+    workload: workloads/chat_small.jsonl
+    concurrency: 4
+    max_requests: 100
+    timeout_s: 60
+
+  throughput_profile:
+    workload: workloads/chat_small.jsonl
+    concurrency: 16
+    max_requests: 500
+    timeout_s: 45

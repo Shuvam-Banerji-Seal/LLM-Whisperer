@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BenchmarkRunRecord",
+  "type": "object",
+  "required": [
+    "run_id",
+    "request_id",
+    "started_unix_ms",
+    "finished_unix_ms",
+    "latency_ms",
+    "ttft_ms",
+    "tpot_ms",
+    "success",
+    "status_code"
+  ],
+  "properties": {
+    "run_id": { "type": "string" },
+    "request_id": { "type": "string" },
+    "started_unix_ms": { "type": "number" },
+    "finished_unix_ms": { "type": "number" },
+    "latency_ms": { "type": "number", "minimum": 0 },
+    "ttft_ms": { "type": "number", "minimum": 0 },
+    "tpot_ms": { "type": "number", "minimum": 0 },
+    "success": { "type": "boolean" },
+    "status_code": { "type": "integer" },
+    "prompt_chars": { "type": "integer", "minimum": 0 },
+    "output_chars": { "type": "integer", "minimum": 0 },
+    "prompt_tokens": { "type": "integer", "minimum": 0 },
+    "completion_tokens": { "type": "integer", "minimum": 0 },
+    "error": { "type": ["string", "null"] }
+  },
+  "additionalProperties": true
+}

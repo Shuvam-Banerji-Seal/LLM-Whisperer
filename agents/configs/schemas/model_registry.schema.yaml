@@ -1,0 +1,80 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: AgentModelRegistry
+type: object
+required:
+  - version
+  - profiles
+  - models
+properties:
+  version:
+    type: string
+  profiles:
+    type: object
+    additionalProperties:
+      type: object
+      required: [primary, fallback]
+      properties:
+        primary:
+          type: string
+        fallback:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+  models:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required:
+        - id
+        - provider
+        - context_window
+        - capabilities
+        - cost
+      properties:
+        id:
+          type: string
+        provider:
+          type: string
+        context_window:
+          type: integer
+          minimum: 1
+        capabilities:
+          type: object
+          required: [tool_calling, json_mode, long_context, multimodal]
+          properties:
+            tool_calling:
+              type: boolean
+            json_mode:
+              type: boolean
+            long_context:
+              type: boolean
+            multimodal:
+              type: boolean
+          additionalProperties: false
+        limits:
+          type: object
+          properties:
+            rpm:
+              type: integer
+              minimum: 0
+            tpm:
+              type: integer
+              minimum: 0
+          additionalProperties: false
+        cost:
+          type: object
+          required: [input_per_1m, output_per_1m]
+          properties:
+            input_per_1m:
+              type: number
+              minimum: 0
+            output_per_1m:
+              type: number
+              minimum: 0
+          additionalProperties: false
+        status:
+          enum: [active, deprecated, disabled]
+      additionalProperties: false
+additionalProperties: false

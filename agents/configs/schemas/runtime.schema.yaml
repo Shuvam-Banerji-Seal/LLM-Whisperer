@@ -1,0 +1,74 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: AgentRuntimeConfig
+type: object
+required:
+  - version
+  - execution
+  - budgets
+  - reliability
+  - observability
+properties:
+  version:
+    type: string
+  execution:
+    type: object
+    required: [max_concurrency, step_timeout_sec, max_workflow_duration_sec]
+    properties:
+      max_concurrency:
+        type: integer
+        minimum: 1
+      step_timeout_sec:
+        type: integer
+        minimum: 1
+      max_workflow_duration_sec:
+        type: integer
+        minimum: 1
+    additionalProperties: false
+  budgets:
+    type: object
+    required: [max_tokens_per_task, max_cost_usd_per_task]
+    properties:
+      max_tokens_per_task:
+        type: integer
+        minimum: 1
+      max_cost_usd_per_task:
+        type: number
+        minimum: 0
+    additionalProperties: false
+  reliability:
+    type: object
+    required: [retry_policy, checkpointing]
+    properties:
+      retry_policy:
+        type: object
+        required: [max_retries, backoff]
+        properties:
+          max_retries:
+            type: integer
+            minimum: 0
+          backoff:
+            enum: [fixed, exponential]
+        additionalProperties: false
+      checkpointing:
+        type: object
+        required: [enabled, interval_steps]
+        properties:
+          enabled:
+            type: boolean
+          interval_steps:
+            type: integer
+            minimum: 1
+        additionalProperties: false
+    additionalProperties: false
+  observability:
+    type: object
+    required: [trace_enabled, log_level, emit_metrics]
+    properties:
+      trace_enabled:
+        type: boolean
+      log_level:
+        enum: [debug, info, warn, error]
+      emit_metrics:
+        type: boolean
+    additionalProperties: false
+additionalProperties: false

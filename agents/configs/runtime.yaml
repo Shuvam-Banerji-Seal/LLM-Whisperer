@@ -1,0 +1,22 @@
+version: 1.0.0
+execution:
+  max_concurrency: 3
+  step_timeout_sec: 240
+  max_workflow_duration_sec: 3600
+
+budgets:
+  max_tokens_per_task: 250000
+  max_cost_usd_per_task: 20
+
+reliability:
+  retry_policy:
+    max_retries: 2
+    backoff: exponential
+  checkpointing:
+    enabled: true
+    interval_steps: 2
+
+observability:
+  trace_enabled: true
+  log_level: info
+  emit_metrics: true

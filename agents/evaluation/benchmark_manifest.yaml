@@ -1,0 +1,23 @@
+version: 1
+owner: llm-whisperer-core
+cadence: per_change_and_nightly
+suites:
+  - id: feature_delivery
+    file: cases/feature_delivery.yaml
+    workflow: feature_delivery
+    required_for_prod: true
+
+  - id: rag
+    file: cases/rag.yaml
+    workflow: rag_improvement
+    required_for_prod: true
+
+  - id: fine_tuning
+    file: cases/fine_tuning.yaml
+    workflow: fine_tuning_experiment
+    required_for_prod: true
+
+  - id: incident_response
+    file: cases/incident_response.yaml
+    workflow: incident_response
+    required_for_prod: true

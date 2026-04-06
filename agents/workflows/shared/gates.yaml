@@ -1,0 +1,21 @@
+version: 1
+common_gates:
+  quality_gate:
+    requires:
+      - reviewer.approval == true
+      - unresolved_critical_findings == 0
+
+  safety_gate:
+    requires:
+      - safety.policy_status == pass
+
+  rollback_gate:
+    requires:
+      - rollback_plan_present == true
+      - rollback_owner_assigned == true
+
+  production_promotion_gate:
+    requires:
+      - quality_gate_passed == true
+      - safety_gate_passed == true
+      - benchmark_threshold_met == true

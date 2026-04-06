@@ -1,0 +1,51 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+title: AgentRoutingConfig
+type: object
+required:
+  - version
+  - default_route
+  - routes
+properties:
+  version:
+    type: string
+  default_route:
+    type: string
+  routes:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required:
+        - id
+        - match
+        - target_role
+        - model_profile
+      properties:
+        id:
+          type: string
+        match:
+          type: object
+          properties:
+            intent:
+              type: string
+            risk:
+              enum: [low, medium, high, critical]
+            max_latency_ms:
+              type: integer
+              minimum: 1
+            max_cost_usd:
+              type: number
+              minimum: 0
+          additionalProperties: false
+        target_role:
+          enum: [orchestrator, planner, researcher, implementer, reviewer, safety]
+        model_profile:
+          type: string
+        confidence_threshold:
+          type: number
+          minimum: 0
+          maximum: 1
+        fallback_route:
+          type: string
+      additionalProperties: false
+additionalProperties: false

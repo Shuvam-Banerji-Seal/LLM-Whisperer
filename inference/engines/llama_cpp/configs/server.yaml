@@ -1,0 +1,12 @@
+server:
+  host: 0.0.0.0
+  port: 8080
+  model_path: /models/local-model.gguf
+  model_alias: local-gguf-model
+
+runtime:
+  context_size: 8192
+  n_gpu_layers: 99
+  threads: 8
+  chat_template: ""
+  api_key: ""

@@ -1,0 +1,30 @@
+cases:
+  - case_id: ir_001_major_incident
+    workflow: incident_response
+    objective: Restore service and produce actionable postmortem
+    input:
+      incident_signal: RAG API error rate greater than 20 percent
+    pass_criteria:
+      - containment action starts within target SLA
+      - postmortem includes root cause and owner-tagged follow-ups
+    fail_criteria:
+      - incident closed without residual risk statement
+    scoring:
+      deterministic_checks: [sla_met, postmortem_fields_complete]
+      llm_judge_rubric: incident_quality_v1
+      min_score: 4.0
+
+  - case_id: ir_002_comms_quality
+    workflow: incident_response
+    objective: Ensure stakeholder communication quality during incident
+    input:
+      incident_signal: retrieval cluster timeout storm
+    pass_criteria:
+      - status updates include impact, next step, and ETA fields
+      - escalation path documented
+    fail_criteria:
+      - missing user impact statement during active incident
+    scoring:
+      deterministic_checks: [status_update_template_complete, escalation_path_present]
+      llm_judge_rubric: incident_quality_v1
+      min_score: 4.0

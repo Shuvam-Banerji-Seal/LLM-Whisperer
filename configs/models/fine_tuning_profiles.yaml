@@ -1,0 +1,41 @@
+version: 1
+
+defaults:
+  seed: 42
+  gradient_accumulation_steps: 8
+  max_seq_length: 4096
+  learning_rate: 2.0e-4
+  warmup_ratio: 0.03
+  weight_decay: 0.01
+  logging_steps: 20
+  eval_steps: 200
+  save_steps: 200
+
+profiles:
+  lora_standard:
+    method: lora
+    lora_r: 16
+    lora_alpha: 32
+    lora_dropout: 0.05
+    target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+    optimizer: adamw_torch
+    precision: bf16
+
+  qlora_memory_efficient:
+    method: qlora
+    quantization: nf4
+    double_quantization: true
+    lora_r: 16
+    lora_alpha: 32
+    lora_dropout: 0.05
+    target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+    optimizer: paged_adamw_8bit
+    precision: bf16
+
+  full_finetune_high_budget:
+    method: full
+    optimizer: adamw_torch
+    precision: bf16
+    gradient_checkpointing: true
+    gradient_accumulation_steps: 16
+    learning_rate: 1.0e-5

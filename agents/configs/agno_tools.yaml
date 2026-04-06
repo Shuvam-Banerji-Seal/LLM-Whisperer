@@ -1,0 +1,284 @@
+# AGNO Tools Configuration
+#
+# This configuration file defines tools and capabilities available to AGNO agents.
+#
+# Reference: https://docs.agno.com/agents/tools
+# Reference: https://docs.agno.com/mcp
+
+# Built-in Tool Categories
+tools:
+  
+  # Web Search Tools
+  web_search:
+    enabled: true
+    provider: "duckduckgo"
+    timeout: 10
+    max_results: 10
+    tools:
+      - name: "web_search"
+        description: "Search the internet for information"
+        capabilities: ["search", "results_parsing"]
+      - name: "newspaper_reader"
+        description: "Extract content from web articles"
+        capabilities: ["content_extraction", "metadata_parsing"]
+    cost_per_call: 0.0
+  
+  # Code Execution Tools
+  coding:
+    enabled: true
+    sandbox: "docker"  # docker, local, none
+    timeout: 30
+    max_execution_attempts: 3
+    tools:
+      - name: "python_executor"
+        description: "Execute Python code"
+        capabilities: ["code_execution", "testing", "analysis"]
+        languages: ["python"]
+      - name: "code_generator"
+        description: "Generate code from descriptions"
+        capabilities: ["code_generation", "refactoring"]
+      - name: "code_analyzer"
+        description: "Analyze code quality and patterns"
+        capabilities: ["static_analysis", "pattern_detection"]
+    cost_per_call: 0.01
+  
+  # Database Tools
+  database:
+    enabled: true
+    timeout: 30
+    tools:
+      - name: "sql_query"
+        description: "Execute SQL queries"
+        capabilities: ["query_execution", "data_retrieval"]
+        supported_databases:
+          - postgresql
+          - mysql
+          - sqlite
+      - name: "database_browser"
+        description: "Browse database schema and structure"
+        capabilities: ["schema_inspection", "data_exploration"]
+    cost_per_call: 0.001
+    permissions:
+      require_approval_for:
+        - data_modification
+        - table_deletion
+        - schema_changes
+  
+  # File System Tools
+  file_system:
+    enabled: true
+    timeout: 10
+    allowed_paths:
+      - "/data"
+      - "/uploads"
+    tools:
+      - name: "file_reader"
+        description: "Read file contents"
+        capabilities: ["file_reading", "encoding_detection"]
+      - name: "file_writer"
+        description: "Write to files"
+        capabilities: ["file_creation", "content_writing"]
+      - name: "directory_browser"
+        description: "Browse directory contents"
+        capabilities: ["directory_listing", "metadata_retrieval"]
+    cost_per_call: 0.0
+  
+  # API Integration Tools
+  api_integration:
+    enabled: true
+    timeout: 15
+    tools:
+      - name: "http_client"
+        description: "Make HTTP requests to APIs"
+        capabilities: ["get", "post", "put", "delete"]
+        supported_auth:
+          - "api_key"
+          - "oauth"
+          - "basic_auth"
+      - name: "rest_client"
+        description: "REST API interaction"
+        capabilities: ["crud_operations", "pagination"]
+    cost_per_call: 0.005
+    allowed_domains:
+      - "api.github.com"
+      - "api.openweathermap.org"
+      - "api.example.com"
+
+# Tool Permissions and Security
+permissions:
+  
+  # Which roles can use which tools
+  by_role:
+    admin:
+      - "all"
+    agent:
+      - "web_search"
+      - "code_analysis"
+      - "data_retrieval"
+    user:
+      - "web_search"
+      - "code_analysis"
+  
+  # Approval requirements
+  require_approval:
+    - "database.sql_query"  # Any write operations
+    - "file_system.file_writer"
+    - "api_integration.post"  # POST/PUT/DELETE requests
+  
+  # Timeout and retry policies
+  timeout_policies:
+    web_search: 10
+    coding: 30
+    database: 30
+    file_system: 10
+    api_integration: 15
+
+# Tool Configuration Profiles
+profiles:
+  
+  # Research profile: optimized for gathering information
+  research:
+    enabled_tools:
+      - "web_search"
+      - "api_integration"
+      - "file_system.file_reader"
+    timeouts:
+      web_search: 15
+      api_integration: 20
+    cost_limit_per_query: 0.10
+  
+  # Development profile: optimized for coding tasks
+  development:
+    enabled_tools:
+      - "coding"
+      - "database"
+      - "file_system"
+      - "api_integration"
+    timeouts:
+      coding: 60
+      database: 30
+    require_approval_for_writes: true
+  
+  # Data Analysis profile: optimized for data work
+  data_analysis:
+    enabled_tools:
+      - "database"
+      - "coding"
+      - "file_system"
+    timeouts:
+      database: 30
+      coding: 30
+    max_data_retrieval: "1GB"
+
+# Tool Chaining Configuration
+tool_chaining:
+  # Allow tools to call other tools
+  enabled: true
+  
+  # Maximum chain depth
+  max_depth: 5
+  
+  # Prohibited chains (to prevent loops)
+  prohibited_chains:
+    - ["file_system.file_writer", "file_system.file_writer"]
+    - ["database", "database"]
+
+# Tool Caching
+caching:
+  enabled: true
+  ttl: 3600  # 1 hour
+  
+  # Which tool results to cache
+  cache_results:
+    - "web_search"
+    - "api_integration"
+  
+  # Which tools NOT to cache (e.g., time-sensitive)
+  no_cache:
+    - "database.sql_query"
+    - "file_system.file_reader"  # File content changes
+
+# Error Handling
+error_handling:
+  # Default action on tool error
+  default_action: "return_error"  # return_error, retry, fallback, escalate
+  
+  # Retry policy
+  retry_policy:
+    max_attempts: 3
+    backoff_factor: 2
+    initial_delay: 1
+    max_delay: 30
+  
+  # Fallback tools
+  fallbacks:
+    "web_search": "api_integration"
+    "database": "file_system"
+
+# Tool Monitoring and Metrics
+monitoring:
+  enabled: true
+  
+  # Track tool usage
+  track_usage: true
+  
+  # Monitor performance
+  track_performance: true
+  
+  # Alert thresholds
+  alerts:
+    - tool: "all"
+      metric: "error_rate"
+      threshold: 0.1  # 10% error rate
+    - tool: "api_integration"
+      metric: "avg_latency"
+      threshold: 5000  # 5 seconds
+    - tool: "database"
+      metric: "max_query_time"
+      threshold: 60  # 60 seconds
+
+# Cost Tracking
+cost:
+  enabled: true
+  
+  # Track costs per tool
+  track_per_tool: true
+  
+  # Alerts for cost overruns
+  daily_budget_limit: 100
+  alert_threshold: 0.8  # Alert at 80% of budget
+  
+  # Cost per tool operation
+  pricing:
+    web_search:
+      per_call: 0.0
+      per_result: 0.0
+    coding:
+      per_call: 0.01
+      per_execution: 0.005
+    database:
+      per_call: 0.001
+      per_row_returned: 0.0001
+    api_integration:
+      per_call: 0.005
+
+# Custom Tools
+custom_tools:
+  enabled: true
+  
+  # Directory for custom tool implementations
+  directory: "/agents/custom_tools"
+  
+  # Example custom tool definition
+  example_tools:
+    - name: "slack_notifier"
+      description: "Send notifications to Slack"
+      module: "slack_tool"
+      class: "SlackNotifierTool"
+      cost_per_call: 0.0
+    
+    - name: "sendgrid_email"
+      description: "Send emails via SendGrid"
+      module: "email_tool"
+      class: "SendGridEmailTool"
+      cost_per_call: 0.0

@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-server
+  labels:
+    app: vllm-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm-server
+  template:
+    metadata:
+      labels:
+        app: vllm-server
+    spec:
+      containers:
+        - name: vllm
+          image: vllm/vllm-openai:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - "bash"
+            - "-lc"
+            - >-
+              vllm serve ${MODEL_NAME}
+              --host 0.0.0.0
+              --port 8000
+              --api-key ${API_KEY}
+              --served-model-name ${SERVED_MODEL_NAME}
+              --gpu-memory-utilization ${GPU_MEMORY_UTILIZATION}
+              --max-model-len ${MAX_MODEL_LEN}
+              --max-num-seqs ${MAX_NUM_SEQS}
+              --tensor-parallel-size ${TENSOR_PARALLEL_SIZE}
+          env:
+            - name: MODEL_NAME
+              value: "meta-llama/Llama-3.1-8B-Instruct"
+            - name: SERVED_MODEL_NAME
+              value: "local-model"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: llm-api-secret
+                  key: api-key
+            - name: GPU_MEMORY_UTILIZATION
+              value: "0.90"
+            - name: MAX_MODEL_LEN
+              value: "8192"
+            - name: MAX_NUM_SEQS
+              value: "128"
+            - name: TENSOR_PARALLEL_SIZE
+              value: "1"
+          ports:
+            - name: http
+              containerPort: 8000
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-server
+  labels:
+    app: vllm-server
+spec:
+  selector:
+    app: vllm-server
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+  type: ClusterIP

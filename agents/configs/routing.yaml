@@ -1,0 +1,45 @@
+version: 1.0.0
+default_route: general_low_risk
+routes:
+  - id: general_low_risk
+    match:
+      intent: general_engineering
+      risk: low
+      max_latency_ms: 120000
+      max_cost_usd: 2.0
+    target_role: orchestrator
+    model_profile: fast_reasoning
+    confidence_threshold: 0.5
+    fallback_route: general_medium_risk
+
+  - id: general_medium_risk
+    match:
+      intent: general_engineering
+      risk: medium
+      max_latency_ms: 180000
+      max_cost_usd: 6.0
+    target_role: orchestrator
+    model_profile: balanced_reasoning
+    confidence_threshold: 0.6
+    fallback_route: high_risk_with_safety
+
+  - id: high_risk_with_safety
+    match:
+      intent: any
+      risk: high
+      max_latency_ms: 300000
+      max_cost_usd: 12.0
+    target_role: orchestrator
+    model_profile: high_reasoning
+    confidence_threshold: 0.7
+    fallback_route: critical_human_gate
+
+  - id: critical_human_gate
+    match:
+      intent: any
+      risk: critical
+      max_latency_ms: 300000
+      max_cost_usd: 20.0
+    target_role: safety
+    model_profile: high_reasoning
+    confidence_threshold: 0.8

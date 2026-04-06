@@ -1,0 +1,76 @@
+version: 1.0.0
+profiles:
+  fast_reasoning:
+    primary: gpt-5.3-codex
+    fallback: [gpt-4.1]
+  balanced_reasoning:
+    primary: gpt-5.3-codex
+    fallback: [gpt-4.1, claude-sonnet]
+  high_reasoning:
+    primary: gpt-5.3-codex
+    fallback: [claude-opus, gpt-4.1]
+
+models:
+  - id: gpt-5.3-codex
+    provider: openai
+    context_window: 200000
+    capabilities:
+      tool_calling: true
+      json_mode: true
+      long_context: true
+      multimodal: true
+    limits:
+      rpm: 0
+      tpm: 0
+    cost:
+      input_per_1m: 0
+      output_per_1m: 0
+    status: active
+
+  - id: gpt-4.1
+    provider: openai
+    context_window: 128000
+    capabilities:
+      tool_calling: true
+      json_mode: true
+      long_context: true
+      multimodal: true
+    limits:
+      rpm: 0
+      tpm: 0
+    cost:
+      input_per_1m: 0
+      output_per_1m: 0
+    status: active
+
+  - id: claude-sonnet
+    provider: anthropic
+    context_window: 200000
+    capabilities:
+      tool_calling: true
+      json_mode: true
+      long_context: true
+      multimodal: true
+    limits:
+      rpm: 0
+      tpm: 0
+    cost:
+      input_per_1m: 0
+      output_per_1m: 0
+    status: active
+
+  - id: claude-opus
+    provider: anthropic
+    context_window: 200000
+    capabilities:
+      tool_calling: true
+      json_mode: true
+      long_context: true
+      multimodal: true
+    limits:
+      rpm: 0
+      tpm: 0
+    cost:
+      input_per_1m: 0
+      output_per_1m: 0
+    status: active

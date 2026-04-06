@@ -1,0 +1,23 @@
+version: 1
+
+logging:
+  level: info
+  format: json
+  redact_sensitive_fields: true
+
+tracing:
+  enabled: true
+  provider: otel
+  service_name: llm-whisperer
+
+metrics:
+  enabled: true
+  export_interval_sec: 30
+  include_token_metrics: true
+  include_latency_percentiles: [50, 90, 95, 99]
+
+alerts:
+  p95_latency_ms_threshold: 1200
+  error_rate_threshold: 0.03
+  hallucination_rate_threshold: 0.05
+  on_call_channel: pagerduty

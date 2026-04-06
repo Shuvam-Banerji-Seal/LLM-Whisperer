@@ -1,0 +1,14 @@
+server:
+  host: 0.0.0.0
+  port: 8000
+  api_key: local-dev-key
+
+model:
+  model_path: /models/local-trtllm-checkpoint
+  served_model_name: local-trt-model
+
+runtime:
+  max_batch_size: 64
+  max_num_tokens: 8192
+  kv_cache_free_gpu_mem_fraction: 0.90
+  tokenizer: auto

@@ -1,0 +1,285 @@
+# LangChain Runtime Configuration
+# ==============================================================================
+# Comprehensive configuration for LangChain runtime environment
+# Documentation: https://python.langchain.com/docs/guides/deployment
+# Reference: https://github.com/langchain-ai/langchain
+#
+# This configuration manages:
+# - LLM provider settings and credentials
+# - Model-specific parameters
+# - API key management and routing
+# - Request timeouts and retry strategies
+# - Logging and debugging options
+# ==============================================================================
+
+version: 1.0.0
+
+# ==============================================================================
+# LLM PROVIDER SETTINGS
+# ==============================================================================
+# Defines connections to various LLM providers
+# Documentation: https://python.langchain.com/docs/integrations/llms/
+providers:
+  # OpenAI Configuration
+  # Docs: https://platform.openai.com/docs/guides/gpt
+  openai:
+    enabled: true
+    api_key_env: OPENAI_API_KEY
+    base_url: https://api.openai.com/v1
+    organization_id_env: OPENAI_ORG_ID  # Optional: for organization accounts
+    request_timeout: 60  # seconds
+    max_retries: 3
+    # Supported models: gpt-4-turbo, gpt-4, gpt-3.5-turbo
+    default_model: gpt-4-turbo
+    
+  # Anthropic Configuration
+  # Docs: https://docs.anthropic.com/claude/docs
+  anthropic:
+    enabled: true
+    api_key_env: ANTHROPIC_API_KEY
+    base_url: https://api.anthropic.com
+    request_timeout: 60
+    max_retries: 3
+    # Supported models: claude-3-opus, claude-3-sonnet, claude-3-haiku
+    default_model: claude-3-opus-20240229
+    
+  # Local/Open Source Models
+  # Using Ollama or vLLM for local deployment
+  # Docs: https://python.langchain.com/docs/integrations/llms/ollama
+  local:
+    enabled: false
+    base_url: http://localhost:11434
+    model: llama2
+    request_timeout: 120
+    max_retries: 2
+    # Use for: cost-effective inference, privacy-sensitive data, offline operation
+    
+  # Google Vertex AI / Gemini
+  # Docs: https://cloud.google.com/vertex-ai/docs/generative-ai/start/quickstarts/api-quickstart
+  google:
+    enabled: true
+    project_id_env: GOOGLE_PROJECT_ID
+    credentials_path_env: GOOGLE_APPLICATION_CREDENTIALS
+    region: us-central1
+    request_timeout: 60
+    max_retries: 3
+    default_model: gemini-pro
+
+# ==============================================================================
+# MODEL PARAMETERS & DEFAULTS
+# ==============================================================================
+# Global default parameters for all LLM calls
+# These can be overridden per request
+# Reference: https://python.langchain.com/docs/modules/model_io/llms/
+model_parameters:
+  # Temperature controls randomness/creativity (0.0 = deterministic, 1.0 = random)
+  temperature: 0.7
+  
+  # Maximum tokens to generate in response
+  max_tokens: 2048
+  
+  # Cumulative probability for nucleus sampling (0.0-1.0)
+  top_p: 1.0
+  
+  # For OpenAI API
+  frequency_penalty: 0.0  # Reduce repetition (-2.0 to 2.0)
+  presence_penalty: 0.0   # Encourage new topics (-2.0 to 2.0)
+  
+  # Seed for reproducibility (if supported by model)
+  seed: null
+
+# ==============================================================================
+# API KEY MANAGEMENT
+# ==============================================================================
+# Strategy for managing and rotating API keys
+# Security: https://python.langchain.com/docs/guides/deployment
+api_management:
+  # Load keys from environment variables
+  use_env_vars: true
+  
+  # Optional: Key rotation for production
+  key_rotation:
+    enabled: false
+    rotation_interval_days: 90
+    backup_key_env: PRIMARY_API_KEY_BACKUP
+  
+  # Rate limiting per provider
+  rate_limits:
+    openai:
+      requests_per_minute: 3500
+      tokens_per_minute: 90000
+    anthropic:
+      requests_per_minute: 50
+      tokens_per_minute: 40000
+    google:
+      requests_per_minute: 60
+      tokens_per_minute: 1000000
+
+# ==============================================================================
+# TIMEOUT & RETRY CONFIGURATION
+# ==============================================================================
+# Handle network failures and timeouts gracefully
+# Docs: https://python.langchain.com/docs/guides/deployment
+timeouts:
+  # Request timeout in seconds
+  request_timeout: 60
+  
+  # Connection timeout in seconds
+  connection_timeout: 10
+  
+  # Total timeout including retries
+  total_timeout: 300
+
+# Exponential backoff retry strategy
+# Formula: base_delay * (multiplier ^ attempt_number)
+retry_policy:
+  max_attempts: 3
+  
+  # Initial delay in seconds
+  initial_delay: 1
+  
+  # Exponential multiplier for each retry
+  multiplier: 2
+  
+  # Maximum delay between retries (cap for exponential growth)
+  max_delay: 60
+  
+  # Errors to retry on
+  retryable_errors:
+    - RateLimitError
+    - APIConnectionError
+    - Timeout
+    - ServiceUnavailableError
+
+# ==============================================================================
+# LOGGING CONFIGURATION
+# ==============================================================================
+# Comprehensive logging for debugging and monitoring
+# Docs: https://python.langchain.com/docs/guides/debugging
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  level: INFO
+  
+  # Log format
+  format: "[%(asctime)s] %(name)s - %(levelname)s - %(message)s"
+  
+  # Output destinations
+  outputs:
+    console:
+      enabled: true
+      level: INFO
+    
+    file:
+      enabled: true
+      path: logs/langchain.log
+      level: DEBUG
+      max_size_mb: 100
+      backup_count: 5
+  
+  # Component-specific log levels
+  component_levels:
+    langchain.llm: DEBUG
+    langchain.chains: INFO
+    langchain.memory: DEBUG
+    langchain.tools: INFO
+    langchain.retrievers: DEBUG
+  
+  # Log LLM requests/responses (be careful with sensitive data)
+  log_llm_io: true
+  mask_sensitive_keys: true
+  
+  # Performance logging
+  log_execution_time: true
+  slow_request_threshold_sec: 10
+
+# ==============================================================================
+# CALLBACK HANDLERS
+# ==============================================================================
+# Integrate with monitoring and observing systems
+# Docs: https://python.langchain.com/docs/modules/callbacks/
+callbacks:
+  # LangSmith tracing
+  langsmith:
+    enabled: true
+    api_key_env: LANGSMITH_API_KEY
+    project_name_env: LANGSMITH_PROJECT
+    endpoint: https://api.smith.langchain.com
+  
+  # Custom metrics and monitoring
+  metrics:
+    enabled: true
+    track_tokens: true
+    track_costs: true
+    track_latency: true
+
+# ==============================================================================
+# CACHE CONFIGURATION
+# ==============================================================================
+# Reduce API calls and costs through intelligent caching
+# Docs: https://python.langchain.com/docs/modules/model_io/llms/caching
+cache:
+  # Enable caching of LLM responses
+  enabled: true
+  
+  # Cache type: in_memory, sql, redis
+  type: in_memory
+  
+  # Redis configuration (if type: redis)
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+    password_env: REDIS_PASSWORD
+    ttl_seconds: 3600
+  
+  # In-memory cache
+  in_memory:
+    max_size: 1000
+    ttl_seconds: 3600
+  
+  # Cache key patterns to ignore
+  no_cache_patterns:
+    - ".*sensitive.*"
+    - ".*secret.*"
+
+# ==============================================================================
+# ASYNC CONFIGURATION
+# ==============================================================================
+# Settings for async/concurrent LLM calls
+async_config:
+  # Enable async operations
+  enabled: true
+  
+  # Maximum concurrent requests
+  max_concurrent: 10
+  
+  # Batch processing
+  batch_size: 5
+  batch_timeout_sec: 30
+
+# ==============================================================================
+# ENVIRONMENT OVERRIDE
+# ==============================================================================
+# Use environment variables to override any setting
+# Format: LANGCHAIN_{SECTION}_{KEY}
+# Example: LANGCHAIN_OPENAI_DEFAULT_MODEL=gpt-4
+environment_override:
+  enabled: true
+  prefix: LANGCHAIN_
+
+# ==============================================================================
+# SECURITY SETTINGS
+# ==============================================================================
+security:
+  # Validate SSL certificates
+  verify_ssl: true
+  
+  # Custom CA bundle path
+  ca_bundle_path_env: CA_BUNDLE_PATH
+  
+  # Mask sensitive information in logs
+  mask_api_keys: true
+  mask_tokens: true
+  
+  # Data retention policies
+  retention_days: 30

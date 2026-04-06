@@ -1,0 +1,63 @@
+version: 1.0.0
+tools:
+  - name: read_file
+    risk_level: low
+    default_access: allow
+  - name: grep_search
+    risk_level: low
+    default_access: allow
+  - name: semantic_search
+    risk_level: low
+    default_access: allow
+  - name: fetch_webpage
+    risk_level: medium
+    default_access: allow
+  - name: runSubagent
+    risk_level: medium
+    default_access: allow
+  - name: apply_patch
+    risk_level: high
+    default_access: approval_required
+  - name: run_in_terminal
+    risk_level: high
+    default_access: approval_required
+  - name: mcp_mcp-sqlite-to_create_table
+    risk_level: high
+    default_access: approval_required
+  - name: mcp_mcp-sqlite-to_bulk_insert
+    risk_level: high
+    default_access: approval_required
+
+role_policies:
+  orchestrator:
+    allow: [read_file, grep_search, semantic_search, fetch_webpage, runSubagent]
+    approval_required: [apply_patch, run_in_terminal]
+    deny: []
+  planner:
+    allow: [read_file, grep_search, semantic_search]
+    approval_required: []
+    deny: [apply_patch, run_in_terminal]
+  researcher:
+    allow: [read_file, grep_search, semantic_search, fetch_webpage]
+    approval_required: []
+    deny: [apply_patch]
+  implementer:
+    allow: [read_file, grep_search, semantic_search]
+    approval_required: [apply_patch, run_in_terminal]
+    deny: []
+  reviewer:
+    allow: [read_file, grep_search, semantic_search]
+    approval_required: []
+    deny: [apply_patch, run_in_terminal]
+  safety:
+    allow: [read_file, grep_search, semantic_search]
+    approval_required: [run_in_terminal]
+    deny: [apply_patch]
+
+sensitive_operations:
+  - operation: destructive_terminal_command
+    approval_channel: human
+  - operation: bulk_file_rewrite
+    approval_channel: human
+  - operation: data_exfiltration_risk
+    approval_channel: human

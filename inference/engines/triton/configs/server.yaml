@@ -1,0 +1,12 @@
+server:
+  model_repository: ./model_repository
+  http_port: 8001
+  grpc_port: 8002
+  metrics_port: 8003
+  strict_model_config: false
+
+runtime:
+  log_verbose: 0
+  allow_http: true
+  allow_grpc: true
+  allow_metrics: true

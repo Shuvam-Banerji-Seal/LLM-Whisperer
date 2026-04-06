@@ -1,0 +1,23 @@
+environment: staging
+owner: llm-whisperer-platform
+
+storage:
+  dataset_root: s3://llm-whisperer-staging/datasets
+  model_root: s3://llm-whisperer-staging/models
+  run_root: s3://llm-whisperer-staging/runs
+
+compute:
+  default_device: cuda
+  max_gpu_count: 4
+
+network:
+  offline_mode: true
+  allow_external_downloads: false
+
+registry:
+  mlflow_tracking_uri: ${MLFLOW_TRACKING_URI_STAGING}
+
+feature_flags:
+  enable_experimental_tools: false
+  enable_auto_eval: true
+  enable_strict_safety_gate: true

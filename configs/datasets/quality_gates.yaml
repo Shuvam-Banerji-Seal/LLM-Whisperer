@@ -1,0 +1,19 @@
+version: 1
+
+thresholds:
+  max_null_ratio: 0.02
+  max_duplicate_ratio: 0.03
+  min_avg_tokens: 12
+  max_avg_tokens: 4096
+  min_language_confidence: 0.9
+
+policy_checks:
+  require_schema_validation: true
+  require_pii_scan: true
+  require_toxicity_scan: true
+  require_license_metadata: true
+
+rag_checks:
+  require_chunk_metadata: true
+  require_source_document_id: true
+  max_empty_chunk_ratio: 0.01

@@ -1,0 +1,9 @@
+plugin:
+  name: llm_plugin_stub
+  abi_version: 1
+  library_path: ./libllm_plugin_stub.so
+
+runtime:
+  input_size: 8
+  output_size: 8
+  scale_factor: 2.0

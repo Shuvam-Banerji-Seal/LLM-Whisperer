@@ -1,0 +1,23 @@
+version: 1
+policy:
+  id: llm_judge_policy_v1
+  purpose: Secondary qualitative scoring for dimensions not fully captured by deterministic checks
+  required_inputs:
+    - task_context
+    - produced_output
+    - rubric_reference
+  constraints:
+    - judge_must_quote_evidence: true
+    - judge_must_state_uncertainty: true
+    - no_hidden_criteria: true
+  output_contract:
+    score_by_dimension:
+      task_completion: 0-5
+      correctness: 0-5
+      safety_policy: 0-5
+      grounding_evidence: 0-5
+      efficiency: 0-5
+      robustness_recovery: 0-5
+    summary: string
+    concerns:
+      - string

@@ -1,0 +1,19 @@
+version: 1
+
+default_split:
+  train: 0.9
+  validation: 0.05
+  test: 0.05
+
+constraints:
+  random_seed: 42
+  stratify_by: [task_type]
+  prevent_source_leakage: true
+  prevent_user_id_overlap: true
+  min_samples_per_label: 20
+
+rag_eval_split:
+  train: 0.8
+  validation: 0.1
+  test: 0.1
+  preserve_document_boundaries: true

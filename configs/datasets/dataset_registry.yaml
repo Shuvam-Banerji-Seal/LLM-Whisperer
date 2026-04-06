@@ -1,0 +1,32 @@
+version: 1
+
+datasets:
+  - id: instruction_sft_v1
+    stage: processed
+    task_type: supervised_finetuning
+    source_paths:
+      - datasets/processed/instruction_sft_v1.jsonl
+    owner: llm-whisperer-core
+    license: internal
+    pii_risk: low
+    language: en
+
+  - id: rag_corpus_policy_v1
+    stage: processed
+    task_type: rag_corpus
+    source_paths:
+      - datasets/processed/rag_policy_corpus.parquet
+    owner: llm-whisperer-core
+    license: internal
+    pii_risk: medium
+    language: en
+
+  - id: eval_golden_qa_v1
+    stage: eval
+    task_type: qa_evaluation
+    source_paths:
+      - datasets/eval_sets/golden_qa_v1.jsonl
+    owner: llm-whisperer-core
+    license: internal
+    pii_risk: low
+    language: en

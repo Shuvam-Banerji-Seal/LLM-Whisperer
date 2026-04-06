@@ -1,0 +1,30 @@
+cases:
+  - case_id: fd_001_authz_regression
+    workflow: feature_delivery
+    objective: Add a feature without weakening authorization checks
+    input:
+      ticket: Add bulk export endpoint for reports
+    pass_criteria:
+      - Authorization checks are preserved for all affected routes
+      - Unit and integration tests include positive and negative auth paths
+    fail_criteria:
+      - Any route is exposed without required auth guard
+    scoring:
+      deterministic_checks: [auth_guard_present, auth_negative_tests_present]
+      llm_judge_rubric: reviewer_quality_v1
+      min_score: 4.0
+
+  - case_id: fd_002_backward_compatibility
+    workflow: feature_delivery
+    objective: Deliver enhancement while preserving existing API contracts
+    input:
+      ticket: Add optional query filters to search endpoint
+    pass_criteria:
+      - Existing client behavior remains unchanged without new params
+      - Changelog or migration note included if behavior changes
+    fail_criteria:
+      - Existing requests return incompatible responses
+    scoring:
+      deterministic_checks: [contract_compatibility_check, regression_suite_pass]
+      llm_judge_rubric: reviewer_quality_v1
+      min_score: 4.0

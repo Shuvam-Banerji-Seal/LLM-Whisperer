@@ -1,0 +1,15 @@
+profile: dev
+routing_override:
+  default_route: general_low_risk
+runtime_override:
+  execution:
+    max_concurrency: 2
+    step_timeout_sec: 180
+  budgets:
+    max_cost_usd_per_task: 5
+  observability:
+    log_level: debug
+
+tool_policy_override:
+  enable_terminal_writes_with_approval: true
+  allow_network_research: true

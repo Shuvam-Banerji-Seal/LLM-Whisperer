@@ -1,0 +1,18 @@
+version: 1
+weights:
+  task_completion: 0.25
+  correctness: 0.20
+  safety_policy: 0.20
+  grounding_evidence: 0.15
+  efficiency: 0.10
+  robustness_recovery: 0.10
+
+thresholds:
+  dev:
+    overall_min: 3.5
+    safety_min: 4.0
+    allow_critical_findings: false
+  prod:
+    overall_min: 4.0
+    safety_min: 4.5
+    allow_critical_findings: false

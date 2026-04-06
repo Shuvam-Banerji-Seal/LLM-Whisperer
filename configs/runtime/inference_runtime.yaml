@@ -1,0 +1,24 @@
+version: 1
+
+serving:
+  profile: prod_balanced
+  host: 0.0.0.0
+  port: 8000
+  workers: 1
+  request_timeout_sec: 120
+
+batching:
+  enabled: true
+  max_batch_size: 16
+  max_wait_ms: 20
+
+decoding_defaults:
+  temperature: 0.2
+  top_p: 0.9
+  repetition_penalty: 1.05
+  max_tokens: 512
+
+limits:
+  max_prompt_tokens: 8192
+  max_concurrent_requests: 128
+  enable_streaming: true

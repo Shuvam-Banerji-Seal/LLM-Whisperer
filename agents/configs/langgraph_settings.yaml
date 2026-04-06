@@ -1,0 +1,428 @@
+# LangGraph Settings Configuration
+# ==============================================================================
+# Complete configuration for LangGraph state graphs and workflows
+# Documentation: https://langchain-ai.github.io/langgraph/
+# GitHub: https://github.com/langchain-ai/langgraph
+#
+# LangGraph enables building robust, stateful AI agents with:
+# - Graph-based execution models
+# - State persistence and checkpointing
+# - Dynamic routing and branching
+# - Human-in-the-loop workflows
+# ==============================================================================
+
+version: 1.0.0
+
+# ==============================================================================
+# GRAPH EXECUTION SETTINGS
+# ==============================================================================
+# Core graph execution behavior and constraints
+# Docs: https://langchain-ai.github.io/langgraph/how-tos/
+execution:
+  # Maximum iterations/steps before halting
+  max_iterations: 25
+  
+  # Default timeout per graph execution (seconds)
+  timeout_seconds: 300
+  
+  # Interrupt before running nodes (for human-in-the-loop)
+  interrupt_before_nodes: []  # e.g., ["human_review", "approval"]
+  
+  # Interrupt after running nodes
+  interrupt_after_nodes: []   # e.g., ["critical_decision"]
+  
+  # Debug mode: verbose logging and state tracking
+  debug_mode: false
+  
+  # Recursion limit (prevent infinite loops)
+  recursion_limit: 100
+  
+  # Stream output configuration
+  streaming:
+    enabled: true
+    # Stream updates from nodes or full state
+    output_mode: updates  # options: "updates", "values", "debug"
+  
+  # Error handling at graph level
+  error_handling:
+    # Continue on node errors or fail fast
+    continue_on_error: false
+    
+    # Maximum errors before halting
+    max_errors: 3
+    
+    # Nodes to skip on error
+    skip_on_error_nodes: []
+
+# ==============================================================================
+# CHECKPOINT PERSISTENCE
+# ==============================================================================
+# Save and restore graph state for resilience and replay
+# Docs: https://langchain-ai.github.io/langgraph/concepts/#checkpointing
+checkpointing:
+  # Enable state persistence
+  enabled: true
+  
+  # Checkpoint storage backend
+  # Options: memory, sql, postgres, mongodb, custom
+  storage_type: sql
+  
+  # In-memory checkpointing (development)
+  memory:
+    max_checkpoints: 100
+    ttl_seconds: 86400  # 24 hours
+  
+  # SQL checkpointing (SQLite for local, PostgreSQL for production)
+  sql:
+    # Connection string (use env var in production)
+    connection_string_env: DATABASE_URL
+    # Fallback SQLite for development
+    fallback_sqlite_path: ./data/checkpoints.db
+    
+    # Connection pooling
+    pool_size: 10
+    max_overflow: 20
+    pool_timeout: 30
+    
+    # Automatic cleanup of old checkpoints
+    cleanup:
+      enabled: true
+      older_than_days: 30
+      batch_size: 100
+  
+  # MongoDB checkpointing (for distributed systems)
+  mongodb:
+    connection_string_env: MONGODB_URL
+    database: langgraph_checkpoints
+    collection: graph_states
+    
+    # TTL index for automatic cleanup
+    ttl_seconds: 2592000  # 30 days
+  
+  # Checkpoint strategy
+  strategy:
+    # Checkpoint on every step or selectively
+    checkpoint_every_step: false
+    
+    # Nodes to always checkpoint
+    critical_nodes: []  # e.g., ["decision_point", "api_call"]
+    
+    # Nodes to skip checkpointing
+    skip_checkpoint_nodes: []  # e.g., ["logging", "metrics"]
+  
+  # Version control for checkpoints
+  versioning:
+    enabled: true
+    keep_versions: 5
+    timestamp_format: "%Y-%m-%d_%H-%M-%S"
+
+# ==============================================================================
+# STATE MANAGEMENT
+# ==============================================================================
+# Configure how graph state is managed and updated
+# Docs: https://langchain-ai.github.io/langgraph/concepts/#state
+state:
+  # State update strategy
+  update_strategy: merge  # options: merge, replace, custom
+  
+  # Reducer functions for aggregating parallel outputs
+  reducers:
+    # Example reducer for list aggregation
+    messages:
+      type: append
+      default: []
+    
+    # Example reducer for latest value
+    last_result:
+      type: last
+      default: null
+    
+    # Example reducer for aggregation
+    scores:
+      type: add
+      default: 0
+  
+  # State persistence per node
+  node_state_persistence:
+    enabled: true
+    exclude_fields: ["sensitive_data", "temporary_cache"]
+  
+  # Initial state configuration
+  initial_state:
+    # Pre-populate with defaults
+    messages: []
+    metadata: {}
+    execution_id: null
+    start_time: null
+    intermediate_results: {}
+
+# ==============================================================================
+# TIMEOUT CONFIGURATIONS
+# ==============================================================================
+# Fine-grained timeout control for different components
+timeouts:
+  # Graph-level timeout
+  graph_execution: 300
+  
+  # Per-node timeout
+  node_execution: 60
+  
+  # Specific node timeouts (overrides default)
+  node_specific:
+    # Example:
+    # "api_call_node": 120
+    # "computation_node": 30
+  
+  # Human-in-the-loop timeout (waiting for approval)
+  human_interaction: 3600  # 1 hour
+  
+  # Webhook callback timeout
+  webhook_callback: 30
+  
+  # Timeout behavior
+  on_timeout:
+    action: terminate  # options: terminate, skip, retry
+    retry_count: 1
+
+# ==============================================================================
+# LOOP ITERATION SETTINGS
+# ==============================================================================
+# Control loop behavior and prevent infinite loops
+loop_control:
+  # Maximum loop iterations
+  max_iterations: 25
+  
+  # Iteration timeout (seconds)
+  iteration_timeout: 60
+  
+  # Loop detection strategy
+  loop_detection:
+    enabled: true
+    # Detect repeated states
+    detect_repeated_states: true
+    tolerance: 2  # Allow N repeated states
+    
+    # Detect circular patterns
+    detect_cycles: true
+  
+  # Actions on max iterations exceeded
+  on_max_iterations:
+    action: terminate  # options: terminate, partial_return
+    return_partial_state: true
+  
+  # Loop history tracking
+  track_loop_history: true
+  max_history_size: 100
+
+# ==============================================================================
+# ERROR HANDLING STRATEGIES
+# ==============================================================================
+# Comprehensive error management and recovery
+# Docs: https://langchain-ai.github.io/langgraph/how-tos/#error-handling
+error_handling:
+  # Global error handling policy
+  policy: log_and_continue  # options: fail_fast, log_and_continue, retry
+  
+  # Per-error-type handlers
+  error_handlers:
+    # Handle API errors
+    APIError:
+      action: retry
+      max_retries: 3
+      backoff_multiplier: 2
+    
+    # Handle validation errors
+    ValidationError:
+      action: log_and_skip
+      severity: warning
+    
+    # Handle timeout errors
+    TimeoutError:
+      action: retry
+      max_retries: 1
+    
+    # Handle custom errors
+    CustomError:
+      action: fail_fast
+  
+  # Fallback nodes to execute on error
+  fallback_nodes:
+    # Mapping from source node to fallback
+    # Example: "api_call": "cached_result"
+  
+  # Error logging configuration
+  logging:
+    enabled: true
+    include_stack_trace: true
+    include_state: true
+    exclude_sensitive_fields: ["api_key", "password"]
+  
+  # Alert configuration for critical errors
+  alerts:
+    enabled: true
+    channels: ["slack", "email"]  # Send alerts to these channels
+    severity_threshold: error  # Minimum severity to alert
+
+# ==============================================================================
+# HUMAN-IN-THE-LOOP CONFIGURATION
+# ==============================================================================
+# Configure human approval and interaction points
+human_in_loop:
+  # Enable human interactions
+  enabled: true
+  
+  # Nodes requiring human approval
+  approval_nodes:
+    # Example: ["major_decision", "data_deletion"]
+  
+  # Human interaction handlers
+  interaction_handlers:
+    # Slack integration
+    slack:
+      enabled: false
+      webhook_url_env: SLACK_WEBHOOK_URL
+      channel: "#approvals"
+    
+    # Email notifications
+    email:
+      enabled: false
+      smtp_server: smtp.gmail.com
+      smtp_port: 587
+      from_address: noreply@example.com
+    
+    # Web UI / Dashboard
+    web_ui:
+      enabled: true
+      base_url: http://localhost:8000
+      timeout_seconds: 3600
+  
+  # Data to send for human review
+  review_data:
+    include_full_state: true
+    include_history: true
+    exclude_fields: ["internal_cache"]
+  
+  # Approval workflow
+  approval_workflow:
+    require_unanimous: false  # All reviewers must approve
+    min_approvers: 1
+    approver_roles: ["admin", "approver"]
+
+# ==============================================================================
+# CONDITIONAL BRANCHING & ROUTING
+# ==============================================================================
+# Configure intelligent routing based on state
+routing:
+  # Dynamic edge evaluation
+  dynamic_edges: true
+  
+  # Routing logic examples
+  routing_rules:
+    # Example: Route based on state
+    # "node_a":
+    #   - condition: "state['score'] > 0.8"
+    #     target: "node_b"
+    #   - condition: "state['score'] <= 0.8"
+    #     target: "node_c"
+
+# ==============================================================================
+# PARALLEL EXECUTION
+# ==============================================================================
+# Configure concurrent node execution
+parallel_execution:
+  # Enable parallel execution
+  enabled: true
+  
+  # Max concurrent nodes
+  max_concurrent_nodes: 5
+  
+  # Nodes that can run in parallel
+  parallel_node_groups:
+    # Example:
+    # - ["fetch_data", "validate_schema", "compute_hash"]
+  
+  # Aggregation strategy for parallel results
+  aggregation_strategy: merge  # options: merge, list, custom
+
+# ==============================================================================
+# MEMORY & PERFORMANCE OPTIMIZATION
+# ==============================================================================
+memory_optimization:
+  # Enable memory optimization
+  enabled: true
+  
+  # Clear intermediate state after nodes
+  clear_intermediate_state: true
+  
+  # Exclude fields from state persistence
+  exclude_from_persistence:
+    - "temporary_cache"
+    - "debug_info"
+  
+  # Compression for large states
+  compression:
+    enabled: false
+    algorithm: gzip
+    threshold_bytes: 1048576  # 1MB
+
+# ==============================================================================
+# MONITORING & OBSERVABILITY
+# ==============================================================================
+# Integrate with monitoring and tracing systems
+monitoring:
+  # LangSmith integration
+  langsmith:
+    enabled: true
+    project_name_env: LANGSMITH_PROJECT
+    trace_sample_rate: 1.0  # 0.0-1.0
+  
+  # Metrics collection
+  metrics:
+    enabled: true
+    track_iteration_count: true
+    track_state_size: true
+    track_error_rate: true
+  
+  # OpenTelemetry integration
+  opentelemetry:
+    enabled: false
+    endpoint: http://localhost:4317
+    service_name: langgraph
+
+# ==============================================================================
+# DEPLOYMENT PROFILES
+# ==============================================================================
+# Pre-configured profiles for different environments
+profiles:
+  # Development profile
+  development:
+    debug_mode: true
+    checkpointing.enabled: true
+    checkpointing.storage_type: memory
+    error_handling.policy: log_and_continue
+    monitoring.langsmith.enabled: false
+  
+  # Production profile
+  production:
+    debug_mode: false
+    checkpointing.enabled: true
+    checkpointing.storage_type: postgres
+    error_handling.policy: fail_fast
+    monitoring.langsmith.enabled: true
+    max_iterations: 25
+  
+  # Testing profile
+  testing:
+    debug_mode: true
+    checkpointing.enabled: false
+    timeout_seconds: 30
+    error_handling.policy: fail_fast
+
+# ==============================================================================
+# ENVIRONMENT OVERRIDE
+# ==============================================================================
+# Use environment variables to override settings
+# Format: LANGGRAPH_{SECTION}_{KEY}
+environment_override:
+  enabled: true
+  prefix: LANGGRAPH_

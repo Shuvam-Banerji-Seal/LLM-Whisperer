@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  vllm:
+    build:
+      context: ../..
+      dockerfile: inference/serving/docker/Dockerfile.vllm
+    container_name: llmwhisperer-vllm
+    environment:
+      MODEL_NAME: ${MODEL_NAME:-meta-llama/Llama-3.1-8B-Instruct}
+      SERVED_MODEL_NAME: ${SERVED_MODEL_NAME:-local-model}
+      HOST: 0.0.0.0
+      PORT: 8000
+      API_KEY: ${API_KEY:-local-dev-key}
+      GPU_MEMORY_UTILIZATION: ${GPU_MEMORY_UTILIZATION:-0.90}
+      MAX_MODEL_LEN: ${MAX_MODEL_LEN:-8192}
+      MAX_NUM_SEQS: ${MAX_NUM_SEQS:-128}
+      TENSOR_PARALLEL_SIZE: ${TENSOR_PARALLEL_SIZE:-1}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ${HF_HOME:-~/.cache/huggingface}:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

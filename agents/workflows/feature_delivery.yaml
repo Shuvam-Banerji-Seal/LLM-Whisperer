@@ -1,0 +1,41 @@
+version: 1
+workflow_id: feature_delivery
+entry_role: orchestrator
+inputs: [ticket, acceptance_criteria, constraints]
+steps:
+  - id: plan
+    role: planner
+    prompt: prompts/tasks/feature_delivery.task.md
+    outputs: [implementation_plan, test_plan, risks, rollback_plan]
+
+  - id: research
+    role: researcher
+    depends_on: [plan]
+    when: implementation_plan.has_unknowns == true
+    outputs: [evidence_notes, alternatives]
+
+  - id: implement
+    role: implementer
+    depends_on: [plan, research]
+    outputs: [change_set, test_results]
+
+  - id: review
+    role: reviewer
+    depends_on: [implement]
+    outputs: [findings, approval]
+
+  - id: safety
+    role: safety
+    depends_on: [implement]
+    outputs: [policy_status]
+
+gates:
+  - id: release_gate
+    requires:
+      - review.approval == true
+      - safety.policy_status == pass
+      - rollback_plan_present == true
+
+fallbacks:
+  - on: review.findings contains high_or_critical
+    action: loop implement -> review
