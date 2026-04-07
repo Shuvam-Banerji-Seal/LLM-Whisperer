@@ -1,0 +1,188 @@
+# Helm Chart Values for LLM Inference Deployment
+# Production-ready configuration for Kubernetes
+
+replicaCount: 3
+
+image:
+  repository: vllm/vllm-openai
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: "llm-inference"
+
+service:
+  type: LoadBalancer
+  port: 8000
+  metricsPort: 8001
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  hosts:
+    - host: "llm-api.example.com"
+      paths:
+        - path: /v1
+          pathType: Prefix
+  tls:
+    - secretName: llm-tls
+      hosts:
+        - llm-api.example.com
+
+resources:
+  requests:
+    memory: "48Gi"
+    cpu: "8"
+    nvidia.com/gpu: "2"
+  limits:
+    memory: "64Gi"
+    cpu: "16"
+    nvidia.com/gpu: "2"
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector:
+  gpu: "true"
+  gpu-type: "a100"
+
+tolerations:
+  - key: nvidia.com/gpu
+    operator: Equal
+    value: "true"
+    effect: NoSchedule
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - llm-inference
+        topologyKey: kubernetes.io/hostname
+
+# Model Configuration
+model:
+  name: "meta-llama/Llama-2-7b-hf"
+  cache:
+    enabled: true
+    storageClass: "fast-ssd"
+    size: "100Gi"
+    retention: "30d"
+
+vllm:
+  tensorParallelSize: 2
+  pipelineParallelSize: 1
+  dtype: "float16"
+  gpuMemoryUtilization: 0.9
+  maxModelLen: 4096
+  maxNumSeqs: 256
+  maxNumBatchedTokens: 8192
+  enableChunkedPrefill: true
+  swapSpace: 4  # GiB
+
+monitoring:
+  enabled: true
+  prometheus:
+    enabled: true
+    interval: "30s"
+  grafana:
+    enabled: true
+    dashboards: true
+  alerts:
+    enabled: true
+    rules:
+      - name: "HighGPUMemoryUsage"
+        expr: 'nvidia_smi_memory_used_mb / nvidia_smi_memory_total_mb > 0.9'
+        for: "5m"
+        severity: "warning"
+      - name: "HighLatency"
+        expr: 'histogram_quantile(0.99, llm_request_latency_seconds_bucket) > 10'
+        for: "5m"
+        severity: "critical"
+
+logging:
+  level: "INFO"
+  format: "json"
+  persistence:
+    enabled: true
+    storageClass: "standard"
+    size: "50Gi"
+
+security:
+  rbac:
+    enabled: true
+  networkPolicy:
+    enabled: true
+    allowExternal: true
+  podSecurityPolicy:
+    enabled: false  # Deprecated in K8s 1.25+
+  podSecurityStandards:
+    enforce: "restricted"
+    audit: "restricted"
+    warn: "restricted"
+
+redis:
+  enabled: true
+  auth: true
+  password: "change-me"
+  persistence:
+    enabled: true
+    size: "10Gi"
+
+postgres:
+  enabled: false  # Use external DB for production
+  auth:
+    username: "llm_user"
+    password: "change-me"
+    database: "llm_logs"
+
+env:
+  OMP_NUM_THREADS: "8"
+  NCCL_NVLS: "0"  # Disable NVIDIA NVLS for stability
+  CUDA_DEVICE_ORDER: "PCI_BUS_ID"
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8000
+  initialDelaySeconds: 60
+  periodSeconds: 30
+  timeoutSeconds: 10
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 8000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 2
+
+# Cost optimization
+costOptimization:
+  spotInstances: true
+  preemptible: false
+  priorityClass: "high-priority"
+  burstable: false
+
+# Performance tuning
+performanceTuning:
+  prefillChunkSize: 4096
+  decodeChunkSize: 8
+  numSchedulerSteps: 1
+  enableFusedKernels: true
+  useFlashAttention: true

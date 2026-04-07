@@ -1,0 +1,104 @@
+# Production Dockerfile for LLM Inference Server
+# Multi-stage build optimizing for size and performance
+
+# Stage 1: Builder
+FROM nvidia/cuda:12.1.0-devel-ubuntu22.04 AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV CUDA_HOME=/usr/local/cuda
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.10 \
+    python3.10-dev \
+    python3-pip \
+    git \
+    wget \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set Python path
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
+RUN update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+
+# Upgrade pip
+RUN pip install --upgrade pip setuptools wheel
+
+# Install Python dependencies
+RUN pip install --no-cache-dir \
+    torch==2.1.2 \
+    torchvision \
+    torchaudio \
+    vllm==0.3.0 \
+    transformers==4.36.2 \
+    peft==0.7.1 \
+    accelerate==0.25.0 \
+    bitsandbytes==0.41.3 \
+    scipy==1.11.4 \
+    numpy==1.24.3 \
+    pydantic==2.5.0 \
+    uvicorn==0.24.0 \
+    fastapi==0.108.0 \
+    prometheus-client==0.19.0 \
+    redis==5.0.1 \
+    aioredis==2.0.1
+
+# Stage 2: Runtime
+FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV CUDA_HOME=/usr/local/cuda
+ENV PATH=${CUDA_HOME}/bin:${PATH}
+ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
+ENV PYTHONUNBUFFERED=1
+ENV VLLM_WORKER_MULTIPROC_METHOD=spawn
+
+# Install runtime dependencies only
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.10 \
+    python3-distutils \
+    ca-certificates \
+    curl \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
+
+# Copy Python packages from builder
+COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+# Create application directory
+WORKDIR /app
+
+# Copy application code
+COPY ./app /app/
+COPY ./config /app/config/
+
+# Create cache directory for models
+RUN mkdir -p /root/.cache/huggingface && chmod -R 777 /root/.cache
+
+# Create non-root user for security
+RUN useradd -m -u 1000 llm-user && \
+    chown -R llm-user:llm-user /app /root/.cache
+
+USER llm-user
+
+# Expose ports
+EXPOSE 8000 8001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Start vLLM server with OpenAI-compatible API
+CMD ["python", "-m", "vllm.entrypoints.openai.api_server", \
+     "--model", "${MODEL_NAME:-meta-llama/Llama-2-7b-hf}", \
+     "--tensor-parallel-size", "${TENSOR_PARALLEL_SIZE:-2}", \
+     "--dtype", "${DTYPE:-float16}", \
+     "--gpu-memory-utilization", "${GPU_MEMORY_UTILIZATION:-0.9}", \
+     "--max-model-len", "${MAX_MODEL_LEN:-4096}", \
+     "--max-num-seqs", "${MAX_NUM_SEQS:-256}", \
+     "--enable-chunked-prefill", \
+     "--host", "0.0.0.0", \
+     "--port", "8000"]
