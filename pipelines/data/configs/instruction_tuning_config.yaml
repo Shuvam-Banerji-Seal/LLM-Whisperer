@@ -1,0 +1,54 @@
+# Instruction tuning data pipeline configuration
+pipeline:
+  name: "Instruction Tuning Data Pipeline"
+  description: "Data processing for instruction tuning datasets"
+
+ingestion:
+  source_type: json
+  source_path: data/raw/alpaca_data.json
+  max_samples: null
+  encoding: utf-8
+  cache_dir: null
+
+cleaning:
+  remove_duplicates: true
+  duplicate_subset: ["instruction", "input", "output"]
+  handle_missing: drop
+  lowercase: false
+  remove_special_chars: false
+  remove_extra_whitespace: true
+  min_length: 5
+  max_length: null
+  detect_language: false
+  remove_urls: false
+  remove_html: false
+
+preprocessing:
+  tokenizer_name: mistralai/Mistral-7B-v0.1
+  max_seq_length: 2048
+  truncation_strategy: longest_first
+  padding_strategy: max_length
+  format_type: instruction_tuning
+  instruction_template: "### Instruction:\n{instruction}\n\n"
+  response_template: "### Response:\n{output}"
+
+splitting:
+  train_size: 0.9
+  val_size: 0.1
+  test_size: 0.0
+  random_state: 42
+  stratify_column: null
+  shuffle: true
+
+validation:
+  required_columns: ["instruction", "output"]
+  min_samples: 100
+  max_duplicates_percentage: 5.0
+  max_missing_percentage: 5.0
+  check_data_types: true
+
+output:
+  output_dir: data/processed/alpaca
+  save_format: parquet
+  save_splits: true
+  save_report: true

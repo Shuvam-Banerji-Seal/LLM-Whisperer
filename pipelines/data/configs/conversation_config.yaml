@@ -1,0 +1,54 @@
+# Conversation data pipeline configuration
+pipeline:
+  name: "Conversation Data Pipeline"
+  description: "Data processing for multi-turn conversation datasets"
+
+ingestion:
+  source_type: jsonl
+  source_path: data/raw/conversations.jsonl
+  max_samples: null
+  encoding: utf-8
+  cache_dir: null
+
+cleaning:
+  remove_duplicates: true
+  duplicate_subset: null
+  handle_missing: drop
+  lowercase: false
+  remove_special_chars: false
+  remove_extra_whitespace: true
+  min_length: 10
+  max_length: null
+  detect_language: false
+  remove_urls: false
+  remove_html: false
+
+preprocessing:
+  tokenizer_name: meta-llama/Llama-2-7b-hf
+  max_seq_length: 4096
+  truncation_strategy: longest_first
+  padding_strategy: max_length
+  format_type: conversation
+  instruction_template: "User: {}\n\n"
+  response_template: "Assistant: {}"
+
+splitting:
+  train_size: 0.85
+  val_size: 0.1
+  test_size: 0.05
+  random_state: 42
+  stratify_column: null
+  shuffle: true
+
+validation:
+  required_columns: ["messages"]
+  min_samples: 50
+  max_duplicates_percentage: 10.0
+  max_missing_percentage: 10.0
+  check_data_types: true
+
+output:
+  output_dir: data/processed/conversations
+  save_format: parquet
+  save_splits: true
+  save_report: true

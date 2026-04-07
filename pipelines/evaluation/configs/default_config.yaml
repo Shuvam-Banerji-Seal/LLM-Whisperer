@@ -1,0 +1,20 @@
+"""Evaluation configuration."""
+
+benchmark:
+  model_path: ./checkpoints/lora
+  benchmarks:
+    - mmlu
+    - alpacaeval
+    - gsm8k
+    - hellaswag
+  batch_size: 32
+  num_shots: 0
+  max_samples: null
+  output_dir: ./eval_results
+
+metrics:
+  task_benchmarks: true
+  llm_as_judge: false
+  safety_checks: false
+  latency_analysis: true
+  regression_tests: false

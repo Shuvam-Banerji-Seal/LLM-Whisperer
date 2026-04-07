@@ -1,0 +1,38 @@
+# Default training configuration
+training:
+  model_name: "gpt2"
+  dataset_path: "data/processed"
+  output_dir: "./training_outputs"
+  
+  # Training parameters
+  num_epochs: 3
+  batch_size: 16
+  learning_rate: 5e-4
+  warmup_steps: 100
+  max_grad_norm: 1.0
+  weight_decay: 0.01
+  
+  # Model parameters
+  lora_rank: null  # Set to use LoRA
+  lora_alpha: 16
+  lora_dropout: 0.05
+  quantization_enabled: false
+  
+  # Training method
+  training_method: full_finetune  # full_finetune, lora, qlora, dpo
+  
+  # Optimization
+  mixed_precision: true
+  gradient_checkpointing: true
+  gradient_accumulation_steps: 1
+  
+  # Evaluation and monitoring
+  eval_steps: 500
+  save_steps: 500
+  log_steps: 100
+  
+  # Monitoring
+  use_wandb: false
+  wandb_project: null
+  use_mlflow: false
+  mlflow_experiment: null

@@ -1,0 +1,37 @@
+# DPO training configuration
+training:
+  model_name: "mistralai/Mistral-7B-v0.1"
+  dataset_path: "data/processed/dpo"
+  output_dir: "./training_outputs/dpo"
+  
+  # Training parameters
+  num_epochs: 2
+  batch_size: 8
+  learning_rate: 5e-5  # Lower learning rate for DPO
+  warmup_steps: 100
+  max_grad_norm: 1.0
+  weight_decay: 0.01
+  
+  # DPO uses all parameters
+  lora_rank: null
+  lora_alpha: 16
+  lora_dropout: 0.05
+  quantization_enabled: false
+  
+  # Training method
+  training_method: dpo
+  
+  # Optimization
+  mixed_precision: true
+  gradient_checkpointing: true
+  gradient_accumulation_steps: 4
+  
+  # Evaluation and monitoring
+  eval_steps: 500
+  save_steps: 500
+  log_steps: 100
+  
+  # Monitoring
+  use_wandb: true
+  wandb_project: llm-training
+  use_mlflow: false

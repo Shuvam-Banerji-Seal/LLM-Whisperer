@@ -1,0 +1,59 @@
+# Default data pipeline configuration
+pipeline:
+  name: "Default Data Pipeline"
+  description: "Standard data processing configuration"
+
+ingestion:
+  source_type: csv  # csv, json, jsonl, parquet, huggingface
+  source_path: data/raw/dataset.csv
+  max_samples: null  # Use all samples
+  sample_fraction: null  # Sample all data
+  encoding: utf-8
+  cache_dir: null
+
+cleaning:
+  remove_duplicates: true
+  duplicate_subset: null  # Use all columns for deduplication
+  handle_missing: drop  # drop or fill
+  missing_fill_value: null
+  lowercase: false
+  remove_special_chars: false
+  remove_extra_whitespace: true
+  min_length: 10
+  max_length: null
+  detect_language: false
+  target_languages: null
+  remove_urls: false
+  remove_html: false
+
+preprocessing:
+  tokenizer_name: gpt2
+  max_seq_length: 512
+  truncation_strategy: longest_first
+  padding_strategy: max_length
+  format_type: standard  # standard, instruction_tuning, conversation
+  instruction_template: "### Instruction:\n{}\n\n"
+  response_template: "### Response:\n{}"
+
+splitting:
+  train_size: 0.8
+  val_size: 0.1
+  test_size: 0.1
+  random_state: 42
+  stratify_column: null
+  shuffle: true
+  cross_validation_folds: null
+
+validation:
+  required_columns: []
+  min_samples: 1
+  max_duplicates_percentage: 10.0
+  max_missing_percentage: 10.0
+  check_data_types: true
+  expected_dtypes: {}
+
+output:
+  output_dir: data/processed
+  save_format: parquet
+  save_splits: true
+  save_report: true

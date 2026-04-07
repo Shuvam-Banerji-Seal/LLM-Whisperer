@@ -1,0 +1,17 @@
+"""Deployment configuration."""
+
+deployment:
+  model_path: ./training_outputs/lora
+  model_name: mistral-7b-lora
+  model_version: 1.0.0
+  output_dir: ./deployments
+  
+  push_to_hub: false
+  hub_repo_id: null
+  
+  quantization: false
+  optimization_level: 0
+  
+  major: 1
+  minor: 0
+  patch: 0
