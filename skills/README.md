@@ -20,45 +20,73 @@ A comprehensive, source-backed library of **73 reusable skill prompts** for adva
 
 ---
 
-## New Skills & Code Examples
+## 🆕 Reorganized: Production Code Examples & Templates
 
-Recently added high-impact skills and production-ready code examples (marked with 🆕 and 💻):
+The repository has been reorganized into an intuitive structure with **10 complete production implementations** and comprehensive guides:
 
-### Production Code Examples (5 skills) 🆕💻
-- **`rag/rag-complete.py`** - 700+ lines: Complete RAG implementation
-  - Dense/sparse retrieval (embeddings + BM25)
-  - HyDE query expansion, cross-encoder reranking
-  - LLMAsJudge evaluation, NDCG/MRR/Recall metrics
-  
-- **`multimodal/multimodal-complete.py`** - 600+ lines: Vision-language models
-  - ImagePreprocessor with CLIP/ViT/DINOv2 presets
-  - Support for 6+ models (LLaVA, Qwen-VL, BLIP-2, InternVL)
-  - KVCacheManager for efficient vision inference
-  
-- **`fast-inference/fast-inference-complete.py`** - 700+ lines: Inference optimization
-  - KVCacheOptimizer (2-4x speedup), ContinuousBatcher (3-5x throughput)
-  - SpeculativeDecoder (2-3x latency), TensorParallelism (multi-GPU)
-  - Combined 75x speedup from baseline
-  
-- **`fine-tuning/finetuning-complete.py`** - 900+ lines: Fine-tuning framework
-  - SFT, DPO, LoRA, QLoRA, Adapters, Prefix-Tuning, FSDP
-  - Comprehensive training metrics and evaluation
-  
-- **`quantization/quantization-complete.py`** - 800+ lines: Model quantization
-  - BitsAndBytes, AutoAWQ, GPTQ, GGUF
-  - QAT and PTQ implementation
+### Complete Production Code Examples 💻
+Located in [`/skills/examples/`](./examples/README.md):
 
-### Infrastructure & Utilities (2 skills) 🆕💻
-- **`templates/kubernetes/llm-inference-deployment.yaml`** - 200+ lines
-  - StatefulSet with GPU management, HPA autoscaling
-  - Service discovery, persistent volumes
-  
-- **`templates/docker/docker-compose.yml`** - 250+ lines
-  - Complete stack: vLLM, Redis, Prometheus, Grafana, PostgreSQL
-  
-- **`skills/utilities.py`** - 600+ lines
-  - TokenizationUtils, BatchingUtils, PromptUtils
-  - EvaluationUtils (ROUGE, BLEU, F1), MonitoringUtils, CacheUtils
+1. **RAG (Retrieval-Augmented Generation)** [`/skills/examples/rag/`](./examples/rag/README.md)
+   - 700+ lines: Dense/sparse retrieval, reranking, evaluation
+   - [→ RAG Implementation Guide](./examples/rag/README.md)
+
+2. **Multimodal (Vision-Language Models)** [`/skills/examples/multimodal/`](./examples/multimodal/README.md)
+   - 600+ lines: Multiple vision encoders, efficient KV-cache
+   - [→ Multimodal Guide](./examples/multimodal/README.md)
+
+3. **Fast Inference (Up to 75x Speedup)** [`/skills/examples/fast-inference/`](./examples/fast-inference/README.md)
+   - 700+ lines: KV-cache, continuous batching, speculative decoding, tensor parallelism
+   - [→ Fast Inference Guide](./examples/fast-inference/README.md)
+
+4. **Fine-Tuning (7 Methods)** [`/skills/examples/fine-tuning/`](./examples/fine-tuning/README.md)
+   - 900+ lines: SFT, DPO, LoRA, QLoRA, Adapters, Prefix-Tuning, FSDP
+   - [→ Fine-Tuning Guide](./examples/fine-tuning/README.md)
+
+5. **Quantization (6 Methods)** [`/skills/examples/quantization/`](./examples/quantization/README.md)
+   - 800+ lines: BitsAndBytes, AutoAWQ, GPTQ, GGUF, QAT, PTQ
+   - [→ Quantization Guide](./examples/quantization/README.md)
+
+6. **Advanced Architectures: Mixture of Experts** [`/skills/examples/advanced-architectures/`](./examples/advanced-architectures/README.md)
+   - 500+ lines: Sparse MoE, expert choice routing, load balancing
+   - [→ MoE Guide](./examples/advanced-architectures/README.md)
+
+7. **Advanced Reasoning & Prompting** [`/skills/examples/advanced-reasoning/`](./examples/advanced-reasoning/README.md)
+   - 400+ lines: Chain-of-Thought, Tree-of-Thought, Self-Consistency, Few-Shot, RAG integration
+   - [→ Prompting Guide](./examples/advanced-reasoning/README.md)
+
+8. **Code Generation** [`/skills/examples/code-generation/`](./examples/code-generation/README.md)
+   - 450+ lines: Function/class generation, testing, evaluation, IDE integration
+   - [→ Code Generation Guide](./examples/code-generation/README.md)
+
+9. **Infrastructure Deployment** [`/skills/examples/infrastructure-deployment/`](./examples/infrastructure-deployment/README.md)
+   - 400+ lines: vLLM async server, batching, error handling, monitoring
+   - [→ Deployment Guide](./examples/infrastructure-deployment/README.md)
+
+10. **Production Monitoring** [`/skills/examples/production-ops/`](./examples/production-ops/README.md)
+    - 400+ lines: Prometheus metrics, Grafana dashboards, tracing, cost tracking
+    - [→ Monitoring Guide](./examples/production-ops/README.md)
+
+### Infrastructure Templates 📦
+Located in [`/skills/templates/`](./templates/README.md):
+- **Kubernetes** - Deployment manifests, HPA, StatefulSet
+- **Docker** - Dockerfile, docker-compose with full stack
+- **Helm** - Chart templates for package management
+- [→ Full Templates Guide](./templates/README.md)
+
+### End-to-End Workflow 🔄
+Located in [`/skills/workflows/`](./workflows/README.md):
+- Complete pipeline: Data preparation → Fine-tuning → Quantization → Optimization → Deployment → Monitoring
+- Production deployment in 2-3 days
+- [→ Workflow Guide](./workflows/README.md)
+
+### Master Index
+Start here: [**`/skills/examples/README.md`**](./examples/README.md) - Comprehensive navigation with:
+- All 10 domains with statistics
+- Cross-domain integration patterns
+- FAQ and troubleshooting
+- Performance benchmarks
+- Cost analysis
 
 ### Foundational Engineering (7 skills) 🆕
 - `foundational/advanced-python-patterns.prompt.md` - Advanced Python design patterns and best practices
