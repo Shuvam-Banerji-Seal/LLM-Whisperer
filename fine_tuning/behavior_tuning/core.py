@@ -199,22 +199,76 @@ class BehaviorFinetuner(BaseFinetuner):
             learning_rate=self.optimizer.param_groups[0]["lr"],
         )
 
-    def evaluate_behavior_consistency(self, test_prompts: List[str]) -> float:
+    def evaluate_behavior_consistency(
+        self, test_prompts: List[str], num_runs: int = 3, max_length: int = 50
+    ) -> float:
         """Evaluate consistency of behavior on test prompts.
+
+        Measures consistency by comparing multiple model outputs for the same
+        input prompt. Higher scores indicate more consistent behavior.
 
         Args:
             test_prompts: List of test prompts
+            num_runs: Number of times to run each prompt for consistency check
+            max_length: Maximum length of generated output
 
         Returns:
-            Consistency score
+            Consistency score between 0.0 and 1.0
         """
         self.model.eval()
         consistency_scores = []
 
+        try:
+            from transformers import AutoTokenizer
+
+            tokenizer = AutoTokenizer.from_pretrained(
+                self.config.model_name,
+                cache_dir=self.config.cache_dir,
+                use_auth_token=self.config.use_auth_token,
+                trust_remote_code=self.config.trust_remote_code,
+            )
+
+            if tokenizer.pad_token is None:
+                tokenizer.pad_token = tokenizer.eos_token
+        except ImportError:
+            logger.error("transformers library not installed")
+            raise
+
         with torch.no_grad():
             for prompt in test_prompts:
-                # Simplified consistency evaluation
-                consistency_scores.append(0.85)  # Placeholder
+                # Generate multiple outputs for the same prompt
+                outputs = []
+
+                for _ in range(num_runs):
+                    inputs = tokenizer(
+                        prompt,
+                        return_tensors="pt",
+                        padding=True,
+                        truncation=True,
+                        max_length=512,
+                    ).to(self.device)
+
+                    # Generate with sampling for variability
+                    output_ids = self.model.generate(
+                        **inputs,
+                        max_new_tokens=max_length,
+                        do_sample=True,
+                        temperature=0.7,
+                        top_p=0.9,
+                        pad_token_id=tokenizer.pad_token_id,
+                    )
+
+                    # Decode output (remove input prompt)
+                    generated = output_ids[:, inputs["input_ids"].shape[1] :]
+                    decoded = tokenizer.decode(
+                        generated[0], skip_special_tokens=True
+                    )
+                    outputs.append(decoded)
+
+                # Calculate consistency score based on output similarity
+                if len(outputs) >= 2:
+                    consistency = self._calculate_output_similarity(outputs)
+                    consistency_scores.append(consistency)
 
         avg_consistency = (
             sum(consistency_scores) / len(consistency_scores)
@@ -223,3 +277,38 @@ class BehaviorFinetuner(BaseFinetuner):
         )
         logger.info(f"Behavior consistency: {avg_consistency:.4f}")
         return avg_consistency
+
+    def _calculate_output_similarity(self, outputs: List[str]) -> float:
+        """Calculate similarity between multiple model outputs.
+
+        Uses token-based Jaccard similarity averaged across all pairs.
+
+        Args:
+            outputs: List of generated output strings
+
+        Returns:
+            Average similarity score between 0.0 and 1.0
+        """
+        if len(outputs) < 2:
+            return 1.0
+
+        # Tokenize outputs for comparison
+        tokenized = [set(out.lower().split()) for out in outputs]
+
+        similarities = []
+        for i in range(len(tokenized)):
+            for j in range(i + 1, len(tokenized)):
+                set1, set2 = tokenized[i], tokenized[j]
+
+                # Jaccard similarity: intersection / union
+                intersection = len(set1 & set2)
+                union = len(set1 | set2)
+
+                if union > 0:
+                    similarity = intersection / union
+                else:
+                    similarity = 1.0 if intersection == 0 else 0.0
+
+                similarities.append(similarity)
+
+        return sum(similarities) / len(similarities) if similarities else 0.0

@@ -49,10 +49,39 @@ class DocumentLoader:
             return []
 
     def _load_pdf(self, source: str) -> List[Dict[str, Any]]:
-        """Load PDF file."""
+        """Load PDF file.
+
+        Args:
+            source: Path to PDF file.
+
+        Returns:
+            List of document dicts with 'content' and 'metadata'.
+        """
         logger.info(f"Loading PDF from {source}")
-        # Placeholder for PDF loading
-        return [{"content": "", "metadata": {"source": source}}]
+
+        try:
+            import pdfplumber
+
+            documents = []
+            with pdfplumber.open(source) as pdf:
+                for page_num, page in enumerate(pdf.pages, start=1):
+                    text = page.extract_text()
+                    if text and text.strip():
+                        documents.append({
+                            "content": text,
+                            "metadata": {
+                                "source": source,
+                                "page_number": page_num,
+                                "total_pages": len(pdf.pages)
+                            }
+                        })
+            return documents
+        except ImportError:
+            logger.error("pdfplumber not installed. Install with: pip install pdfplumber")
+            return []
+        except Exception as e:
+            logger.error(f"Failed to load PDF {source}: {e}")
+            return []
 
     def _load_directory(self, source: str) -> List[Dict[str, Any]]:
         """Load all files from directory."""

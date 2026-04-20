@@ -210,10 +210,71 @@ class TrainingOrchestrator:
         )
 
     def _estimate_total_steps(self) -> int:
-        """Estimate total training steps."""
-        # This would need access to dataset size
-        # For now, return a placeholder
-        return 10000
+        """Estimate total training steps.
+
+        Calculates based on dataset size if available, otherwise uses config parameters.
+
+        Returns:
+            Estimated total number of training steps.
+        """
+        try:
+            from datasets import load_from_disk, load_dataset
+
+            # Try to load dataset and get size
+            dataset_size = None
+            dataset_path = self.config.dataset_path
+
+            # Try loading as HuggingFace dataset
+            try:
+                if Path(dataset_path).exists():
+                    # Local dataset directory
+                    dataset = load_from_disk(dataset_path)
+                else:
+                    # Try loading from HuggingFace Hub
+                    dataset = load_dataset(dataset_path, split="train")
+
+                if hasattr(dataset, "num_rows"):
+                    dataset_size = dataset.num_rows
+                elif hasattr(dataset, "__len__"):
+                    dataset_size = len(dataset)
+            except Exception as e:
+                logger.warning(f"Could not load dataset to estimate steps: {e}")
+
+            # Calculate steps based on dataset size or use reasonable estimate
+            if dataset_size:
+                steps_per_epoch = (
+                    dataset_size
+                    // (self.config.batch_size * self.config.gradient_accumulation_steps)
+                )
+                total_steps = steps_per_epoch * self.config.num_epochs
+                logger.info(
+                    f"Estimated {total_steps} steps from dataset size {dataset_size}"
+                )
+                return max(total_steps, 1)
+            else:
+                # Fallback: estimate based on typical dataset sizes
+                # Use 10k samples as default assumption
+                assumed_dataset_size = 10000
+                steps_per_epoch = (
+                    assumed_dataset_size
+                    // (self.config.batch_size * self.config.gradient_accumulation_steps)
+                )
+                total_steps = steps_per_epoch * self.config.num_epochs
+                logger.info(
+                    f"Dataset size unknown, estimated {total_steps} steps based on "
+                    f"assumed dataset size of {assumed_dataset_size}"
+                )
+                return max(total_steps, 1)
+
+        except ImportError:
+            logger.warning("datasets library not available, using default step estimate")
+            # Fallback calculation without dataset
+            assumed_dataset_size = 10000
+            steps_per_epoch = (
+                assumed_dataset_size
+                // (self.config.batch_size * self.config.gradient_accumulation_steps)
+            )
+            return max(steps_per_epoch * self.config.num_epochs, 1)
 
     def save_checkpoint(self, checkpoint_dir: Optional[str] = None):
         """Save model checkpoint.

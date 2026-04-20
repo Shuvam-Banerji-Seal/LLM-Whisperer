@@ -12,9 +12,8 @@ Each category provides specialized runners, metrics, and aggregation functionali
 The base module provides shared utilities and interfaces for all evaluation types.
 """
 
-from .src import (
-    # Base classes and utilities will be imported from src when available
-)
+# Base classes and utilities will be imported from src when available
+# from .src import (...)
 
 __version__ = "1.0.0"
 

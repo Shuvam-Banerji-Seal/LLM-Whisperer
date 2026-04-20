@@ -396,9 +396,156 @@ class DataProcessor:
     def __init__(self):
         self.data = []
     
-    def load_data(self, source):
-        # TODO: Implement data loading
-        pass
+    def load_data(self, source: str) -> Dict[str, Any]:
+        """
+        Load data from various sources.
+
+        Args:
+            source: File path, directory, or URL to load data from
+
+        Returns:
+            Dictionary containing load results and metadata
+        """
+        import json
+        import os
+        from pathlib import Path
+
+        result = {
+            "source": source,
+            "success": False,
+            "data": None,
+            "format": None,
+            "error": None,
+        }
+
+        try:
+            # Check if source is a URL
+            if source.startswith(("http://", "https://")):
+                result.update(self._load_from_url(source))
+            # Check if source is a directory
+            elif os.path.isdir(source):
+                result.update(self._load_from_directory(source))
+            # Otherwise, treat as a file
+            elif os.path.isfile(source):
+                result.update(self._load_from_file(source))
+            else:
+                result["error"] = f"Source not found: {source}"
+                logger.warning(f"Data source not found: {source}")
+
+            if result.get("data") is not None:
+                self.data = result["data"]
+                result["success"] = True
+                logger.info(f"Successfully loaded data from {source}")
+
+        except Exception as e:
+            result["error"] = str(e)
+            logger.error(f"Error loading data from {source}: {e}")
+
+        return result
+
+    def _load_from_file(self, filepath: str) -> Dict[str, Any]:
+        """Load data from a single file."""
+        import csv
+
+        path = Path(filepath)
+        suffix = path.suffix.lower()
+        result = {"data": None, "format": suffix}
+
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                content = f.read()
+
+            if suffix == ".json":
+                import json
+                result["data"] = json.loads(content)
+            elif suffix == ".csv":
+                lines = content.strip().split("\n")
+                if lines:
+                    reader = csv.DictReader(lines)
+                    result["data"] = list(reader)
+                else:
+                    result["data"] = []
+            elif suffix in (".txt", ".md", ".py", ".js", ".html", ".css"):
+                result["data"] = content
+                result["format"] = "text"
+            else:
+                # Default to text for unknown formats
+                result["data"] = content
+                result["format"] = "text"
+
+        except json.JSONDecodeError as e:
+            logger.error(f"Invalid JSON in {filepath}: {e}")
+            result["data"] = None
+            result["error"] = f"Invalid JSON: {e}"
+        except Exception as e:
+            logger.error(f"Error reading file {filepath}: {e}")
+            result["data"] = None
+            result["error"] = str(e)
+
+        return result
+
+    def _load_from_directory(self, dirpath: str) -> Dict[str, Any]:
+        """Load data from all supported files in a directory."""
+        import os
+
+        result = {"data": [], "format": "directory", "files_loaded": 0}
+        supported_extensions = (".json", ".csv", ".txt", ".md", ".py", ".js", ".html", ".css")
+
+        try:
+            for filename in os.listdir(dirpath):
+                filepath = os.path.join(dirpath, filename)
+                if os.path.isfile(filepath) and filename.lower().endswith(supported_extensions):
+                    file_result = self._load_from_file(filepath)
+                    if file_result.get("data") is not None:
+                        result["data"].append({
+                            "filename": filename,
+                            "format": file_result["format"],
+                            "content": file_result["data"],
+                        })
+                        result["files_loaded"] += 1
+
+            logger.info(f"Loaded {result['files_loaded']} files from directory {dirpath}")
+
+        except Exception as e:
+            logger.error(f"Error reading directory {dirpath}: {e}")
+            result["error"] = str(e)
+
+        return result
+
+    def _load_from_url(self, url: str) -> Dict[str, Any]:
+        """Load data from a URL."""
+        result = {"data": None, "format": "url"}
+
+        try:
+            import urllib.request
+            from urllib.parse import urlparse
+
+            parsed = urlparse(url)
+            if not parsed.scheme or not parsed.netloc:
+                result["error"] = "Invalid URL format"
+                return result
+
+            with urllib.request.urlopen(url, timeout=30) as response:
+                content = response.read().decode("utf-8")
+
+            # Try to parse as JSON first
+            try:
+                import json
+                result["data"] = json.loads(content)
+                result["format"] = "json"
+            except json.JSONDecodeError:
+                # Fall back to text
+                result["data"] = content
+                result["format"] = "text"
+
+        except urllib.error.URLError as e:
+            logger.error(f"URL error for {url}: {e}")
+            result["error"] = f"URL error: {e}"
+        except Exception as e:
+            logger.error(f"Error loading from URL {url}: {e}")
+            result["error"] = str(e)
+
+        return result
     
     def process(self):
         try:

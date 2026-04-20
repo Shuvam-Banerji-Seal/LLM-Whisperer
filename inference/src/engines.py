@@ -125,8 +125,23 @@ class TransformersEngine(InferenceEngine):
         """
         logger.info(f"Computing embeddings for {len(texts)} texts")
 
-        # Placeholder implementation
-        return [[0.0] * 768 for _ in texts]
+        try:
+            from sentence_transformers import SentenceTransformer
+        except ImportError:
+            raise ImportError("sentence-transformers library required for embeddings")
+
+        # Load embedding model if not already loaded
+        if not hasattr(self, '_embedding_model') or self._embedding_model is None:
+            # Use a default embedding model or derive from model_name
+            embedding_model_name = "all-MiniLM-L6-v2"
+            logger.info(f"Loading embedding model: {embedding_model_name}")
+            self._embedding_model = SentenceTransformer(embedding_model_name)
+
+        # Compute embeddings
+        embeddings = self._embedding_model.encode(texts, convert_to_numpy=True)
+
+        # Convert to list of lists
+        return [embedding.tolist() for embedding in embeddings]
 
 
 class VLLMEngine(InferenceEngine):
@@ -166,8 +181,28 @@ class VLLMEngine(InferenceEngine):
         """
         logger.info(f"Generating with vLLM for {len(prompts)} prompts")
 
-        # Placeholder implementation
-        return ["Generated response"] * len(prompts)
+        try:
+            from vllm import SamplingParams
+        except ImportError:
+            raise ImportError("vLLM library required")
+
+        if self.model is None:
+            raise RuntimeError("vLLM model not loaded")
+
+        # Configure sampling parameters from config
+        sampling_params = SamplingParams(
+            temperature=self.config.temperature,
+            top_p=self.config.top_p,
+            max_tokens=self.config.max_length,
+        )
+
+        # Generate outputs
+        outputs = self.model.generate(prompts, sampling_params)
+
+        # Extract generated text from outputs
+        results = [output.outputs[0].text for output in outputs]
+
+        return results
 
     def get_embeddings(self, texts: List[str]) -> List[List[float]]:
         """Get embeddings (not supported in vLLM for generation)."""

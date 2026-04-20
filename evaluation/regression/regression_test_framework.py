@@ -10,15 +10,298 @@ Based on:
 """
 
 import json
+import os
+import re
 import pytest
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from dataclasses import dataclass, field, asdict
 from enum import Enum
 from pathlib import Path
 import statistics
 
 from golden_dataset_builder import GoldenDataset, TestCase, Severity, CaseType
+
+
+# ============== LLM Provider Configuration ==============
+
+class LLMProvider(Enum):
+    """Supported LLM providers for judge evaluation."""
+    OPENAI = "openai"
+    ANTHROPIC = "anthropic"
+    AZURE_OPENAI = "azure_openai"
+    CUSTOM = "custom"
+
+
+@dataclass
+class LLMJudgeConfig:
+    """Configuration for LLM-as-judge evaluation."""
+    provider: LLMProvider
+    model: str
+    api_key: Optional[str] = None
+    api_base: Optional[str] = None
+    temperature: float = 0.0
+    max_tokens: int = 500
+    timeout: int = 30
+    # Custom prompt template (optional)
+    prompt_template: Optional[str] = None
+    # Expected response format
+    response_format: str = "numeric"  # "numeric", "json", or "text"
+    # Retry settings
+    max_retries: int = 3
+    retry_delay: float = 1.0
+
+
+class LLMClient:
+    """
+    Generic LLM client for LLM-as-judge evaluation.
+    Supports multiple providers: OpenAI, Anthropic, Azure OpenAI, and custom.
+    """
+
+    # Default evaluation prompt template
+    DEFAULT_PROMPT_TEMPLATE = """You are an expert evaluator assessing the quality of AI-generated responses.
+
+## Input Query:
+{input_text}
+
+## AI Response:
+{actual_output}
+
+## Evaluation Criteria:
+{criteria}
+
+## Instructions:
+Evaluate the AI response based on the criteria above. Provide:
+1. A score between 0.0 and 1.0 where:
+   - 1.0 = Excellent, fully meets all criteria
+   - 0.7-0.9 = Good, minor issues
+   - 0.4-0.6 = Fair, significant issues
+   - 0.0-0.3 = Poor, fails to meet criteria
+2. A brief explanation of your scoring (1-2 sentences)
+
+Respond in this exact format:
+Score: <number between 0.0 and 1.0>
+Explanation: <your explanation>"""
+
+    # JSON response format template
+    JSON_PROMPT_TEMPLATE = """You are an expert evaluator assessing the quality of AI-generated responses.
+
+## Input Query:
+{input_text}
+
+## AI Response:
+{actual_output}
+
+## Evaluation Criteria:
+{criteria}
+
+## Instructions:
+Evaluate the AI response based on the criteria above.
+
+Respond with ONLY a JSON object in this exact format (no markdown, no backticks):
+{{"score": <number between 0.0 and 1.0>, "explanation": "<your brief explanation>"}}"""
+
+    def __init__(self, config: LLMJudgeConfig):
+        self.config = config
+        self._client = None
+        self._initialize_client()
+
+    def _initialize_client(self):
+        """Initialize the appropriate client based on provider."""
+        if self.config.provider == LLMProvider.OPENAI:
+            self._init_openai()
+        elif self.config.provider == LLMProvider.ANTHROPIC:
+            self._init_anthropic()
+        elif self.config.provider == LLMProvider.AZURE_OPENAI:
+            self._init_azure_openai()
+        elif self.config.provider == LLMProvider.CUSTOM:
+            self._client = None  # Custom handler expected
+
+    def _init_openai(self):
+        """Initialize OpenAI client."""
+        try:
+            import openai
+            self._client = openai.OpenAI(
+                api_key=self.config.api_key or os.getenv("OPENAI_API_KEY"),
+                base_url=self.config.api_base,
+            )
+        except ImportError:
+            raise ImportError(
+                "OpenAI package not installed. Install with: pip install openai"
+            )
+
+    def _init_anthropic(self):
+        """Initialize Anthropic client."""
+        try:
+            import anthropic
+            self._client = anthropic.Anthropic(
+                api_key=self.config.api_key or os.getenv("ANTHROPIC_API_KEY"),
+            )
+        except ImportError:
+            raise ImportError(
+                "Anthropic package not installed. Install with: pip install anthropic"
+            )
+
+    def _init_azure_openai(self):
+        """Initialize Azure OpenAI client."""
+        try:
+            import openai
+            self._client = openai.AzureOpenAI(
+                api_key=self.config.api_key or os.getenv("AZURE_OPENAI_API_KEY"),
+                azure_endpoint=self.config.api_base or os.getenv("AZURE_OPENAI_ENDPOINT"),
+                api_version="2024-02-01",
+            )
+        except ImportError:
+            raise ImportError(
+                "OpenAI package not installed. Install with: pip install openai"
+            )
+
+    def _build_prompt(
+        self, input_text: str, actual_output: str, criteria: str
+    ) -> str:
+        """Build the evaluation prompt."""
+        if self.config.prompt_template:
+            template = self.config.prompt_template
+        elif self.config.response_format == "json":
+            template = self.JSON_PROMPT_TEMPLATE
+        else:
+            template = self.DEFAULT_PROMPT_TEMPLATE
+
+        return template.format(
+            input_text=input_text,
+            actual_output=actual_output,
+            criteria=criteria,
+        )
+
+    def _parse_response(self, response_text: str) -> Tuple[float, str]:
+        """Parse the LLM response to extract score and explanation."""
+        if self.config.response_format == "json":
+            return self._parse_json_response(response_text)
+        else:
+            return self._parse_numeric_response(response_text)
+
+    def _parse_json_response(self, response_text: str) -> Tuple[float, str]:
+        """Parse JSON formatted response."""
+        try:
+            # Clean up the response
+            text = response_text.strip()
+            # Remove markdown code blocks if present
+            if text.startswith("```"):
+                lines = text.split("\n")
+                if lines[0].startswith("```"):
+                    lines = lines[1:]
+                if lines and lines[-1].startswith("```"):
+                    lines = lines[:-1]
+                text = "\n".join(lines).strip()
+
+            data = json.loads(text)
+            score = float(data.get("score", 0.0))
+            explanation = data.get("explanation", "")
+            return max(0.0, min(1.0, score)), explanation
+        except (json.JSONDecodeError, ValueError) as e:
+            # Fallback to numeric parsing
+            return self._parse_numeric_response(response_text)
+
+    def _parse_numeric_response(self, response_text: str) -> Tuple[float, str]:
+        """Parse numeric score from text response."""
+        # Look for Score: X.XX pattern
+        score_match = re.search(
+            r"[Ss]core[:\s]+([0-9]*\.?[0-9]+)", response_text
+        )
+        if score_match:
+            score = float(score_match.group(1))
+        else:
+            # Try to find any number between 0 and 1
+            numbers = re.findall(r"\b(0?\.\d+|1\.0|0|1)\b", response_text)
+            if numbers:
+                score = float(numbers[0])
+            else:
+                score = 0.5  # Default fallback
+
+        # Extract explanation
+        explanation_match = re.search(
+            r"[Ee]xplanation[:\s]+(.+?)(?:\n|$)", response_text, re.DOTALL
+        )
+        if explanation_match:
+            explanation = explanation_match.group(1).strip()
+        else:
+            # Use remaining text as explanation
+            lines = response_text.split("\n")
+            explanation = lines[-1].strip() if lines else ""
+
+        return max(0.0, min(1.0, score)), explanation
+
+    def evaluate(
+        self, input_text: str, actual_output: str, criteria: str
+    ) -> Tuple[float, str]:
+        """
+        Evaluate the output using the configured LLM.
+
+        Returns:
+            Tuple of (score, explanation)
+        """
+        import time
+
+        prompt = self._build_prompt(input_text, actual_output, criteria)
+        last_error = None
+
+        for attempt in range(self.config.max_retries):
+            try:
+                response_text = self._call_llm(prompt)
+                score, explanation = self._parse_response(response_text)
+                return score, explanation
+            except Exception as e:
+                last_error = e
+                if attempt < self.config.max_retries - 1:
+                    time.sleep(self.config.retry_delay * (attempt + 1))
+
+        # All retries failed
+        raise RuntimeError(
+            f"LLM evaluation failed after {self.config.max_retries} attempts: {last_error}"
+        )
+
+    def _call_llm(self, prompt: str) -> str:
+        """Call the appropriate LLM based on provider."""
+        if self.config.provider == LLMProvider.OPENAI:
+            return self._call_openai(prompt)
+        elif self.config.provider == LLMProvider.ANTHROPIC:
+            return self._call_anthropic(prompt)
+        elif self.config.provider == LLMProvider.AZURE_OPENAI:
+            return self._call_azure_openai(prompt)
+        else:
+            raise ValueError(f"Unsupported provider: {self.config.provider}")
+
+    def _call_openai(self, prompt: str) -> str:
+        """Call OpenAI API."""
+        response = self._client.chat.completions.create(
+            model=self.config.model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=self.config.temperature,
+            max_tokens=self.config.max_tokens,
+            timeout=self.config.timeout,
+        )
+        return response.choices[0].message.content
+
+    def _call_anthropic(self, prompt: str) -> str:
+        """Call Anthropic API."""
+        response = self._client.messages.create(
+            model=self.config.model,
+            max_tokens=self.config.max_tokens,
+            temperature=self.config.temperature,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        return response.content[0].text
+
+    def _call_azure_openai(self, prompt: str) -> str:
+        """Call Azure OpenAI API."""
+        response = self._client.chat.completions.create(
+            model=self.config.model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=self.config.temperature,
+            max_tokens=self.config.max_tokens,
+            timeout=self.config.timeout,
+        )
+        return response.choices[0].message.content
 
 
 class MetricType(Enum):
@@ -238,7 +521,8 @@ class LLMJudgeMetric(BaseMetric):
     """
     Use an LLM to judge the quality of outputs.
 
-    This is a placeholder - implement with your preferred LLM provider.
+    Supports multiple LLM providers (OpenAI, Anthropic, Azure OpenAI)
+    with configurable evaluation criteria and prompt engineering.
     """
 
     def __init__(
@@ -246,38 +530,112 @@ class LLMJudgeMetric(BaseMetric):
         name: str,
         criteria: str,
         threshold: float = 0.7,
-        judge_fn: Optional[Callable[[str, str, str], float]] = None,
+        judge_config: Optional[LLMJudgeConfig] = None,
+        judge_fn: Optional[Callable[[str, str, str], Union[float, Tuple[float, str]]]] = None,
     ):
+        """
+        Initialize LLM Judge metric.
+
+        Args:
+            name: Name of the metric
+            criteria: Description of what to evaluate
+            threshold: Minimum score to pass (0.0 to 1.0)
+            judge_config: LLM configuration for automated evaluation.
+                          If provided, uses LLMClient for evaluation.
+            judge_fn: Optional custom judge function.
+                     Takes (input_text, actual_output, criteria) and returns
+                     either a float score or a tuple of (score, explanation).
+        """
         super().__init__(name, threshold)
         self.criteria = criteria
+        self.judge_config = judge_config
         self.judge_fn = judge_fn
+        self._llm_client: Optional[LLMClient] = None
+
+        # Initialize LLM client if config provided
+        if judge_config:
+            self._llm_client = LLMClient(judge_config)
 
     def evaluate(self, test_case: TestCase, actual_output: str) -> MetricResult:
-        if not self.judge_fn:
-            # Return placeholder score
-            return MetricResult(
-                metric_name=self.name,
-                score=0.5,
-                passed=True,
-                threshold=self.threshold,
-                details={"reason": "No judge function provided - using placeholder"},
-            )
-
         # Get input text
         input_text = " ".join(
             [msg.get("content", "") for msg in test_case.input_messages]
         )
 
-        # Call judge function
-        score = self.judge_fn(input_text, actual_output, self.criteria)
+        try:
+            if self.judge_fn:
+                # Use custom judge function
+                result = self.judge_fn(input_text, actual_output, self.criteria)
+                if isinstance(result, tuple):
+                    score, explanation = result
+                else:
+                    score, explanation = result, ""
 
-        return MetricResult(
-            metric_name=self.name,
-            score=score,
-            passed=score >= self.threshold,
-            threshold=self.threshold,
-            details={"criteria": self.criteria},
-        )
+                return MetricResult(
+                    metric_name=self.name,
+                    score=score,
+                    passed=score >= self.threshold,
+                    threshold=self.threshold,
+                    details={
+                        "criteria": self.criteria,
+                        "explanation": explanation,
+                        "judge_type": "custom_function",
+                    },
+                )
+
+            elif self._llm_client:
+                # Use LLM client for evaluation
+                score, explanation = self._llm_client.evaluate(
+                    input_text, actual_output, self.criteria
+                )
+
+                return MetricResult(
+                    metric_name=self.name,
+                    score=score,
+                    passed=score >= self.threshold,
+                    threshold=self.threshold,
+                    details={
+                        "criteria": self.criteria,
+                        "explanation": explanation,
+                        "provider": self.judge_config.provider.value,
+                        "model": self.judge_config.model,
+                        "judge_type": "llm_client",
+                    },
+                )
+
+            else:
+                # No judge configured - raise error with helpful message
+                raise ValueError(
+                    "LLMJudgeMetric requires either judge_config or judge_fn. "
+                    "Please provide one of:\n"
+                    "  1. judge_config: LLMJudgeConfig with provider settings\n"
+                    "  2. judge_fn: Custom evaluation function\n\n"
+                    "Example:\n"
+                    "  config = LLMJudgeConfig(\n"
+                    "      provider=LLMProvider.OPENAI,\n"
+                    "      model='gpt-4',\n"
+                    "      api_key='your-api-key'\n"
+                    "  )\n"
+                    "  metric = LLMJudgeMetric(\n"
+                    "      name='quality',\n"
+                    "      criteria='Evaluate response quality',\n"
+                    "      judge_config=config\n"
+                    "  )"
+                )
+
+        except Exception as e:
+            # Return failed result with error details
+            return MetricResult(
+                metric_name=self.name,
+                score=0.0,
+                passed=False,
+                threshold=self.threshold,
+                details={
+                    "criteria": self.criteria,
+                    "error": str(e),
+                    "error_type": type(e).__name__,
+                },
+            )
 
 
 class RegressionTestSuite:
@@ -448,29 +806,146 @@ def create_pytest_suite(
     return {"golden_dataset": golden_dataset, "test_golden_case": test_golden_case}
 
 
+# ============== Mock LLM and Test Implementations ==============
+
+class MockLLMClient:
+    """
+    A proper mock LLM client for testing the LLM judge functionality.
+    Simulates LLM responses without requiring actual API calls.
+    """
+
+    def __init__(self, response_map: Optional[Dict[str, str]] = None):
+        """
+        Initialize mock client with optional response mappings.
+
+        Args:
+            response_map: Dict mapping input patterns to responses
+        """
+        self.response_map = response_map or {}
+        self.call_history: List[Dict[str, Any]] = []
+
+    def generate(self, messages: List[Dict[str, str]]) -> str:
+        """Generate a response based on the last message content."""
+        last_message = messages[-1]["content"] if messages else ""
+
+        # Check response map first
+        for pattern, response in self.response_map.items():
+            if pattern.lower() in last_message.lower():
+                self.call_history.append({
+                    "input": last_message,
+                    "output": response,
+                    "matched_pattern": pattern,
+                })
+                return response
+
+        # Default responses based on query type
+        if "capital" in last_message.lower():
+            return "The capital of France is Paris."
+        elif "factorial" in last_message.lower():
+            return "This is a recursive factorial function that multiplies n by factorial(n-1)."
+        elif "einstein" in last_message.lower():
+            return "Einstein won the Nobel Prize in Physics in 1921, not in Chemistry."
+        elif "cost" in last_message.lower() or "price" in last_message.lower():
+            return "I'd need more context. Could you please clarify what specific product or service you're asking about?"
+        elif "hello" in last_message.lower() or "hi" in last_message.lower():
+            return "Hello! How can I help you today?"
+        else:
+            return "I can help with that question."
+
+
+def create_mock_judge_fn(
+    score_map: Optional[Dict[str, float]] = None
+) -> Callable[[str, str, str], Tuple[float, str]]:
+    """
+    Create a mock judge function for testing LLM judge metrics.
+
+    Args:
+        score_map: Optional dict mapping criteria patterns to scores
+
+    Returns:
+        Judge function that returns (score, explanation)
+    """
+    default_scores = {
+        "accurate": 0.9,
+        "complete": 0.85,
+        "concise": 0.8,
+        "helpful": 0.9,
+        "safe": 0.95,
+    }
+    scores = {**default_scores, **(score_map or {})}
+
+    def mock_judge(input_text: str, actual_output: str, criteria: str) -> Tuple[float, str]:
+        """Mock judge that evaluates based on criteria keywords."""
+        criteria_lower = criteria.lower()
+
+        # Check for exact criteria matches
+        for key, score in scores.items():
+            if key in criteria_lower:
+                explanation = f"Mock judge evaluated '{key}' criteria and assigned score {score}"
+                return score, explanation
+
+        # Default evaluation based on output length
+        if len(actual_output) < 10:
+            score = 0.3
+            explanation = "Output too short, assigned low score"
+        elif len(actual_output) > 500:
+            score = 0.6
+            explanation = "Output verbose but may contain useful information"
+        else:
+            score = 0.75
+            explanation = "Output has reasonable length and content"
+
+        return score, explanation
+
+    return mock_judge
+
+
+def create_simulated_llm_judge(
+    provider: LLMProvider = LLMProvider.OPENAI,
+    model: str = "gpt-4",
+) -> LLMJudgeConfig:
+    """
+    Create an LLM judge configuration for testing.
+
+    This is a helper function to create a judge config. In production,
+    you would use real API keys from environment variables.
+    """
+    return LLMJudgeConfig(
+        provider=provider,
+        model=model,
+        api_key=os.getenv("OPENAI_API_KEY") if provider == LLMProvider.OPENAI else os.getenv("ANTHROPIC_API_KEY"),
+        temperature=0.0,
+        max_tokens=500,
+        response_format="text",
+        max_retries=3,
+    )
+
+
 # Example usage
 if __name__ == "__main__":
     from golden_dataset_builder import create_sample_golden_dataset
 
+    print("=" * 70)
+    print("LLM Regression Test Framework - Example Usage")
+    print("=" * 70)
+
     # Create sample dataset
     dataset = create_sample_golden_dataset()
 
-    # Mock LLM function
-    def mock_llm(messages: List[Dict[str, str]]) -> str:
-        """Mock LLM for demonstration."""
-        last_message = messages[-1]["content"] if messages else ""
-        if "capital of France" in last_message:
-            return "The capital of France is Paris."
-        elif "factorial" in last_message:
-            return "This is a recursive factorial function that multiplies n by factorial(n-1)."
-        elif "Einstein" in last_message:
-            return "Einstein won the Nobel Prize in Physics in 1921, not in Chemistry."
-        elif "cost" in last_message.lower():
-            return "I'd need more context. Could you please clarify what specific product or service you're asking about?"
-        else:
-            return "I can help with that question."
+    # Create mock LLM
+    mock_llm_client = MockLLMClient({
+        "translate": "Translation: Hello, how are you?",
+        "code": "```python\ndef factorial(n):\n    return 1 if n <= 1 else n * factorial(n-1)\n```",
+    })
 
-    # Run regression tests
+    def mock_llm(messages: List[Dict[str, str]]) -> str:
+        """Mock LLM for demonstration - proper test implementation."""
+        return mock_llm_client.generate(messages)
+
+    print("\n1. Basic Metrics Test (Exact Match, Contains, Not Contains)")
+    print("-" * 70)
+
+    # Run basic regression tests
     suite = RegressionTestSuite(
         dataset=dataset,
         llm_fn=mock_llm,
@@ -479,11 +954,104 @@ if __name__ == "__main__":
 
     results = suite.run()
     print(f"Regression Test Results:")
-    print(f"  Pass Rate: {results.pass_rate:.1%}")
-    print(f"  Passed: {results.passed_cases}/{results.total_cases}")
-    print(f"  Failed: {results.failed_cases}")
-    print(f"  Errors: {results.error_cases}")
-    print(f"  Execution Time: {results.execution_time_ms:.0f}ms")
+    print(f" Pass Rate: {results.pass_rate:.1%}")
+    print(f" Passed: {results.passed_cases}/{results.total_cases}")
+    print(f" Failed: {results.failed_cases}")
+    print(f" Errors: {results.error_cases}")
+    print(f" Execution Time: {results.execution_time_ms:.0f}ms")
     print(f"\nAggregate Scores:")
     for metric, score in results.aggregate_scores.items():
-        print(f"  {metric}: {score:.2%}")
+        print(f" {metric}: {score:.2%}")
+
+    print("\n2. LLM Judge Metric Test (with Mock Judge Function)")
+    print("-" * 70)
+
+    # Create LLM judge with mock function
+    mock_judge = create_mock_judge_fn({
+        "accuracy": 0.92,
+        "completeness": 0.88,
+        "safety": 0.98,
+    })
+
+    llm_judge_metric = LLMJudgeMetric(
+        name="quality_score",
+        criteria="Evaluate the accuracy, completeness, and safety of the response",
+        threshold=0.7,
+        judge_fn=mock_judge,
+    )
+
+    # Test with a sample case
+    test_input = [{"role": "user", "content": "What is the capital of France?"}]
+    test_output = mock_llm(test_input)
+
+    # Create a minimal test case for demonstration
+    from golden_dataset_builder import TestCase, Severity, CaseType
+    sample_case = TestCase(
+        case_id="demo-001",
+        title="Demo Quality Evaluation",
+        input_messages=test_input,
+        expected_output="Paris",
+        severity=Severity.MEDIUM,
+        case_type=CaseType.FACTUAL,
+    )
+
+    judge_result = llm_judge_metric.evaluate(sample_case, test_output)
+    print(f"LLM Judge Result:")
+    print(f" Metric: {judge_result.metric_name}")
+    print(f" Score: {judge_result.score:.2f}")
+    print(f" Passed: {judge_result.passed}")
+    print(f" Threshold: {judge_result.threshold}")
+    print(f" Details: {judge_result.details}")
+
+    print("\n3. Demonstrating LLMJudgeConfig Usage")
+    print("-" * 70)
+    print("Example configuration for different providers:")
+
+    # OpenAI config example
+    openai_config = LLMJudgeConfig(
+        provider=LLMProvider.OPENAI,
+        model="gpt-4",
+        temperature=0.0,
+        max_tokens=500,
+        response_format="text",
+    )
+    print(f"\nOpenAI Config:")
+    print(f"  Provider: {openai_config.provider.value}")
+    print(f"  Model: {openai_config.model}")
+    print(f"  Temperature: {openai_config.temperature}")
+
+    # Anthropic config example
+    anthropic_config = LLMJudgeConfig(
+        provider=LLMProvider.ANTHROPIC,
+        model="claude-3-sonnet-20240229",
+        temperature=0.0,
+        max_tokens=500,
+        response_format="json",
+    )
+    print(f"\nAnthropic Config:")
+    print(f"  Provider: {anthropic_config.provider.value}")
+    print(f"  Model: {anthropic_config.model}")
+    print(f"  Response Format: {anthropic_config.response_format}")
+
+    print("\n4. Error Handling Demonstration")
+    print("-" * 70)
+
+    # Test without judge_fn or judge_config - should return error
+    incomplete_judge = LLMJudgeMetric(
+        name="incomplete_judge",
+        criteria="Some criteria",
+        threshold=0.7,
+        # No judge_fn or judge_config provided
+    )
+
+    error_result = incomplete_judge.evaluate(sample_case, test_output)
+    print(f"Incomplete Judge Result:")
+    print(f" Score: {error_result.score}")
+    print(f" Passed: {error_result.passed}")
+    print(f" Error in details: {'error' in error_result.details}")
+    if 'error' in error_result.details:
+        print(f" Error Message: {error_result.details['error'][:100]}...")
+
+    print("\n" + "=" * 70)
+    print("Example usage complete!")
+    print("=" * 70)
