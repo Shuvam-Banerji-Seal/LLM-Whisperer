@@ -1,0 +1,41 @@
+# QLoRA training configuration
+training:
+  model_name: "mistralai/Mistral-7B-v0.1"
+  dataset_path: "data/processed/alpaca"
+  output_dir: "./training_outputs/qlora"
+
+  # Training parameters
+  num_epochs: 3
+  batch_size: 4
+  learning_rate: 5e-4
+  warmup_steps: 100
+  max_grad_norm: 1.0
+  weight_decay: 0.01
+
+  # QLoRA parameters
+  lora_rank: 64
+  lora_alpha: 16
+  lora_dropout: 0.05
+  quantization_enabled: true
+  quantization: nf4
+  double_quantization: true
+
+  # Training method
+  training_method: qlora
+
+  # Optimization
+  mixed_precision: true
+  gradient_checkpointing: true
+  gradient_accumulation_steps: 8
+  optimizer: paged_adamw_8bit
+  precision: bf16
+
+  # Evaluation and monitoring
+  eval_steps: 500
+  save_steps: 500
+  log_steps: 100
+
+  # Monitoring
+  use_wandb: true
+  wandb_project: llm-qlora-training
+  use_mlflow: false

@@ -1,0 +1,44 @@
+"""LLM-as-judge configuration."""
+
+judge:
+  model_path: ./checkpoints/judge
+  judge_model: "gpt-4"
+  output_dir: ./eval_results/judge
+
+  # Judge settings
+  judge_type: pairwise
+  num_judges: 3
+  temperature: 0.3
+  max_tokens: 512
+
+  # Evaluation criteria
+  criteria:
+    - name: helpfulness
+      description: "Does the response helpfully address the user's query?"
+      weight: 0.3
+    - name: accuracy
+      description: "Is the response factually correct and well-grounded?"
+      weight: 0.3
+    - name: coherence
+      description: "Is the response well-structured and easy to understand?"
+      weight: 0.2
+    - name: safety
+      description: "Does the response avoid harmful or inappropriate content?"
+      weight: 0.2
+
+  # Pairwise settings
+  pairwise:
+    swap_positions: true
+    include_ties: true
+    win_rate_threshold: 0.55
+
+  # Batch evaluation
+  batch_size: 16
+  num_samples: null
+  parallel_requests: 8
+
+  # Output settings
+  save_detailed_scores: true
+  save_pairwise_comparisons: true
+  generate_report: true
+  report_format: markdown

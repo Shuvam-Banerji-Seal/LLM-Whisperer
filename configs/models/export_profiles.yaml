@@ -1,0 +1,64 @@
+version: 1
+
+profiles:
+  onnx_fp32:
+    format: onnx
+    dtype: fp32
+    optimization_level: 3
+    opset_version: 17
+    desc: "Full precision ONNX export"
+
+  onnx_fp16:
+    format: onnx
+    dtype: fp16
+    optimization_level: 3
+    opset_version: 17
+    desc: "FP16 ONNX export for inference"
+
+  onnx_int8:
+    format: onnx
+    dtype: int8
+    optimization_level: 3
+    opset_version: 17
+    quantization_approach: static
+    calibrate_max_tokens: 512
+    desc: "INT8 quantized ONNX export"
+
+  tensorrt_fp16:
+    format: tensorrt
+    dtype: fp16
+    max_batch_size: 32
+    max_workspace_size_gb: 16
+    enable_graph_optimization: true
+    desc: "TensorRT FP16 engine"
+
+  tensorrt_int8:
+    format: tensorrt
+    dtype: int8
+    max_batch_size: 32
+    max_workspace_size_gb: 16
+    enable_graph_optimization: true
+    quantization_approach: int8
+    calibration_dataset: data/calibration
+    desc: "TensorRT INT8 engine with calibration"
+
+  pytorch_eager:
+    format: pytorch
+    dtype: fp32
+    save_format: state_dict
+    desc: "PyTorch eager mode export"
+
+  safetensors:
+    format: safetensors
+    dtype: fp16
+    save_format: safetensors
+    metadata:
+      model_type: causal_lm
+      framework: pytorch
+    desc: "SafeTensors format for HuggingFace"
+
+defaults:
+  input_ids_name: input_ids
+  attention_mask_name: attention_mask
+  device_map: auto
+  trust_remote_code: true

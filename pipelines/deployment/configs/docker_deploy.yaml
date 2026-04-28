@@ -1,0 +1,69 @@
+"""Docker deployment configuration."""
+
+deployment:
+  model_path: ./training_outputs/qlora
+  model_name: mistral-7b-qlora
+  model_version: 1.0.0
+  output_dir: ./deployments
+  output_format: docker
+
+  # Registry settings
+  container_registry: ghcr.io/llm-whisperer
+  image_name: llm-whisperer-serve
+  image_tag: latest
+
+  # Quantization and optimization
+  quantization: int4
+  optimization_level: 1
+
+  # Docker settings
+  docker:
+    base_image: nvidia/cuda:12.1.0-runtime-ubuntu22.04
+    dockerfile_template: templates/Dockerfile.serve
+    port: 8000
+    healthcheck:
+      enabled: true
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      command: ["curl", "-f", "http://localhost:8000/health/ready"]
+
+  # Environment variables
+  env:
+    MODEL_PATH: /models
+    HOST: 0.0.0.0
+    PORT: "8000"
+    Tensor_parallel_size: "1"
+    GPU_MEMORY_Utilization: "0.90"
+
+  # Resource limits
+  resources:
+    memory: "32Gi"
+    shm_size: "2g"
+    nvidia_gpus: 1
+
+  # Volume mounts
+  volumes:
+    model_cache:
+      type: volume
+      source: llm-model-cache
+      target: /models
+    output:
+      type: bind
+      source: ./deployment_logs
+      target: /var/log/llm-whisperer
+
+  # Networking
+  network: llm-network
+  ports:
+    - "8000:8000"
+
+  # Health and monitoring
+  enable_health_endpoint: true
+  enable_metrics_endpoint: true
+  metrics_port: 9090
+
+  # Version
+  major: 1
+  minor: 0
+  patch: 0

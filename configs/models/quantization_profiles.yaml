@@ -1,0 +1,58 @@
+version: 1
+
+profiles:
+  nf4_standard:
+    quantization: nf4
+    double_quantization: true
+    compute_dtype: fp16
+    bits: 4
+    desc: "Standard NF4 quantization with double quantization"
+
+  nf4_high_memory:
+    quantization: nf4
+    double_quantization: true
+    compute_dtype: bf16
+    bits: 4
+    desc: "High memory efficiency NF4 with BF16 compute"
+
+  int8_standard:
+    quantization: int8
+    double_quantization: false
+    compute_dtype: fp16
+    bits: 8
+    desc: "Standard INT8 quantization"
+
+  int8_smoothquant:
+    quantization: int8
+    double_quantization: false
+    compute_dtype: fp16
+    bits: 8
+    smoothquant: true
+    alpha: 0.5
+    desc: "INT8 with SmoothQuant for outlier handling"
+
+  fp16_baseline:
+    quantization: none
+    compute_dtype: fp16
+    bits: 16
+    desc: "Full precision FP16 baseline"
+
+  bf16_standard:
+    quantization: none
+    compute_dtype: bf16
+    bits: 16
+    desc: "BF16 precision without quantization"
+
+  int4_awq:
+    quantization: int4
+    double_quantization: false
+    compute_dtype: fp16
+    bits: 4
+    awq: true
+    awq_group_size: 128
+    desc: "INT4 with AWQ activation-aware quantization"
+
+defaults:
+  device_map: auto
+  max_memory: null
+  trust_remote_code: true

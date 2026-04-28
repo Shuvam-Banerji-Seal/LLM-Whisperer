@@ -1,0 +1,48 @@
+"""Benchmark suite configuration."""
+
+benchmark:
+  model_path: ./checkpoints/lora
+  benchmarks:
+    - mmlu
+    - alpacaeval
+    - gsm8k
+    - hellaswag
+    - truthfulqa
+    - winogrande
+  batch_size: 32
+  num_shots: 0
+  max_samples: null
+  output_dir: ./eval_results/benchmark
+
+  # Benchmark-specific settings
+  benchmark_settings:
+    mmlu:
+      subjects: null
+      use_consistent_formatting: true
+    gsm8k:
+      num_few_shot: 8
+      solve_cot: true
+    alpacaeval:
+      reference_model: gpt-4
+      leniency: 1.0
+
+  # Metrics
+  metrics:
+    task_benchmarks: true
+    llm_as_judge: false
+    safety_checks: true
+    latency_analysis: true
+    regression_tests: true
+
+  # Regression thresholds
+  regression:
+    mmlu_threshold: 0.60
+    gsm8k_threshold: 0.40
+    hellaswag_threshold: 0.80
+    max_regression_pct: 5.0
+
+  # Parallel execution
+  parallel:
+    enabled: true
+    num_workers: 4
+    timeout_per_benchmark: 3600

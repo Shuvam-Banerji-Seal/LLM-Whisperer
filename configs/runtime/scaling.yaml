@@ -1,0 +1,69 @@
+version: 1
+
+scaling:
+  # Horizontal Pod Autoscaler
+  hpa:
+    enabled: true
+    min_replicas: 1
+    max_replicas: 20
+    target_cpu_utilization: 70
+    target_memory_utilization: 80
+    target_requests_per_second: 100
+
+  # Vertical Pod Autoscaler
+  vpa:
+    enabled: false
+    mode: Auto
+    min_allowed:
+      memory: 8Gi
+      cpu: "2"
+    max_allowed:
+      memory: 64Gi
+      cpu: "16"
+
+  # Cluster autoscaler
+  cluster_autoscaler:
+    enabled: true
+    min_nodes: 1
+    max_nodes: 50
+    scale_down_delay_after_add: 10m
+    scale_down_unneeded_time: 10m
+
+  # Predictive scaling
+  predictive:
+    enabled: true
+    look_ahead_window: 30m
+    buffer_percentage: 20
+
+  # Request queue
+  queue:
+    max_size: 1000
+    timeout_seconds: 300
+    retry_attempts: 3
+    backoff_factor: 2.0
+
+  # Rate limiting
+  rate_limiting:
+    enabled: true
+    requests_per_minute: 1000
+    burst_size: 100
+    per_user_limit: 100
+
+  # Circuit breaker
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 5
+    timeout_seconds: 60
+    half_open_max_requests: 3
+
+  # Load balancing
+  load_balancing:
+    algorithm: least_requests
+    health_check_interval_seconds: 10
+    removal_delay_seconds: 30
+
+  # Graceful scaling
+  graceful:
+    termination_grace_period_seconds: 120
+    drain_timeout_seconds: 60
+    new_replica_settle_time: 30
