@@ -47,7 +47,7 @@ const Modal = {
     this.titleEl.textContent = item.name || 'Loading...';
     this.subtitleEl.textContent = item.category || '';
     this.iconEl.setAttribute('data-icon', item.icon || 'file');
-    this.githubLink.href = item.url || `https://github.com/${API.repo}/tree/main/${item.path}`;
+    this.githubLink.href = item.url || '#';
 
     this.contentEl.innerHTML = `
       <div class="modal-loading">
@@ -59,96 +59,67 @@ const Modal = {
 
     if (item.path) {
       try {
-        const content = await this.fetchContent(item);
+        const rawUrl = item.url
+          .replace('github.com', 'raw.githubusercontent.com')
+          .replace('/blob/', '/');
+        const response = await fetch(rawUrl);
+        if (!response.ok) throw new Error('Failed to fetch');
+        const content = await response.text();
         this.displayContent(content, item);
       } catch (error) {
         this.contentEl.innerHTML = `
           <div class="error" style="margin: 24px;">
             <i class="icon" data-icon="alert-triangle"></i>
             <p>Failed to load content: ${error.message}</p>
-            <a href="${item.url}" target="_blank" rel="noopener" class="btn-primary" style="margin-top: 16px; display: inline-flex;">
-              View on GitHub
+            <a href="${item.url}" target="_blank" rel="noopener" class="btn-primary" style="margin-top:16px;display:inline-flex;">
+              <i class="icon" data-icon="external-link"></i> View on GitHub
             </a>
           </div>
         `;
         Icons.replace();
       }
-    } else if (item.url) {
-      window.open(item.url, '_blank');
-      this.close();
     }
-  },
-
-  async fetchContent(item) {
-    const rawUrl = item.url
-      .replace('github.com', 'raw.githubusercontent.com')
-      .replace('/blob/', '/');
-
-    const response = await fetch(rawUrl);
-    if (!response.ok) throw new Error('Failed to fetch file');
-    return await response.text();
   },
 
   displayContent(content, item) {
-    const isMarkdown = item.name.endsWith('.md') || item.name.endsWith('.prompt.md');
-    const isPython = item.name.endsWith('.py');
-    const isYaml = item.name.endsWith('.yaml') || item.name.endsWith('.yml');
+    const isMD = item.name.endsWith('.md') || item.name.endsWith('.prompt.md');
+    const isPy = item.name.endsWith('.py');
+    const isYml = item.name.endsWith('.yaml') || item.name.endsWith('.yml');
 
-    let htmlContent;
-
-    if (isMarkdown) {
-      htmlContent = this.renderMarkdown(content);
-    } else if (isPython || isYaml) {
-      htmlContent = this.renderCode(content, isPython ? 'python' : 'yaml');
+    let html;
+    if (isMD) {
+      html = this.renderMarkdown(content);
+    } else if (isPy || isYml) {
+      html = this.renderCode(content, isPy ? 'python' : 'yaml');
     } else {
-      htmlContent = this.renderCode(content, 'text');
+      html = this.renderCode(content, 'text');
     }
-
-    this.contentEl.innerHTML = `<div class="content-viewer ${isMarkdown ? 'markdown' : ''}">${htmlContent}</div>`;
+    this.contentEl.innerHTML = `<div class="content-viewer ${isMD ? 'markdown' : ''}">${html}</div>`;
     Icons.replace();
   },
 
   renderMarkdown(text) {
-    // Simple markdown to HTML conversion
     let html = text
-      // Escape HTML
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      // Headers
-      .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-      .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-      .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-      // Bold and italic
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      // Code blocks
-      .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
-      // Inline code
-      .replace(/`([^`]+)`/g, '<code>$1</code>')
-      // Links
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-      // Lists
-      .replace(/^\- (.*$)/gm, '<li>$1</li>')
-      .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
-      // Paragraphs
-      .replace(/\n\n/g, '</p><p>')
-      .replace(/\n/g, '<br>');
-
-    // Wrap list items
-    html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
-    html = html.replace(/<\/ul>\s*<ul>/g, '');
-
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/^### (.*$)/gm,'<h3>$1</h3>')
+      .replace(/^## (.*$)/gm,'<h2>$1</h2>')
+      .replace(/^# (.*$)/gm,'<h1>$1</h1>')
+      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g,'<em>$1</em>')
+      .replace(/```(\w*)\n([\s\S]*?)```/g,'<pre><code class="language-$1">$2</code></pre>')
+      .replace(/`([^`]+)`/g,'<code>$1</code>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')
+      .replace(/^- (.*$)/gm,'<li>$1</li>')
+      .replace(/^\d+\. (.*$)/gm,'<li>$1</li>')
+      .replace(/\n\n/g,'</p><p>')
+      .replace(/\n/g,'<br>');
+    html = html.replace(/(<li>.*<\/li>)/gs,'<ul>$1</ul>').replace(/<\/ul>\s*<ul>/g,'');
     return `<p>${html}</p>`;
   },
 
   renderCode(code, language) {
-    const escaped = code
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-
-    return `<pre><code class="language-${language}">${escaped}</code></pre>`;
+    const esc = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `<pre><code class="language-${language}">${esc}</code></pre>`;
   },
 
   close() {
@@ -158,93 +129,42 @@ const Modal = {
   }
 };
 
-// Initialize app
+// Initialize app with STATIC data (no GitHub API calls!)
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('LLM-Whisperer Website Initializing...');
 
-  // Initialize UI features
   UI.initTheme();
   UI.initMobileMenu();
   UI.initHeader();
   UI.initNavigation();
   Modal.init();
 
-  // Show loading states
   UI.showLoading('skills-grid');
   UI.showLoading('sample-code-grid');
   UI.showLoading('scripts-grid');
   UI.showLoading('pipelines-grid');
 
   try {
-    // Load all data in parallel
-    const [skills, sampleCode, scripts, pipelines, repoInfo] = await Promise.all([
-      API.getSkills(),
-      API.getSampleCode(),
-      API.getScripts(),
-      API.getPipelines(),
-      API.getRepoInfo().catch(() => null),
-    ]);
+    // Load static data.json (pre-generated, no API rate limits!)
+    const response = await fetch('js/data.json');
+    const raw = await response.json();
 
-    allSkills = skills;
-    allSampleCode = sampleCode;
-    allScripts = scripts;
-    allPipelines = pipelines;
+    allSkills = processSkills(raw.skills);
+    allSampleCode = processSampleCode(raw.sample_code);
+    allScripts = processScripts(raw.scripts);
+    allPipelines = processPipelines(raw.pipelines);
+    allNotebooks = processNotebooks(raw.notebooks);
+    allConfigs = processConfigs(raw.configs);
 
-    // Update stats
-    if (repoInfo) {
-      UI.updateStats({
-        skills: skills.length,
-        code: sampleCode.length,
-        scripts: scripts.length,
-        stars: repoInfo.stargazers_count || 0,
-      });
-    }
+    UI.updateStats({
+      skills: allSkills.length,
+      code: allSampleCode.length,
+      scripts: allScripts.length,
+      stars: 0,
+    });
 
-    // Get notebooks
-    try {
-      const notebooks = await API.getContents('notebooks');
-      allNotebooks = notebooks
-        .filter((f) => f.type === 'dir')
-        .map((dir) => ({
-          name: dir.name,
-          path: dir.path,
-          url: dir.html_url,
-          type: 'notebook',
-          icon: 'notebook',
-          category: 'Notebooks',
-        }));
-    } catch (e) {
-      console.warn('Failed to load notebooks:', e);
-    }
+    allItems = [...allSkills, ...allSampleCode, ...allScripts, ...allPipelines, ...allNotebooks, ...allConfigs];
 
-    // Get configs
-    try {
-      const configs = await API.getContents('configs');
-      allConfigs = configs
-        .filter((f) => f.type === 'dir')
-        .map((dir) => ({
-          name: dir.name,
-          path: dir.path,
-          url: dir.html_url,
-          type: 'config',
-          icon: 'settings',
-          category: 'Configs',
-        }));
-    } catch (e) {
-      console.warn('Failed to load configs:', e);
-    }
-
-    // Combine all items for search
-    allItems = [
-      ...allSkills,
-      ...allSampleCode,
-      ...allScripts,
-      ...allPipelines,
-      ...allNotebooks,
-      ...allConfigs,
-    ];
-
-    // Render all sections
     renderSkills();
     renderSampleCode();
     renderScripts();
@@ -253,21 +173,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderConfigs();
     renderDocs();
 
-// Initialize search
-  UI.initSearch(allItems);
+    UI.initSearch(allItems);
 
-  // Add click handlers for item cards (delegated to document)
-  document.addEventListener('item-click', (e) => {
-    Modal.open(e.detail);
-  });
+    document.addEventListener('item-click', (e) => {
+      Modal.open(e.detail);
+    });
 
-  // Initialize Lucide icons
-  Icons.replace();
-
+    Icons.replace();
     console.log('LLM-Whisperer Website Loaded Successfully!');
   } catch (error) {
-    console.error('Failed to initialize app:', error);
-    UI.showError('skills-grid', `Failed to load data: ${error.message}`);
+    console.error('Failed to initialize:', error);
+    UI.showError('skills-grid', `Failed to load: ${error.message}`);
   }
 });
 
@@ -299,7 +215,7 @@ function renderSkills() {
         name: catName + ' Skills',
         category: 'Skills',
         icon: skills[0].icon || 'folder',
-        url: `https://github.com/${API.repo}/tree/main/skills/${skills[0].categorySlug || catName.toLowerCase()}`,
+        url: `${GH}/tree/main/skills/${skills[0].categorySlug || catName.toLowerCase()}`,
         path: `skills/${skills[0].categorySlug || catName.toLowerCase()}`
       });
     };
@@ -328,7 +244,7 @@ function renderSkills() {
     buttonContainer.style.textAlign = 'center';
     buttonContainer.style.marginTop = '32px';
     buttonContainer.innerHTML = `
-      <a href="https://github.com/${API.repo}/tree/main/skills" target="_blank" rel="noopener" class="btn-primary">
+      <a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills" target="_blank" rel="noopener" class="btn-primary">
         <i class="icon" data-icon="external-link"></i>
         View All Skills on GitHub
       </a>
@@ -423,25 +339,25 @@ function renderDocs() {
   const docs = [
     {
       name: 'README',
-      url: `https://github.com/${API.repo}/blob/main/README.md`,
+      url: `https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/blob/main/README.md`,
       icon: 'file-text',
       category: 'Documentation',
     },
     {
       name: 'CONTRIBUTING',
-      url: `https://github.com/${API.repo}/blob/main/CONTRIBUTING.md`,
+      url: `https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/blob/main/CONTRIBUTING.md`,
       icon: 'git-pull-request',
       category: 'Documentation',
     },
     {
       name: 'Architecture Docs',
-      url: `https://github.com/${API.repo}/tree/main/docs/architecture`,
+      url: `https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/docs/architecture`,
       icon: 'building',
       category: 'Documentation',
     },
     {
       name: 'Guides',
-      url: `https://github.com/${API.repo}/tree/main/docs/guides`,
+      url: `https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/docs/guides`,
       icon: 'book-open',
       category: 'Documentation',
     },

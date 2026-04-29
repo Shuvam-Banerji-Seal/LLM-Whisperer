@@ -128,24 +128,36 @@ a:hover {
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: 0;
 }
 
-.logo .icon {
-  font-size: 32px;
-  color: var(--accent-primary);
+.logo-svg {
+  flex-shrink: 0;
 }
 
-.logo h1 {
-  font-size: 1.5rem;
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.logo-name {
+  font-size: 1.1rem;
   font-weight: 700;
   line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
 }
 
-.logo .subtitle {
-  font-size: 0.75rem;
+.logo-tagline {
+  font-size: 0.65rem;
   color: var(--text-tertiary);
   font-weight: 400;
+  white-space: nowrap;
 }
 
 /* Navigation */
@@ -634,6 +646,10 @@ main {
 @media (max-width: 1024px) {
   .grid-4 { grid-template-columns: repeat(3, 1fr); }
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .nav-link span { display: none; }
+  .nav-link { padding: 8px 12px; }
+  .logo-tagline { display: none; }
+  .search-box input { width: 180px; }
 }
 
 @media (max-width: 768px) {

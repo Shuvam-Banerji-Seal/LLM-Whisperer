@@ -1,0 +1,3062 @@
+{
+  "skills": [
+    {
+      "name": "README.md",
+      "path": "skills/README.md",
+      "type": "file"
+    },
+    {
+      "name": "advanced-llm-architectures",
+      "path": "skills/advanced-llm-architectures",
+      "type": "dir",
+      "children": [
+        {
+          "name": "README.md",
+          "path": "skills/advanced-llm-architectures/README.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "advanced-reasoning",
+      "path": "skills/advanced-reasoning",
+      "type": "dir",
+      "children": [
+        {
+          "name": "README.md",
+          "path": "skills/advanced-reasoning/README.md",
+          "type": "file"
+        },
+        {
+          "name": "chain-of-thought.prompt.md",
+          "path": "skills/advanced-reasoning/chain-of-thought.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "tree-of-thought.prompt.md",
+          "path": "skills/advanced-reasoning/tree-of-thought.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "self-consistency.prompt.md",
+          "path": "skills/advanced-reasoning/self-consistency.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "agentic",
+      "path": "skills/agentic",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "skills/agentic/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "agent-choreography-and-orchestration.prompt.md",
+          "path": "skills/agentic/agent-choreography-and-orchestration.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "agent-communication-protocols.prompt.md",
+          "path": "skills/agentic/agent-communication-protocols.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "agent-memory-systems.prompt.md",
+          "path": "skills/agentic/agent-memory-systems.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "distributed-consensus-for-agents.prompt.md",
+          "path": "skills/agentic/distributed-consensus-for-agents.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "failure-detection-and-recovery.prompt.md",
+          "path": "skills/agentic/failure-detection-and-recovery.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "load-balancing-and-routing.prompt.md",
+          "path": "skills/agentic/load-balancing-and-routing.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "monitoring-and-observability.prompt.md",
+          "path": "skills/agentic/monitoring-and-observability.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "multi-agent-collaboration.prompt.md",
+          "path": "skills/agentic/multi-agent-collaboration.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "agent-fine-tuning.prompt.md",
+          "path": "skills/agentic/agent-fine-tuning.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "autonomous-planning.prompt.md",
+          "path": "skills/agentic/autonomous-planning.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "agent-evaluation.prompt.md",
+          "path": "skills/agentic/agent-evaluation.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "agents",
+      "path": "skills/agents",
+      "type": "dir",
+      "children": [
+        {
+          "name": "agent-frameworks.prompt.md",
+          "path": "skills/agents/agent-frameworks.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "tool-use-patterns.prompt.md",
+          "path": "skills/agents/tool-use-patterns.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "code-generation",
+      "path": "skills/code-generation",
+      "type": "dir",
+      "children": [
+        {
+          "name": "README.md",
+          "path": "skills/code-generation/README.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "data-preprocessing",
+      "path": "skills/data-preprocessing",
+      "type": "dir",
+      "children": [
+        {
+          "name": "categorical-encoding.prompt.md",
+          "path": "skills/data-preprocessing/categorical-encoding.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "data-augmentation-techniques.prompt.md",
+          "path": "skills/data-preprocessing/data-augmentation-techniques.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "numerical-data-scaling.prompt.md",
+          "path": "skills/data-preprocessing/numerical-data-scaling.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "text-preprocessing-nlp.prompt.md",
+          "path": "skills/data-preprocessing/text-preprocessing-nlp.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "data-quality",
+      "path": "skills/data-quality",
+      "type": "dir",
+      "children": [
+        {
+          "name": "INDEX.md",
+          "path": "skills/data-quality/INDEX.md",
+          "type": "file"
+        },
+        {
+          "name": "QUICK_REFERENCE.md",
+          "path": "skills/data-quality/QUICK_REFERENCE.md",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "skills/data-quality/README.md",
+          "type": "file"
+        },
+        {
+          "name": "class-imbalance-handling.prompt.md",
+          "path": "skills/data-quality/class-imbalance-handling.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "data-quality-assessment.prompt.md",
+          "path": "skills/data-quality/data-quality-assessment.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "missing-data-imputation.prompt.md",
+          "path": "skills/data-quality/missing-data-imputation.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "outlier-detection-handling.prompt.md",
+          "path": "skills/data-quality/outlier-detection-handling.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "datasets",
+      "path": "skills/datasets",
+      "type": "dir",
+      "children": [
+        {
+          "name": "annotation-and-labeling.prompt.md",
+          "path": "skills/datasets/annotation-and-labeling.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "dataset-construction-curation.prompt.md",
+          "path": "skills/datasets/dataset-construction-curation.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "dataset-versioning-management.prompt.md",
+          "path": "skills/datasets/dataset-versioning-management.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "synthetic-data-generation.prompt.md",
+          "path": "skills/datasets/synthetic-data-generation.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "diffusion",
+      "path": "skills/diffusion",
+      "type": "dir",
+      "children": [
+        {
+          "name": "loading-and-optimization.prompt.md",
+          "path": "skills/diffusion/loading-and-optimization.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "documentation",
+      "path": "skills/documentation",
+      "type": "dir",
+      "children": [
+        {
+          "name": "general",
+          "path": "skills/documentation/general",
+          "type": "dir",
+          "children": [
+            {
+              "name": "AGENTIC_ORCHESTRATION_SKILLS_SUMMARY.md",
+              "path": "skills/documentation/general/AGENTIC_ORCHESTRATION_SKILLS_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "NOTEBOOKS_SUMMARY.md",
+              "path": "skills/documentation/general/NOTEBOOKS_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "QUICK_START_REFERENCE.md",
+              "path": "skills/documentation/general/QUICK_START_REFERENCE.md",
+              "type": "file"
+            },
+            {
+              "name": "RESEARCH_SOURCES_AND_CITATIONS.md",
+              "path": "skills/documentation/general/RESEARCH_SOURCES_AND_CITATIONS.md",
+              "type": "file"
+            },
+            {
+              "name": "RESEARCH_SUMMARY.md",
+              "path": "skills/documentation/general/RESEARCH_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "SAMPLE_CODE_SUMMARY.md",
+              "path": "skills/documentation/general/SAMPLE_CODE_SUMMARY.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "project-reports",
+          "path": "skills/documentation/project-reports",
+          "type": "dir",
+          "children": [
+            {
+              "name": "DEPLOYMENT_REPORT.md",
+              "path": "skills/documentation/project-reports/DEPLOYMENT_REPORT.md",
+              "type": "file"
+            },
+            {
+              "name": "PROJECT_COMPLETION_SUMMARY.md",
+              "path": "skills/documentation/project-reports/PROJECT_COMPLETION_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "SKILLS_DEVELOPMENT_SUMMARY.md",
+              "path": "skills/documentation/project-reports/SKILLS_DEVELOPMENT_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "SKILLS_INDEX.md",
+              "path": "skills/documentation/project-reports/SKILLS_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "SKILLS_MANIFEST.md",
+              "path": "skills/documentation/project-reports/SKILLS_MANIFEST.md",
+              "type": "file"
+            },
+            {
+              "name": "SKILLS_QUICK_START.md",
+              "path": "skills/documentation/project-reports/SKILLS_QUICK_START.md",
+              "type": "file"
+            },
+            {
+              "name": "SKILL_CREATION_SUMMARY.md",
+              "path": "skills/documentation/project-reports/SKILL_CREATION_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "SKILL_DEPLOYMENT_SUMMARY.md",
+              "path": "skills/documentation/project-reports/SKILL_DEPLOYMENT_SUMMARY.md",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "evaluation",
+      "path": "skills/evaluation",
+      "type": "dir",
+      "children": [
+        {
+          "name": "EVALUATION-IMPLEMENTATION-GUIDE-2026.md",
+          "path": "skills/evaluation/EVALUATION-IMPLEMENTATION-GUIDE-2026.md",
+          "type": "file"
+        },
+        {
+          "name": "LLM-BENCHMARKS-COMPREHENSIVE-GUIDE-2026.md",
+          "path": "skills/evaluation/LLM-BENCHMARKS-COMPREHENSIVE-GUIDE-2026.md",
+          "type": "file"
+        },
+        {
+          "name": "LLM-EVALUATION-RESEARCH-INDEX-2026.md",
+          "path": "skills/evaluation/LLM-EVALUATION-RESEARCH-INDEX-2026.md",
+          "type": "file"
+        },
+        {
+          "name": "README-2026.md",
+          "path": "skills/evaluation/README-2026.md",
+          "type": "file"
+        },
+        {
+          "name": "evaluation-metrics.prompt.md",
+          "path": "skills/evaluation/evaluation-metrics.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "llm-benchmarks.prompt.md",
+          "path": "skills/evaluation/llm-benchmarks.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "examples",
+      "path": "skills/examples",
+      "type": "dir",
+      "children": [
+        {
+          "name": "README.md",
+          "path": "skills/examples/README.md",
+          "type": "file"
+        },
+        {
+          "name": "advanced-architectures",
+          "path": "skills/examples/advanced-architectures",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/examples/advanced-architectures/README.md",
+              "type": "file"
+            },
+            {
+              "name": "moe-implementation.py",
+              "path": "skills/examples/advanced-architectures/moe-implementation.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "advanced-reasoning",
+          "path": "skills/examples/advanced-reasoning",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/examples/advanced-reasoning/README.md",
+              "type": "file"
+            },
+            {
+              "name": "advanced-prompting-techniques.py",
+              "path": "skills/examples/advanced-reasoning/advanced-prompting-techniques.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "code-generation",
+          "path": "skills/examples/code-generation",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/examples/code-generation/README.md",
+              "type": "file"
+            },
+            {
+              "name": "code-generation-complete.py",
+              "path": "skills/examples/code-generation/code-generation-complete.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "fast-inference",
+          "path": "skills/examples/fast-inference",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/examples/fast-inference/README.md",
+              "type": "file"
+            },
+            {
+              "name": "fast-inference-complete.py",
+              "path": "skills/examples/fast-inference/fast-inference-complete.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "fine-tuning",
+          "path": "skills/examples/fine-tuning",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/examples/fine-tuning/README.md",
+              "type": "file"
+            },
+            {
+              "name": "finetuning-complete.py",
+              "path": "skills/examples/fine-tuning/finetuning-complete.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "infrastructure-deployment",
+          "path": "skills/examples/infrastructure-deployment",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/examples/infrastructure-deployment/README.md",
+              "type": "file"
+            },
+            {
+              "name": "vllm-deployment-example.py",
+              "path": "skills/examples/infrastructure-deployment/vllm-deployment-example.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "multimodal",
+          "path": "skills/examples/multimodal",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/examples/multimodal/README.md",
+              "type": "file"
+            },
+            {
+              "name": "multimodal-complete.py",
+              "path": "skills/examples/multimodal/multimodal-complete.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "production-ops",
+          "path": "skills/examples/production-ops",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/examples/production-ops/README.md",
+              "type": "file"
+            },
+            {
+              "name": "llm-monitoring-complete.py",
+              "path": "skills/examples/production-ops/llm-monitoring-complete.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "quantization",
+          "path": "skills/examples/quantization",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/examples/quantization/README.md",
+              "type": "file"
+            },
+            {
+              "name": "quantization-complete.py",
+              "path": "skills/examples/quantization/quantization-complete.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "rag",
+          "path": "skills/examples/rag",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/examples/rag/README.md",
+              "type": "file"
+            },
+            {
+              "name": "rag-complete.py",
+              "path": "skills/examples/rag/rag-complete.py",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fast-inference",
+      "path": "skills/fast-inference",
+      "type": "dir",
+      "children": [
+        {
+          "name": "README.md",
+          "path": "skills/fast-inference/README.md",
+          "type": "file"
+        },
+        {
+          "name": "batch-serving-strategies.prompt.md",
+          "path": "skills/fast-inference/batch-serving-strategies.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "documentation",
+          "path": "skills/fast-inference/documentation",
+          "type": "dir",
+          "children": [
+            {
+              "name": "LLM_INFERENCE_OPTIMIZATION_EXECUTIVE_SUMMARY.md",
+              "path": "skills/fast-inference/documentation/LLM_INFERENCE_OPTIMIZATION_EXECUTIVE_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "LLM_INFERENCE_OPTIMIZATION_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/fast-inference/documentation/LLM_INFERENCE_OPTIMIZATION_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "LLM_INFERENCE_OPTIMIZATION_RESEARCH_REPORT.md",
+              "path": "skills/fast-inference/documentation/LLM_INFERENCE_OPTIMIZATION_RESEARCH_REPORT.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "dynamic-shape-inference.prompt.md",
+          "path": "skills/fast-inference/dynamic-shape-inference.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "kv-cache-optimization.prompt.md",
+          "path": "skills/fast-inference/kv-cache-optimization.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "model-distillation.prompt.md",
+          "path": "skills/fast-inference/model-distillation.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "pipeline-parallelism.prompt.md",
+          "path": "skills/fast-inference/pipeline-parallelism.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "speculative-decoding.prompt.md",
+          "path": "skills/fast-inference/speculative-decoding.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "tensor-parallelism.prompt.md",
+          "path": "skills/fast-inference/tensor-parallelism.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "vllm-and-serving.prompt.md",
+          "path": "skills/fast-inference/vllm-and-serving.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "fine-tuning",
+      "path": "skills/fine-tuning",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "skills/fine-tuning/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "adapter-and-bottleneck-methods.prompt.md",
+          "path": "skills/fine-tuning/adapter-and-bottleneck-methods.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "eval-and-ops.prompt.md",
+          "path": "skills/fine-tuning/eval-and-ops.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "llm-finetuning.prompt.md",
+          "path": "skills/fine-tuning/llm-finetuning.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "lora-advanced-techniques.prompt.md",
+          "path": "skills/fine-tuning/lora-advanced-techniques.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "prefix-tuning-and-prompting.prompt.md",
+          "path": "skills/fine-tuning/prefix-tuning-and-prompting.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "direct-preference-optimization.prompt.md",
+          "path": "skills/fine-tuning/direct-preference-optimization.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "gradient-free-tuning.prompt.md",
+          "path": "skills/fine-tuning/gradient-free-tuning.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "foundational",
+      "path": "skills/foundational",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "skills/foundational/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "GRAPH-NEURAL-NETWORKS-COMPREHENSIVE-SKILL.md",
+          "path": "skills/foundational/GRAPH-NEURAL-NETWORKS-COMPREHENSIVE-SKILL.md",
+          "type": "file"
+        },
+        {
+          "name": "advanced-optimization-algorithms.prompt.md",
+          "path": "skills/foundational/advanced-optimization-algorithms.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "advanced-python-patterns.prompt.md",
+          "path": "skills/foundational/advanced-python-patterns.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "api-design-and-documentation.prompt.md",
+          "path": "skills/foundational/api-design-and-documentation.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "dependency-management.prompt.md",
+          "path": "skills/foundational/dependency-management.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "error-handling-and-logging.prompt.md",
+          "path": "skills/foundational/error-handling-and-logging.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "performance-profiling.prompt.md",
+          "path": "skills/foundational/performance-profiling.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "testing-and-validation.prompt.md",
+          "path": "skills/foundational/testing-and-validation.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "general-python-development.prompt.md",
+      "path": "skills/general-python-development.prompt.md",
+      "type": "file"
+    },
+    {
+      "name": "huggingface",
+      "path": "skills/huggingface",
+      "type": "dir",
+      "children": [
+        {
+          "name": "token-management.prompt.md",
+          "path": "skills/huggingface/token-management.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "image-generation",
+      "path": "skills/image-generation",
+      "type": "dir",
+      "children": [
+        {
+          "name": "diffusers-image-generation.prompt.md",
+          "path": "skills/image-generation/diffusers-image-generation.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "inference",
+      "path": "skills/inference",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "skills/inference/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "custom-kernels.prompt.md",
+          "path": "skills/inference/custom-kernels.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "distributed-inference.prompt.md",
+          "path": "skills/inference/distributed-inference.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "model-caching.prompt.md",
+          "path": "skills/inference/model-caching.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "infrastructure-deployment",
+      "path": "skills/infrastructure-deployment",
+      "type": "dir",
+      "children": [
+        {
+          "name": "README.md",
+          "path": "skills/infrastructure-deployment/README.md",
+          "type": "file"
+        },
+        {
+          "name": "llm-kubernetes-production.prompt.md",
+          "path": "skills/infrastructure-deployment/llm-kubernetes-production.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "knowledge-systems",
+      "path": "skills/knowledge-systems",
+      "type": "dir",
+      "children": [
+        {
+          "name": "knowledge-graphs",
+          "path": "skills/knowledge-systems/knowledge-graphs",
+          "type": "dir",
+          "children": [
+            {
+              "name": "KGE_COMPREHENSIVE_DOCUMENTATION.md",
+              "path": "skills/knowledge-systems/knowledge-graphs/KGE_COMPREHENSIVE_DOCUMENTATION.md",
+              "type": "file"
+            },
+            {
+              "name": "KGE_DOCUMENTATION_SUITE_OVERVIEW.md",
+              "path": "skills/knowledge-systems/knowledge-graphs/KGE_DOCUMENTATION_SUITE_OVERVIEW.md",
+              "type": "file"
+            },
+            {
+              "name": "KGE_IMPLEMENTATION_CODE_GUIDE.md",
+              "path": "skills/knowledge-systems/knowledge-graphs/KGE_IMPLEMENTATION_CODE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "KGE_QUICK_REFERENCE_GUIDE.md",
+              "path": "skills/knowledge-systems/knowledge-graphs/KGE_QUICK_REFERENCE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "KGE_QUICK_START_INDEX.md",
+              "path": "skills/knowledge-systems/knowledge-graphs/KGE_QUICK_START_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "KGE_RESEARCH_SOURCES_AND_CITATIONS.md",
+              "path": "skills/knowledge-systems/knowledge-graphs/KGE_RESEARCH_SOURCES_AND_CITATIONS.md",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "llm-engineering",
+      "path": "skills/llm-engineering",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "skills/llm-engineering/.gitkeep",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "long-context",
+      "path": "skills/long-context",
+      "type": "dir",
+      "children": [
+        {
+          "name": "efficient-attention.prompt.md",
+          "path": "skills/long-context/efficient-attention.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "long-context-serving.prompt.md",
+          "path": "skills/long-context/long-context-serving.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "position-encodings.prompt.md",
+          "path": "skills/long-context/position-encodings.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "model-merging",
+      "path": "skills/model-merging",
+      "type": "dir",
+      "children": [
+        {
+          "name": "adapter-composition.prompt.md",
+          "path": "skills/model-merging/adapter-composition.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "weight-merging.prompt.md",
+          "path": "skills/model-merging/weight-merging.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "moe",
+      "path": "skills/moe",
+      "type": "dir",
+      "children": [
+        {
+          "name": "mixture-of-experts-loading.prompt.md",
+          "path": "skills/moe/mixture-of-experts-loading.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "multimodal",
+      "path": "skills/multimodal",
+      "type": "dir",
+      "children": [
+        {
+          "name": "image-preprocessing.prompt.md",
+          "path": "skills/multimodal/image-preprocessing.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "multimodal-serving.prompt.md",
+          "path": "skills/multimodal/multimodal-serving.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "vision-language-loading.prompt.md",
+          "path": "skills/multimodal/vision-language-loading.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "production-ops",
+      "path": "skills/production-ops",
+      "type": "dir",
+      "children": [
+        {
+          "name": "README.md",
+          "path": "skills/production-ops/README.md",
+          "type": "file"
+        },
+        {
+          "name": "monitoring-observability.prompt.md",
+          "path": "skills/production-ops/monitoring-observability.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "incident-response.prompt.md",
+          "path": "skills/production-ops/incident-response.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "canary-deployment.prompt.md",
+          "path": "skills/production-ops/canary-deployment.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "cost-optimization.prompt.md",
+          "path": "skills/production-ops/cost-optimization.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "prompt-engineering",
+      "path": "skills/prompt-engineering",
+      "type": "dir",
+      "children": [
+        {
+          "name": "prompt-optimization.prompt.md",
+          "path": "skills/prompt-engineering/prompt-optimization.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "prompt-templates.prompt.md",
+          "path": "skills/prompt-engineering/prompt-templates.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "quantization",
+      "path": "skills/quantization",
+      "type": "dir",
+      "children": [
+        {
+          "name": "llm-quantization.prompt.md",
+          "path": "skills/quantization/llm-quantization.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "rag-advanced",
+      "path": "skills/rag-advanced",
+      "type": "dir",
+      "children": [
+        {
+          "name": "HYBRID_RETRIEVAL_RAG_RESEARCH_SUMMARY.md",
+          "path": "skills/rag-advanced/HYBRID_RETRIEVAL_RAG_RESEARCH_SUMMARY.md",
+          "type": "file"
+        },
+        {
+          "name": "document-indexing",
+          "path": "skills/rag-advanced/document-indexing",
+          "type": "dir",
+          "children": [
+            {
+              "name": "DOCUMENT_INDEXING_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/rag-advanced/document-indexing/DOCUMENT_INDEXING_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "DOCUMENT_INDEXING_RETRIEVAL_COMPREHENSIVE_RESEARCH.md",
+              "path": "skills/rag-advanced/document-indexing/DOCUMENT_INDEXING_RETRIEVAL_COMPREHENSIVE_RESEARCH.md",
+              "type": "file"
+            },
+            {
+              "name": "DOCUMENT_INDEXING_SOURCES_AND_REFERENCES.md",
+              "path": "skills/rag-advanced/document-indexing/DOCUMENT_INDEXING_SOURCES_AND_REFERENCES.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "embedding-models",
+          "path": "skills/rag-advanced/embedding-models",
+          "type": "dir",
+          "children": [
+            {
+              "name": "EMBEDDING_MODELS_COMPREHENSIVE_RESEARCH.md",
+              "path": "skills/rag-advanced/embedding-models/EMBEDDING_MODELS_COMPREHENSIVE_RESEARCH.md",
+              "type": "file"
+            },
+            {
+              "name": "EMBEDDING_MODELS_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/rag-advanced/embedding-models/EMBEDDING_MODELS_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "EMBEDDING_MODELS_QUICK_REFERENCE.md",
+              "path": "skills/rag-advanced/embedding-models/EMBEDDING_MODELS_QUICK_REFERENCE.md",
+              "type": "file"
+            },
+            {
+              "name": "EMBEDDING_RESEARCH_INDEX.md",
+              "path": "skills/rag-advanced/embedding-models/EMBEDDING_RESEARCH_INDEX.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "semantic-ranking",
+          "path": "skills/rag-advanced/semantic-ranking",
+          "type": "dir",
+          "children": [
+            {
+              "name": "SEMANTIC_RANKING_COMPREHENSIVE_RESEARCH.md",
+              "path": "skills/rag-advanced/semantic-ranking/SEMANTIC_RANKING_COMPREHENSIVE_RESEARCH.md",
+              "type": "file"
+            },
+            {
+              "name": "SEMANTIC_RANKING_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/rag-advanced/semantic-ranking/SEMANTIC_RANKING_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "SEMANTIC_RANKING_SOURCES_AND_REFERENCES.md",
+              "path": "skills/rag-advanced/semantic-ranking/SEMANTIC_RANKING_SOURCES_AND_REFERENCES.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "vector-databases",
+          "path": "skills/rag-advanced/vector-databases",
+          "type": "dir",
+          "children": [
+            {
+              "name": "VECTOR_DATABASE_COMPREHENSIVE_RESEARCH.md",
+              "path": "skills/rag-advanced/vector-databases/VECTOR_DATABASE_COMPREHENSIVE_RESEARCH.md",
+              "type": "file"
+            },
+            {
+              "name": "VECTOR_DATABASE_RESEARCH_INDEX.md",
+              "path": "skills/rag-advanced/vector-databases/VECTOR_DATABASE_RESEARCH_INDEX.md",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rag",
+      "path": "skills/rag",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "skills/rag/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "reranking-evaluation.prompt.md",
+          "path": "skills/rag/reranking-evaluation.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "retrieval-strategies.prompt.md",
+          "path": "skills/rag/retrieval-strategies.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "hybrid-retrieval.prompt.md",
+          "path": "skills/rag/hybrid-retrieval.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "knowledge-graph-rag.prompt.md",
+          "path": "skills/rag/knowledge-graph-rag.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "iterative-rag.prompt.md",
+          "path": "skills/rag/iterative-rag.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "real-time-rag.prompt.md",
+          "path": "skills/rag/real-time-rag.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "research-archive",
+      "path": "skills/research-archive",
+      "type": "dir",
+      "children": [
+        {
+          "name": "README.md",
+          "path": "skills/research-archive/README.md",
+          "type": "file"
+        },
+        {
+          "name": "advanced-llm-techniques",
+          "path": "skills/research-archive/advanced-llm-techniques",
+          "type": "dir",
+          "children": [
+            {
+              "name": "ADVANCED_LLM_TECHNIQUES_COMPREHENSIVE_GUIDE.md",
+              "path": "skills/research-archive/advanced-llm-techniques/ADVANCED_LLM_TECHNIQUES_COMPREHENSIVE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "ADVANCED_LLM_TECHNIQUES_EXTENDED_GUIDE.md",
+              "path": "skills/research-archive/advanced-llm-techniques/ADVANCED_LLM_TECHNIQUES_EXTENDED_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "ADVANCED_LLM_TECHNIQUES_MASTER_INDEX.md",
+              "path": "skills/research-archive/advanced-llm-techniques/ADVANCED_LLM_TECHNIQUES_MASTER_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "ADVANCED_LLM_TECHNIQUES_RESEARCH_INDEX.md",
+              "path": "skills/research-archive/advanced-llm-techniques/ADVANCED_LLM_TECHNIQUES_RESEARCH_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "README.md",
+              "path": "skills/research-archive/advanced-llm-techniques/README.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "code-generation",
+          "path": "skills/research-archive/code-generation",
+          "type": "dir",
+          "children": [
+            {
+              "name": "CODE_GENERATION_COMPREHENSIVE_GUIDE.md",
+              "path": "skills/research-archive/code-generation/CODE_GENERATION_COMPREHENSIVE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "CODE_GENERATION_DELIVERY_MANIFEST.md",
+              "path": "skills/research-archive/code-generation/CODE_GENERATION_DELIVERY_MANIFEST.md",
+              "type": "file"
+            },
+            {
+              "name": "CODE_GENERATION_PACKAGE_README.md",
+              "path": "skills/research-archive/code-generation/CODE_GENERATION_PACKAGE_README.md",
+              "type": "file"
+            },
+            {
+              "name": "CODE_GENERATION_RESEARCH_INDEX.md",
+              "path": "skills/research-archive/code-generation/CODE_GENERATION_RESEARCH_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "CODE_GENERATION_RESEARCH_SUMMARY.md",
+              "path": "skills/research-archive/code-generation/CODE_GENERATION_RESEARCH_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "README.md",
+              "path": "skills/research-archive/code-generation/README.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "infrastructure",
+          "path": "skills/research-archive/infrastructure",
+          "type": "dir",
+          "children": [
+            {
+              "name": "LLMOPS_MONITORING_GUIDE.md",
+              "path": "skills/research-archive/infrastructure/LLMOPS_MONITORING_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "LLM_INFRASTRUCTURE_DEPLOYMENT_GUIDE.md",
+              "path": "skills/research-archive/infrastructure/LLM_INFRASTRUCTURE_DEPLOYMENT_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "README.md",
+              "path": "skills/research-archive/infrastructure/README.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "moe-transformers",
+          "path": "skills/research-archive/moe-transformers",
+          "type": "dir",
+          "children": [
+            {
+              "name": "COMPREHENSIVE_MOE_TRANSFORMER_RESEARCH.md",
+              "path": "skills/research-archive/moe-transformers/COMPREHENSIVE_MOE_TRANSFORMER_RESEARCH.md",
+              "type": "file"
+            },
+            {
+              "name": "MOE_TRANSFORMER_RESEARCH_INDEX.md",
+              "path": "skills/research-archive/moe-transformers/MOE_TRANSFORMER_RESEARCH_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "README.md",
+              "path": "skills/research-archive/moe-transformers/README.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "multimodal-vlm",
+          "path": "skills/research-archive/multimodal-vlm",
+          "type": "dir",
+          "children": [
+            {
+              "name": "MULTIMODAL_VLM_RESEARCH.md",
+              "path": "skills/research-archive/multimodal-vlm/MULTIMODAL_VLM_RESEARCH.md",
+              "type": "file"
+            },
+            {
+              "name": "MULTIMODAL_VLM_RESEARCH_INDEX.md",
+              "path": "skills/research-archive/multimodal-vlm/MULTIMODAL_VLM_RESEARCH_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "README.md",
+              "path": "skills/research-archive/multimodal-vlm/README.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "project-documentation",
+          "path": "skills/research-archive/project-documentation",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README.md",
+              "path": "skills/research-archive/project-documentation/README.md",
+              "type": "file"
+            },
+            {
+              "name": "RESEARCH_COMPILATION_SUMMARY.md",
+              "path": "skills/research-archive/project-documentation/RESEARCH_COMPILATION_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "RESEARCH_COMPLETION_SUMMARY.txt",
+              "path": "skills/research-archive/project-documentation/RESEARCH_COMPLETION_SUMMARY.txt",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "rag-advanced",
+          "path": "skills/research-archive/rag-advanced",
+          "type": "dir",
+          "children": [
+            {
+              "name": "ADVANCED_RAG_RESEARCH_COMPILATION_INDEX.md",
+              "path": "skills/research-archive/rag-advanced/ADVANCED_RAG_RESEARCH_COMPILATION_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "ADVANCED_RAG_SYNTHETIC_DATA_RESEARCH.md",
+              "path": "skills/research-archive/rag-advanced/ADVANCED_RAG_SYNTHETIC_DATA_RESEARCH.md",
+              "type": "file"
+            },
+            {
+              "name": "RAG_GITHUB_TOOLS_REFERENCE.md",
+              "path": "skills/research-archive/rag-advanced/RAG_GITHUB_TOOLS_REFERENCE.md",
+              "type": "file"
+            },
+            {
+              "name": "RAG_PRODUCTION_DEPLOYMENT_GUIDE.md",
+              "path": "skills/research-archive/rag-advanced/RAG_PRODUCTION_DEPLOYMENT_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "README.md",
+              "path": "skills/research-archive/rag-advanced/README.md",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "safety-alignment",
+      "path": "skills/safety-alignment",
+      "type": "dir",
+      "children": [
+        {
+          "name": "alignment-eval.prompt.md",
+          "path": "skills/safety-alignment/alignment-eval.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "red-teaming.prompt.md",
+          "path": "skills/safety-alignment/red-teaming.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "rlhf-and-dpo.prompt.md",
+          "path": "skills/safety-alignment/rlhf-and-dpo.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "security-governance",
+      "path": "skills/security-governance",
+      "type": "dir",
+      "children": [
+        {
+          "name": "ML_LLM_SECURITY_COMPREHENSIVE_RESEARCH.md",
+          "path": "skills/security-governance/ML_LLM_SECURITY_COMPREHENSIVE_RESEARCH.md",
+          "type": "file"
+        },
+        {
+          "name": "SECURITY_IMPLEMENTATION_TEMPLATES.md",
+          "path": "skills/security-governance/SECURITY_IMPLEMENTATION_TEMPLATES.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "specialized-ml-techniques",
+      "path": "skills/specialized-ml-techniques",
+      "type": "dir",
+      "children": [
+        {
+          "name": "active-learning",
+          "path": "skills/specialized-ml-techniques/active-learning",
+          "type": "dir",
+          "children": [
+            {
+              "name": "ACTIVE_LEARNING_COMPREHENSIVE_GUIDE.md",
+              "path": "skills/specialized-ml-techniques/active-learning/ACTIVE_LEARNING_COMPREHENSIVE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "ACTIVE_LEARNING_DOCUMENTATION_SUITE.md",
+              "path": "skills/specialized-ml-techniques/active-learning/ACTIVE_LEARNING_DOCUMENTATION_SUITE.md",
+              "type": "file"
+            },
+            {
+              "name": "ACTIVE_LEARNING_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/specialized-ml-techniques/active-learning/ACTIVE_LEARNING_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "ACTIVE_LEARNING_INDEX.md",
+              "path": "skills/specialized-ml-techniques/active-learning/ACTIVE_LEARNING_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "ACTIVE_LEARNING_QUICK_REFERENCE.md",
+              "path": "skills/specialized-ml-techniques/active-learning/ACTIVE_LEARNING_QUICK_REFERENCE.md",
+              "type": "file"
+            },
+            {
+              "name": "ACTIVE_LEARNING_README.md",
+              "path": "skills/specialized-ml-techniques/active-learning/ACTIVE_LEARNING_README.md",
+              "type": "file"
+            },
+            {
+              "name": "ACTIVE_LEARNING_RESEARCH_SOURCES.md",
+              "path": "skills/specialized-ml-techniques/active-learning/ACTIVE_LEARNING_RESEARCH_SOURCES.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "causal-inference",
+          "path": "skills/specialized-ml-techniques/causal-inference",
+          "type": "dir",
+          "children": [
+            {
+              "name": "CAUSAL_INFERENCE_COMPREHENSIVE_GUIDE.md",
+              "path": "skills/specialized-ml-techniques/causal-inference/CAUSAL_INFERENCE_COMPREHENSIVE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "CAUSAL_INFERENCE_DELIVERY_SUMMARY.md",
+              "path": "skills/specialized-ml-techniques/causal-inference/CAUSAL_INFERENCE_DELIVERY_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "CAUSAL_INFERENCE_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/specialized-ml-techniques/causal-inference/CAUSAL_INFERENCE_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "CAUSAL_INFERENCE_INDEX.md",
+              "path": "skills/specialized-ml-techniques/causal-inference/CAUSAL_INFERENCE_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "CAUSAL_INFERENCE_QUICK_REFERENCE.md",
+              "path": "skills/specialized-ml-techniques/causal-inference/CAUSAL_INFERENCE_QUICK_REFERENCE.md",
+              "type": "file"
+            },
+            {
+              "name": "CAUSAL_INFERENCE_README.md",
+              "path": "skills/specialized-ml-techniques/causal-inference/CAUSAL_INFERENCE_README.md",
+              "type": "file"
+            },
+            {
+              "name": "CAUSAL_INFERENCE_RESEARCH_SOURCES.md",
+              "path": "skills/specialized-ml-techniques/causal-inference/CAUSAL_INFERENCE_RESEARCH_SOURCES.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "federated-learning",
+          "path": "skills/specialized-ml-techniques/federated-learning",
+          "type": "dir",
+          "children": [
+            {
+              "name": "FEDERATED_LEARNING_ADVANCED_IMPLEMENTATION.md",
+              "path": "skills/specialized-ml-techniques/federated-learning/FEDERATED_LEARNING_ADVANCED_IMPLEMENTATION.md",
+              "type": "file"
+            },
+            {
+              "name": "FEDERATED_LEARNING_COMPREHENSIVE_GUIDE.md",
+              "path": "skills/specialized-ml-techniques/federated-learning/FEDERATED_LEARNING_COMPREHENSIVE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "FEDERATED_LEARNING_DOCUMENTATION_INDEX.md",
+              "path": "skills/specialized-ml-techniques/federated-learning/FEDERATED_LEARNING_DOCUMENTATION_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "FEDERATED_LEARNING_DOCUMENTATION_SUMMARY.md",
+              "path": "skills/specialized-ml-techniques/federated-learning/FEDERATED_LEARNING_DOCUMENTATION_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "FEDERATED_LEARNING_QUICK_REFERENCE.md",
+              "path": "skills/specialized-ml-techniques/federated-learning/FEDERATED_LEARNING_QUICK_REFERENCE.md",
+              "type": "file"
+            },
+            {
+              "name": "FEDERATED_LEARNING_RESEARCH_SOURCES.md",
+              "path": "skills/specialized-ml-techniques/federated-learning/FEDERATED_LEARNING_RESEARCH_SOURCES.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "graph-networks",
+          "path": "skills/specialized-ml-techniques/graph-networks",
+          "type": "dir",
+          "children": [
+            {
+              "name": "GAT_COMPREHENSIVE_DOCUMENTATION.md",
+              "path": "skills/specialized-ml-techniques/graph-networks/GAT_COMPREHENSIVE_DOCUMENTATION.md",
+              "type": "file"
+            },
+            {
+              "name": "GAT_DOCUMENTATION_SUITE_OVERVIEW.md",
+              "path": "skills/specialized-ml-techniques/graph-networks/GAT_DOCUMENTATION_SUITE_OVERVIEW.md",
+              "type": "file"
+            },
+            {
+              "name": "GAT_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/specialized-ml-techniques/graph-networks/GAT_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "GAT_RESEARCH_INDEX.md",
+              "path": "skills/specialized-ml-techniques/graph-networks/GAT_RESEARCH_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "GNN_COMPREHENSIVE_RESEARCH_INDEX.md",
+              "path": "skills/specialized-ml-techniques/graph-networks/GNN_COMPREHENSIVE_RESEARCH_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "GNN_IMPLEMENTATION_REFERENCE.md",
+              "path": "skills/specialized-ml-techniques/graph-networks/GNN_IMPLEMENTATION_REFERENCE.md",
+              "type": "file"
+            },
+            {
+              "name": "GNN_QUICK_START.md",
+              "path": "skills/specialized-ml-techniques/graph-networks/GNN_QUICK_START.md",
+              "type": "file"
+            },
+            {
+              "name": "GNN_RESEARCH_SUMMARY.md",
+              "path": "skills/specialized-ml-techniques/graph-networks/GNN_RESEARCH_SUMMARY.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "interpretability",
+          "path": "skills/specialized-ml-techniques/interpretability",
+          "type": "dir",
+          "children": [
+            {
+              "name": "INTERPRETABILITY_MANIFEST.md",
+              "path": "skills/specialized-ml-techniques/interpretability/INTERPRETABILITY_MANIFEST.md",
+              "type": "file"
+            },
+            {
+              "name": "MODEL_INTERPRETABILITY_COMPREHENSIVE_GUIDE.md",
+              "path": "skills/specialized-ml-techniques/interpretability/MODEL_INTERPRETABILITY_COMPREHENSIVE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "MODEL_INTERPRETABILITY_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/specialized-ml-techniques/interpretability/MODEL_INTERPRETABILITY_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "MODEL_INTERPRETABILITY_INDEX.md",
+              "path": "skills/specialized-ml-techniques/interpretability/MODEL_INTERPRETABILITY_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "MODEL_INTERPRETABILITY_QUICK_REFERENCE.md",
+              "path": "skills/specialized-ml-techniques/interpretability/MODEL_INTERPRETABILITY_QUICK_REFERENCE.md",
+              "type": "file"
+            },
+            {
+              "name": "MODEL_INTERPRETABILITY_README.md",
+              "path": "skills/specialized-ml-techniques/interpretability/MODEL_INTERPRETABILITY_README.md",
+              "type": "file"
+            },
+            {
+              "name": "MODEL_INTERPRETABILITY_RESEARCH_SOURCES.md",
+              "path": "skills/specialized-ml-techniques/interpretability/MODEL_INTERPRETABILITY_RESEARCH_SOURCES.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "transfer-learning",
+          "path": "skills/specialized-ml-techniques/transfer-learning",
+          "type": "dir",
+          "children": [
+            {
+              "name": "README_TRANSFER_LEARNING.md",
+              "path": "skills/specialized-ml-techniques/transfer-learning/README_TRANSFER_LEARNING.md",
+              "type": "file"
+            },
+            {
+              "name": "TRANSFER_LEARNING_DOCUMENTATION_INDEX.md",
+              "path": "skills/specialized-ml-techniques/transfer-learning/TRANSFER_LEARNING_DOCUMENTATION_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "TRANSFER_LEARNING_DOCUMENTATION_SUMMARY.md",
+              "path": "skills/specialized-ml-techniques/transfer-learning/TRANSFER_LEARNING_DOCUMENTATION_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "TRANSFER_LEARNING_DOMAIN_ADAPTATION_COMPREHENSIVE_GUIDE.md",
+              "path": "skills/specialized-ml-techniques/transfer-learning/TRANSFER_LEARNING_DOMAIN_ADAPTATION_COMPREHENSIVE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "TRANSFER_LEARNING_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/specialized-ml-techniques/transfer-learning/TRANSFER_LEARNING_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "TRANSFER_LEARNING_QUICK_REFERENCE.md",
+              "path": "skills/specialized-ml-techniques/transfer-learning/TRANSFER_LEARNING_QUICK_REFERENCE.md",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "templates",
+      "path": "skills/templates",
+      "type": "dir",
+      "children": [
+        {
+          "name": "README.md",
+          "path": "skills/templates/README.md",
+          "type": "file"
+        },
+        {
+          "name": "docker",
+          "path": "skills/templates/docker",
+          "type": "dir",
+          "children": [
+            {
+              "name": "Dockerfile.llm",
+              "path": "skills/templates/docker/Dockerfile.llm",
+              "type": "file"
+            },
+            {
+              "name": "docker-compose.yml",
+              "path": "skills/templates/docker/docker-compose.yml",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "helm",
+          "path": "skills/templates/helm",
+          "type": "dir",
+          "children": [
+            {
+              "name": "values.yaml",
+              "path": "skills/templates/helm/values.yaml",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "kubernetes",
+          "path": "skills/templates/kubernetes",
+          "type": "dir",
+          "children": [
+            {
+              "name": "llm-inference-deployment.yaml",
+              "path": "skills/templates/kubernetes/llm-inference-deployment.yaml",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "time-series",
+      "path": "skills/time-series",
+      "type": "dir",
+      "children": [
+        {
+          "name": "TIME_SERIES_COMPLETION_SUMMARY.md",
+          "path": "skills/time-series/TIME_SERIES_COMPLETION_SUMMARY.md",
+          "type": "file"
+        },
+        {
+          "name": "TIME_SERIES_QUICK_REFERENCE.md",
+          "path": "skills/time-series/TIME_SERIES_QUICK_REFERENCE.md",
+          "type": "file"
+        },
+        {
+          "name": "anomaly-detection",
+          "path": "skills/time-series/anomaly-detection",
+          "type": "dir",
+          "children": [
+            {
+              "name": "TIME_SERIES_ANOMALY_DETECTION_COMPREHENSIVE_GUIDE.md",
+              "path": "skills/time-series/anomaly-detection/TIME_SERIES_ANOMALY_DETECTION_COMPREHENSIVE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "TIME_SERIES_ANOMALY_DETECTION_DOCUMENTATION_INDEX.md",
+              "path": "skills/time-series/anomaly-detection/TIME_SERIES_ANOMALY_DETECTION_DOCUMENTATION_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "TIME_SERIES_ANOMALY_DETECTION_EXECUTIVE_SUMMARY.md",
+              "path": "skills/time-series/anomaly-detection/TIME_SERIES_ANOMALY_DETECTION_EXECUTIVE_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "TIME_SERIES_ANOMALY_DETECTION_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/time-series/anomaly-detection/TIME_SERIES_ANOMALY_DETECTION_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "TIME_SERIES_ANOMALY_DETECTION_QUICK_REFERENCE.md",
+              "path": "skills/time-series/anomaly-detection/TIME_SERIES_ANOMALY_DETECTION_QUICK_REFERENCE.md",
+              "type": "file"
+            },
+            {
+              "name": "TIME_SERIES_ANOMALY_DETECTION_README.md",
+              "path": "skills/time-series/anomaly-detection/TIME_SERIES_ANOMALY_DETECTION_README.md",
+              "type": "file"
+            },
+            {
+              "name": "TIME_SERIES_ANOMALY_DETECTION_SOURCES_AND_REFERENCES.md",
+              "path": "skills/time-series/anomaly-detection/TIME_SERIES_ANOMALY_DETECTION_SOURCES_AND_REFERENCES.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "forecasting",
+          "path": "skills/time-series/forecasting",
+          "type": "dir",
+          "children": [
+            {
+              "name": "TIME_SERIES_FORECASTING_COMPREHENSIVE_GUIDE.md",
+              "path": "skills/time-series/forecasting/TIME_SERIES_FORECASTING_COMPREHENSIVE_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "TIME_SERIES_FORECASTING_DOCUMENTATION_INDEX.md",
+              "path": "skills/time-series/forecasting/TIME_SERIES_FORECASTING_DOCUMENTATION_INDEX.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "temporal-modeling",
+          "path": "skills/time-series/temporal-modeling",
+          "type": "dir",
+          "children": [
+            {
+              "name": "TEMPORAL_MODELING_COMPLETION_SUMMARY.md",
+              "path": "skills/time-series/temporal-modeling/TEMPORAL_MODELING_COMPLETION_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "TEMPORAL_MODELING_DOCUMENTATION_INDEX.md",
+              "path": "skills/time-series/temporal-modeling/TEMPORAL_MODELING_DOCUMENTATION_INDEX.md",
+              "type": "file"
+            },
+            {
+              "name": "TEMPORAL_MODELING_IMPLEMENTATION_GUIDE.md",
+              "path": "skills/time-series/temporal-modeling/TEMPORAL_MODELING_IMPLEMENTATION_GUIDE.md",
+              "type": "file"
+            },
+            {
+              "name": "TEMPORAL_MODELING_IN_TIME_SERIES_COMPREHENSIVE_DOCUMENTATION.md",
+              "path": "skills/time-series/temporal-modeling/TEMPORAL_MODELING_IN_TIME_SERIES_COMPREHENSIVE_DOCUMENTATION.md",
+              "type": "file"
+            },
+            {
+              "name": "TEMPORAL_MODELING_RESEARCH_SOURCES_AND_QUICK_REFERENCE.md",
+              "path": "skills/time-series/temporal-modeling/TEMPORAL_MODELING_RESEARCH_SOURCES_AND_QUICK_REFERENCE.md",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "training-optimization",
+      "path": "skills/training-optimization",
+      "type": "dir",
+      "children": [
+        {
+          "name": "distributed-training-optimization.prompt.md",
+          "path": "skills/training-optimization/distributed-training-optimization.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "documentation",
+          "path": "skills/training-optimization/documentation",
+          "type": "dir",
+          "children": [
+            {
+              "name": "LEARNING_RATE_SCHEDULING_SKILL_README.md",
+              "path": "skills/training-optimization/documentation/LEARNING_RATE_SCHEDULING_SKILL_README.md",
+              "type": "file"
+            },
+            {
+              "name": "TRAINING_OPTIMIZATION_SKILLS_SUMMARY.md",
+              "path": "skills/training-optimization/documentation/TRAINING_OPTIMIZATION_SKILLS_SUMMARY.md",
+              "type": "file"
+            },
+            {
+              "name": "TRAINING_SKILLS_QUICK_REFERENCE.md",
+              "path": "skills/training-optimization/documentation/TRAINING_SKILLS_QUICK_REFERENCE.md",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "gradient-accumulation-checkpointing.prompt.md",
+          "path": "skills/training-optimization/gradient-accumulation-checkpointing.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "learning-rate-scheduling.prompt.md",
+          "path": "skills/training-optimization/learning-rate-scheduling.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "mixed-precision-training.prompt.md",
+          "path": "skills/training-optimization/mixed-precision-training.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "mixture-of-experts-training.prompt.md",
+          "path": "skills/training-optimization/mixture-of-experts-training.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "modular-training-routing.prompt.md",
+          "path": "skills/training-optimization/modular-training-routing.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "transformers",
+      "path": "skills/transformers",
+      "type": "dir",
+      "children": [
+        {
+          "name": "loading-and-moe.prompt.md",
+          "path": "skills/transformers/loading-and-moe.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "turboquant",
+      "path": "skills/turboquant",
+      "type": "dir",
+      "children": [
+        {
+          "name": "turboquant-finetuning.prompt.md",
+          "path": "skills/turboquant/turboquant-finetuning.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "utilities.py",
+      "path": "skills/utilities.py",
+      "type": "file"
+    },
+    {
+      "name": "video-generation",
+      "path": "skills/video-generation",
+      "type": "dir",
+      "children": [
+        {
+          "name": "diffusers-video-generation.prompt.md",
+          "path": "skills/video-generation/diffusers-video-generation.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "workflows",
+      "path": "skills/workflows",
+      "type": "dir",
+      "children": [
+        {
+          "name": "README.md",
+          "path": "skills/workflows/README.md",
+          "type": "file"
+        },
+        {
+          "name": "end-to-end-workflow.py",
+          "path": "skills/workflows/end-to-end-workflow.py",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "safety",
+      "path": "skills/safety",
+      "type": "dir",
+      "children": [
+        {
+          "name": "prompt-injection-defense.prompt.md",
+          "path": "skills/safety/prompt-injection-defense.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "content-filtering.prompt.md",
+          "path": "skills/safety/content-filtering.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "privacy-preservation.prompt.md",
+          "path": "skills/safety/privacy-preservation.prompt.md",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "advanced-architectures",
+      "path": "skills/advanced-architectures",
+      "type": "dir",
+      "children": [
+        {
+          "name": "sparse-transformers.prompt.md",
+          "path": "skills/advanced-architectures/sparse-transformers.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "state-space-models.prompt.md",
+          "path": "skills/advanced-architectures/state-space-models.prompt.md",
+          "type": "file"
+        },
+        {
+          "name": "memory-augmented-llms.prompt.md",
+          "path": "skills/advanced-architectures/memory-augmented-llms.prompt.md",
+          "type": "file"
+        }
+      ]
+    }
+  ],
+  "sample_code": [
+    {
+      "name": "README.md",
+      "path": "sample_code/README.md",
+      "type": "file"
+    },
+    {
+      "name": "agent_frameworks",
+      "path": "sample_code/agent_frameworks",
+      "type": "dir",
+      "children": [
+        {
+          "name": "end_to_end",
+          "path": "sample_code/agent_frameworks/end_to_end",
+          "type": "dir",
+          "children": [
+            {
+              "name": "agno_customer_support_agent.py",
+              "path": "sample_code/agent_frameworks/end_to_end/agno_customer_support_agent.py",
+              "type": "file"
+            },
+            {
+              "name": "langchain_research_assistant.py",
+              "path": "sample_code/agent_frameworks/end_to_end/langchain_research_assistant.py",
+              "type": "file"
+            },
+            {
+              "name": "langgraph_workflow_orchestrator.py",
+              "path": "sample_code/agent_frameworks/end_to_end/langgraph_workflow_orchestrator.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "minimal",
+          "path": "sample_code/agent_frameworks/minimal",
+          "type": "dir",
+          "children": [
+            {
+              "name": "agno_hello_world.py",
+              "path": "sample_code/agent_frameworks/minimal/agno_hello_world.py",
+              "type": "file"
+            },
+            {
+              "name": "langchain_hello_world.py",
+              "path": "sample_code/agent_frameworks/minimal/langchain_hello_world.py",
+              "type": "file"
+            },
+            {
+              "name": "langgraph_hello_world.py",
+              "path": "sample_code/agent_frameworks/minimal/langgraph_hello_world.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "reference_apps",
+          "path": "sample_code/agent_frameworks/reference_apps",
+          "type": "dir",
+          "children": [
+            {
+              "name": "agno_code_reviewer.py",
+              "path": "sample_code/agent_frameworks/reference_apps/agno_code_reviewer.py",
+              "type": "file"
+            },
+            {
+              "name": "langchain_doc_qa_system.py",
+              "path": "sample_code/agent_frameworks/reference_apps/langchain_doc_qa_system.py",
+              "type": "file"
+            },
+            {
+              "name": "langgraph_data_analysis_pipeline.py",
+              "path": "sample_code/agent_frameworks/reference_apps/langgraph_data_analysis_pipeline.py",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "agent_patterns",
+      "path": "sample_code/agent_patterns",
+      "type": "dir",
+      "children": [
+        {
+          "name": "agent_patterns.py",
+          "path": "sample_code/agent_patterns/agent_patterns.py",
+          "type": "file"
+        },
+        {
+          "name": "tool_patterns.py",
+          "path": "sample_code/agent_patterns/tool_patterns.py",
+          "type": "file"
+        },
+        {
+          "name": "planning_patterns.py",
+          "path": "sample_code/agent_patterns/planning_patterns.py",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "end_to_end",
+      "path": "sample_code/end_to_end",
+      "type": "dir",
+      "children": [
+        {
+          "name": "e2e_rag_pipeline.py",
+          "path": "sample_code/end_to_end/e2e_rag_pipeline.py",
+          "type": "file"
+        },
+        {
+          "name": "e2e_finetune_pipeline.py",
+          "path": "sample_code/end_to_end/e2e_finetune_pipeline.py",
+          "type": "file"
+        },
+        {
+          "name": "e2e_deployment.py",
+          "path": "sample_code/end_to_end/e2e_deployment.py",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "integration_examples",
+      "path": "sample_code/integration_examples",
+      "type": "dir",
+      "children": [
+        {
+          "name": "integration_examples.py",
+          "path": "sample_code/integration_examples/integration_examples.py",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "minimal",
+      "path": "sample_code/minimal",
+      "type": "dir",
+      "children": [
+        {
+          "name": "minimal_rag.py",
+          "path": "sample_code/minimal/minimal_rag.py",
+          "type": "file"
+        },
+        {
+          "name": "minimal_agent.py",
+          "path": "sample_code/minimal/minimal_agent.py",
+          "type": "file"
+        },
+        {
+          "name": "minimal_finetune.py",
+          "path": "sample_code/minimal/minimal_finetune.py",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "reference_apps",
+      "path": "sample_code/reference_apps",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "sample_code/reference_apps/.gitkeep",
+          "type": "file"
+        }
+      ]
+    }
+  ],
+  "scripts": [
+    {
+      "name": ".gitkeep",
+      "path": "scripts/.gitkeep",
+      "type": "file"
+    },
+    {
+      "name": "README.md",
+      "path": "scripts/README.md",
+      "type": "file"
+    },
+    {
+      "name": "generate_rigorous_skills_v2.py",
+      "path": "scripts/generate_rigorous_skills_v2.py",
+      "type": "file"
+    },
+    {
+      "name": "data",
+      "path": "scripts/data",
+      "type": "dir",
+      "children": [
+        {
+          "name": "__init__.py",
+          "path": "scripts/data/__init__.py",
+          "type": "file"
+        },
+        {
+          "name": "download_dataset.py",
+          "path": "scripts/data/download_dataset.py",
+          "type": "file"
+        },
+        {
+          "name": "validate_data.py",
+          "path": "scripts/data/validate_data.py",
+          "type": "file"
+        },
+        {
+          "name": "augment_data.py",
+          "path": "scripts/data/augment_data.py",
+          "type": "file"
+        },
+        {
+          "name": "__pycache__",
+          "path": "scripts/data/__pycache__",
+          "type": "dir",
+          "children": [
+            {
+              "name": "download_dataset.cpython-314.pyc",
+              "path": "scripts/data/__pycache__/download_dataset.cpython-314.pyc",
+              "type": "file"
+            },
+            {
+              "name": "validate_data.cpython-314.pyc",
+              "path": "scripts/data/__pycache__/validate_data.cpython-314.pyc",
+              "type": "file"
+            },
+            {
+              "name": "augment_data.cpython-314.pyc",
+              "path": "scripts/data/__pycache__/augment_data.cpython-314.pyc",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "model",
+      "path": "scripts/model",
+      "type": "dir",
+      "children": [
+        {
+          "name": "__init__.py",
+          "path": "scripts/model/__init__.py",
+          "type": "file"
+        },
+        {
+          "name": "export_model.py",
+          "path": "scripts/model/export_model.py",
+          "type": "file"
+        },
+        {
+          "name": "quantize_model.py",
+          "path": "scripts/model/quantize_model.py",
+          "type": "file"
+        },
+        {
+          "name": "merge_adapters.py",
+          "path": "scripts/model/merge_adapters.py",
+          "type": "file"
+        },
+        {
+          "name": "__pycache__",
+          "path": "scripts/model/__pycache__",
+          "type": "dir",
+          "children": [
+            {
+              "name": "export_model.cpython-314.pyc",
+              "path": "scripts/model/__pycache__/export_model.cpython-314.pyc",
+              "type": "file"
+            },
+            {
+              "name": "quantize_model.cpython-314.pyc",
+              "path": "scripts/model/__pycache__/quantize_model.cpython-314.pyc",
+              "type": "file"
+            },
+            {
+              "name": "merge_adapters.cpython-314.pyc",
+              "path": "scripts/model/__pycache__/merge_adapters.cpython-314.pyc",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "eval",
+      "path": "scripts/eval",
+      "type": "dir",
+      "children": [
+        {
+          "name": "__init__.py",
+          "path": "scripts/eval/__init__.py",
+          "type": "file"
+        },
+        {
+          "name": "run_benchmark.py",
+          "path": "scripts/eval/run_benchmark.py",
+          "type": "file"
+        },
+        {
+          "name": "judge_evaluation.py",
+          "path": "scripts/eval/judge_evaluation.py",
+          "type": "file"
+        },
+        {
+          "name": "__pycache__",
+          "path": "scripts/eval/__pycache__",
+          "type": "dir",
+          "children": [
+            {
+              "name": "run_benchmark.cpython-314.pyc",
+              "path": "scripts/eval/__pycache__/run_benchmark.cpython-314.pyc",
+              "type": "file"
+            },
+            {
+              "name": "judge_evaluation.cpython-314.pyc",
+              "path": "scripts/eval/__pycache__/judge_evaluation.cpython-314.pyc",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "deploy",
+      "path": "scripts/deploy",
+      "type": "dir",
+      "children": [
+        {
+          "name": "__init__.py",
+          "path": "scripts/deploy/__init__.py",
+          "type": "file"
+        },
+        {
+          "name": "build_container.py",
+          "path": "scripts/deploy/build_container.py",
+          "type": "file"
+        },
+        {
+          "name": "health_check.py",
+          "path": "scripts/deploy/health_check.py",
+          "type": "file"
+        },
+        {
+          "name": "__pycache__",
+          "path": "scripts/deploy/__pycache__",
+          "type": "dir",
+          "children": [
+            {
+              "name": "build_container.cpython-314.pyc",
+              "path": "scripts/deploy/__pycache__/build_container.cpython-314.pyc",
+              "type": "file"
+            },
+            {
+              "name": "health_check.cpython-314.pyc",
+              "path": "scripts/deploy/__pycache__/health_check.cpython-314.pyc",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "setup_environment.py",
+      "path": "scripts/setup_environment.py",
+      "type": "file"
+    },
+    {
+      "name": "benchmark_inference.py",
+      "path": "scripts/benchmark_inference.py",
+      "type": "file"
+    },
+    {
+      "name": "__pycache__",
+      "path": "scripts/__pycache__",
+      "type": "dir",
+      "children": [
+        {
+          "name": "setup_environment.cpython-314.pyc",
+          "path": "scripts/__pycache__/setup_environment.cpython-314.pyc",
+          "type": "file"
+        },
+        {
+          "name": "benchmark_inference.cpython-314.pyc",
+          "path": "scripts/__pycache__/benchmark_inference.cpython-314.pyc",
+          "type": "file"
+        }
+      ]
+    }
+  ],
+  "pipelines": [
+    {
+      "name": "README.md",
+      "path": "pipelines/README.md",
+      "type": "file"
+    },
+    {
+      "name": "data",
+      "path": "pipelines/data",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "pipelines/data/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "pipelines/data/README.md",
+          "type": "file"
+        },
+        {
+          "name": "__init__.py",
+          "path": "pipelines/data/__init__.py",
+          "type": "file"
+        },
+        {
+          "name": "configs",
+          "path": "pipelines/data/configs",
+          "type": "dir",
+          "children": [
+            {
+              "name": "conversation_config.yaml",
+              "path": "pipelines/data/configs/conversation_config.yaml",
+              "type": "file"
+            },
+            {
+              "name": "default_config.yaml",
+              "path": "pipelines/data/configs/default_config.yaml",
+              "type": "file"
+            },
+            {
+              "name": "instruction_tuning_config.yaml",
+              "path": "pipelines/data/configs/instruction_tuning_config.yaml",
+              "type": "file"
+            },
+            {
+              "name": "quality_gates.yaml",
+              "path": "pipelines/data/configs/quality_gates.yaml",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "requirements.txt",
+          "path": "pipelines/data/requirements.txt",
+          "type": "file"
+        },
+        {
+          "name": "scripts",
+          "path": "pipelines/data/scripts",
+          "type": "dir",
+          "children": [
+            {
+              "name": "run_pipeline.py",
+              "path": "pipelines/data/scripts/run_pipeline.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "src",
+          "path": "pipelines/data/src",
+          "type": "dir",
+          "children": [
+            {
+              "name": "__init__.py",
+              "path": "pipelines/data/src/__init__.py",
+              "type": "file"
+            },
+            {
+              "name": "cleaning.py",
+              "path": "pipelines/data/src/cleaning.py",
+              "type": "file"
+            },
+            {
+              "name": "ingestion.py",
+              "path": "pipelines/data/src/ingestion.py",
+              "type": "file"
+            },
+            {
+              "name": "preprocessing.py",
+              "path": "pipelines/data/src/preprocessing.py",
+              "type": "file"
+            },
+            {
+              "name": "splitting.py",
+              "path": "pipelines/data/src/splitting.py",
+              "type": "file"
+            },
+            {
+              "name": "validation.py",
+              "path": "pipelines/data/src/validation.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "tests",
+          "path": "pipelines/data/tests",
+          "type": "dir",
+          "children": [
+            {
+              "name": "test_pipeline.py",
+              "path": "pipelines/data/tests/test_pipeline.py",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "deployment",
+      "path": "pipelines/deployment",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "pipelines/deployment/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "pipelines/deployment/README.md",
+          "type": "file"
+        },
+        {
+          "name": "__init__.py",
+          "path": "pipelines/deployment/__init__.py",
+          "type": "file"
+        },
+        {
+          "name": "configs",
+          "path": "pipelines/deployment/configs",
+          "type": "dir",
+          "children": [
+            {
+              "name": "default_config.yaml",
+              "path": "pipelines/deployment/configs/default_config.yaml",
+              "type": "file"
+            },
+            {
+              "name": "kubernetes_deploy.yaml",
+              "path": "pipelines/deployment/configs/kubernetes_deploy.yaml",
+              "type": "file"
+            },
+            {
+              "name": "docker_deploy.yaml",
+              "path": "pipelines/deployment/configs/docker_deploy.yaml",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "requirements.txt",
+          "path": "pipelines/deployment/requirements.txt",
+          "type": "file"
+        },
+        {
+          "name": "scripts",
+          "path": "pipelines/deployment/scripts",
+          "type": "dir",
+          "children": [
+            {
+              "name": "deploy.py",
+              "path": "pipelines/deployment/scripts/deploy.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "src",
+          "path": "pipelines/deployment/src",
+          "type": "dir",
+          "children": [
+            {
+              "name": "monitoring.py",
+              "path": "pipelines/deployment/src/monitoring.py",
+              "type": "file"
+            },
+            {
+              "name": "orchestrator.py",
+              "path": "pipelines/deployment/src/orchestrator.py",
+              "type": "file"
+            },
+            {
+              "name": "packaging.py",
+              "path": "pipelines/deployment/src/packaging.py",
+              "type": "file"
+            },
+            {
+              "name": "publishing.py",
+              "path": "pipelines/deployment/src/publishing.py",
+              "type": "file"
+            },
+            {
+              "name": "rollback.py",
+              "path": "pipelines/deployment/src/rollback.py",
+              "type": "file"
+            },
+            {
+              "name": "versioning.py",
+              "path": "pipelines/deployment/src/versioning.py",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "evaluation",
+      "path": "pipelines/evaluation",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "pipelines/evaluation/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "pipelines/evaluation/README.md",
+          "type": "file"
+        },
+        {
+          "name": "__init__.py",
+          "path": "pipelines/evaluation/__init__.py",
+          "type": "file"
+        },
+        {
+          "name": "configs",
+          "path": "pipelines/evaluation/configs",
+          "type": "dir",
+          "children": [
+            {
+              "name": "default_config.yaml",
+              "path": "pipelines/evaluation/configs/default_config.yaml",
+              "type": "file"
+            },
+            {
+              "name": "benchmark_config.yaml",
+              "path": "pipelines/evaluation/configs/benchmark_config.yaml",
+              "type": "file"
+            },
+            {
+              "name": "judge_config.yaml",
+              "path": "pipelines/evaluation/configs/judge_config.yaml",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "requirements.txt",
+          "path": "pipelines/evaluation/requirements.txt",
+          "type": "file"
+        },
+        {
+          "name": "scripts",
+          "path": "pipelines/evaluation/scripts",
+          "type": "dir",
+          "children": [
+            {
+              "name": "evaluate.py",
+              "path": "pipelines/evaluation/scripts/evaluate.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "src",
+          "path": "pipelines/evaluation/src",
+          "type": "dir",
+          "children": [
+            {
+              "name": "__init__.py",
+              "path": "pipelines/evaluation/src/__init__.py",
+              "type": "file"
+            },
+            {
+              "name": "benchmark.py",
+              "path": "pipelines/evaluation/src/benchmark.py",
+              "type": "file"
+            },
+            {
+              "name": "dashboards.py",
+              "path": "pipelines/evaluation/src/dashboards.py",
+              "type": "file"
+            },
+            {
+              "name": "metrics.py",
+              "path": "pipelines/evaluation/src/metrics.py",
+              "type": "file"
+            },
+            {
+              "name": "regression.py",
+              "path": "pipelines/evaluation/src/regression.py",
+              "type": "file"
+            },
+            {
+              "name": "reporting.py",
+              "path": "pipelines/evaluation/src/reporting.py",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "training",
+      "path": "pipelines/training",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "pipelines/training/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "pipelines/training/README.md",
+          "type": "file"
+        },
+        {
+          "name": "__init__.py",
+          "path": "pipelines/training/__init__.py",
+          "type": "file"
+        },
+        {
+          "name": "configs",
+          "path": "pipelines/training/configs",
+          "type": "dir",
+          "children": [
+            {
+              "name": "default_config.yaml",
+              "path": "pipelines/training/configs/default_config.yaml",
+              "type": "file"
+            },
+            {
+              "name": "dpo_config.yaml",
+              "path": "pipelines/training/configs/dpo_config.yaml",
+              "type": "file"
+            },
+            {
+              "name": "lora_config.yaml",
+              "path": "pipelines/training/configs/lora_config.yaml",
+              "type": "file"
+            },
+            {
+              "name": "qlora_config.yaml",
+              "path": "pipelines/training/configs/qlora_config.yaml",
+              "type": "file"
+            },
+            {
+              "name": "qlora_train.yaml",
+              "path": "pipelines/training/configs/qlora_train.yaml",
+              "type": "file"
+            },
+            {
+              "name": "full_finetune.yaml",
+              "path": "pipelines/training/configs/full_finetune.yaml",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "requirements.txt",
+          "path": "pipelines/training/requirements.txt",
+          "type": "file"
+        },
+        {
+          "name": "scripts",
+          "path": "pipelines/training/scripts",
+          "type": "dir",
+          "children": [
+            {
+              "name": "train.py",
+              "path": "pipelines/training/scripts/train.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "src",
+          "path": "pipelines/training/src",
+          "type": "dir",
+          "children": [
+            {
+              "name": "callbacks.py",
+              "path": "pipelines/training/src/callbacks.py",
+              "type": "file"
+            },
+            {
+              "name": "checkpointing.py",
+              "path": "pipelines/training/src/checkpointing.py",
+              "type": "file"
+            },
+            {
+              "name": "methods.py",
+              "path": "pipelines/training/src/methods.py",
+              "type": "file"
+            },
+            {
+              "name": "orchestrator.py",
+              "path": "pipelines/training/src/orchestrator.py",
+              "type": "file"
+            }
+          ]
+        },
+        {
+          "name": "tests",
+          "path": "pipelines/training/tests",
+          "type": "dir",
+          "children": [
+            {
+              "name": "test_training.py",
+              "path": "pipelines/training/tests/test_training.py",
+              "type": "file"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "notebooks": [
+    {
+      "name": "README.md",
+      "path": "notebooks/README.md",
+      "type": "file"
+    },
+    {
+      "name": "exploration",
+      "path": "notebooks/exploration",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "notebooks/exploration/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "01_chunking_token_budget_playground.ipynb",
+          "path": "notebooks/exploration/01_chunking_token_budget_playground.ipynb",
+          "type": "file"
+        },
+        {
+          "name": "advanced_reasoning_patterns.ipynb",
+          "path": "notebooks/exploration/advanced_reasoning_patterns.ipynb",
+          "type": "file"
+        },
+        {
+          "name": "agent_framework_comparison.ipynb",
+          "path": "notebooks/exploration/agent_framework_comparison.ipynb",
+          "type": "file"
+        },
+        {
+          "name": "tool_integration_deep_dive.ipynb",
+          "path": "notebooks/exploration/tool_integration_deep_dive.ipynb",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "reports",
+      "path": "notebooks/reports",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "notebooks/reports/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "01_agent_eval_scorecard.ipynb",
+          "path": "notebooks/reports/01_agent_eval_scorecard.ipynb",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "tutorials",
+      "path": "notebooks/tutorials",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "notebooks/tutorials/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "01_getting_started_with_agents.ipynb",
+          "path": "notebooks/tutorials/01_getting_started_with_agents.ipynb",
+          "type": "file"
+        },
+        {
+          "name": "01_rag_baseline_walkthrough.ipynb",
+          "path": "notebooks/tutorials/01_rag_baseline_walkthrough.ipynb",
+          "type": "file"
+        },
+        {
+          "name": "02_agno_framework_tutorial.ipynb",
+          "path": "notebooks/tutorials/02_agno_framework_tutorial.ipynb",
+          "type": "file"
+        },
+        {
+          "name": "02_lora_experiment_planner.ipynb",
+          "path": "notebooks/tutorials/02_lora_experiment_planner.ipynb",
+          "type": "file"
+        },
+        {
+          "name": "03_langchain_framework_tutorial.ipynb",
+          "path": "notebooks/tutorials/03_langchain_framework_tutorial.ipynb",
+          "type": "file"
+        },
+        {
+          "name": "04_building_multi_agent_systems.ipynb",
+          "path": "notebooks/tutorials/04_building_multi_agent_systems.ipynb",
+          "type": "file"
+        },
+        {
+          "name": "05_memory_and_state_management.ipynb",
+          "path": "notebooks/tutorials/05_memory_and_state_management.ipynb",
+          "type": "file"
+        }
+      ]
+    }
+  ],
+  "configs": [
+    {
+      "name": "README.md",
+      "path": "configs/README.md",
+      "type": "file"
+    },
+    {
+      "name": "__init__.py",
+      "path": "configs/__init__.py",
+      "type": "file"
+    },
+    {
+      "name": "datasets",
+      "path": "configs/datasets",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "configs/datasets/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "configs/datasets/README.md",
+          "type": "file"
+        },
+        {
+          "name": "dataset_registry.yaml",
+          "path": "configs/datasets/dataset_registry.yaml",
+          "type": "file"
+        },
+        {
+          "name": "quality_gates.yaml",
+          "path": "configs/datasets/quality_gates.yaml",
+          "type": "file"
+        },
+        {
+          "name": "split_policy.yaml",
+          "path": "configs/datasets/split_policy.yaml",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "environments",
+      "path": "configs/environments",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "configs/environments/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "configs/environments/README.md",
+          "type": "file"
+        },
+        {
+          "name": "dev.yaml",
+          "path": "configs/environments/dev.yaml",
+          "type": "file"
+        },
+        {
+          "name": "local.yaml",
+          "path": "configs/environments/local.yaml",
+          "type": "file"
+        },
+        {
+          "name": "prod.yaml",
+          "path": "configs/environments/prod.yaml",
+          "type": "file"
+        },
+        {
+          "name": "staging.yaml",
+          "path": "configs/environments/staging.yaml",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "models",
+      "path": "configs/models",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "configs/models/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "configs/models/README.md",
+          "type": "file"
+        },
+        {
+          "name": "fine_tuning_profiles.yaml",
+          "path": "configs/models/fine_tuning_profiles.yaml",
+          "type": "file"
+        },
+        {
+          "name": "inference_profiles.yaml",
+          "path": "configs/models/inference_profiles.yaml",
+          "type": "file"
+        },
+        {
+          "name": "model_registry.yaml",
+          "path": "configs/models/model_registry.yaml",
+          "type": "file"
+        },
+        {
+          "name": "quantization_profiles.yaml",
+          "path": "configs/models/quantization_profiles.yaml",
+          "type": "file"
+        },
+        {
+          "name": "export_profiles.yaml",
+          "path": "configs/models/export_profiles.yaml",
+          "type": "file"
+        }
+      ]
+    },
+    {
+      "name": "runtime",
+      "path": "configs/runtime",
+      "type": "dir",
+      "children": [
+        {
+          "name": ".gitkeep",
+          "path": "configs/runtime/.gitkeep",
+          "type": "file"
+        },
+        {
+          "name": "README.md",
+          "path": "configs/runtime/README.md",
+          "type": "file"
+        },
+        {
+          "name": "agent_runtime.yaml",
+          "path": "configs/runtime/agent_runtime.yaml",
+          "type": "file"
+        },
+        {
+          "name": "inference_runtime.yaml",
+          "path": "configs/runtime/inference_runtime.yaml",
+          "type": "file"
+        },
+        {
+          "name": "observability.yaml",
+          "path": "configs/runtime/observability.yaml",
+          "type": "file"
+        },
+        {
+          "name": "rag_runtime.yaml",
+          "path": "configs/runtime/rag_runtime.yaml",
+          "type": "file"
+        },
+        {
+          "name": "monitoring.yaml",
+          "path": "configs/runtime/monitoring.yaml",
+          "type": "file"
+        },
+        {
+          "name": "scaling.yaml",
+          "path": "configs/runtime/scaling.yaml",
+          "type": "file"
+        }
+      ]
+    }
+  ],
+  "docs_list": [
+    {
+      "name": "README.md",
+      "path": "README.md"
+    },
+    {
+      "name": "CONTRIBUTING.md",
+      "path": "CONTRIBUTING.md"
+    }
+  ]
+}

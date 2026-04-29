@@ -41,7 +41,7 @@ createItemCard(item, index) {
   card.style.animationDelay = `${index * 50}ms`;
 
   const icon = item.icon || 'file-text';
-  const url = item.url || `https://github.com/${API.repo}/tree/main/${item.path}`;
+  const url = item.url || `https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/${item.path}`;
 
   card.innerHTML = `
     <div class="item-header">
