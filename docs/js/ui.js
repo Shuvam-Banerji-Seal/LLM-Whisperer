@@ -29,9 +29,7 @@ const UI = {
     });
 
     // Initialize Lucide icons
-    if (window.lucide) {
-      lucide.createIcons();
-    }
+    Icons.replace();
   },
 
   /**
@@ -94,9 +92,7 @@ const UI = {
       container.appendChild(card);
     });
 
-    if (window.lucide) {
-      lucide.createIcons();
-    }
+    Icons.replace();
   },
 
   /**
@@ -172,7 +168,7 @@ const UI = {
         <p>Loading...</p>
       </div>
     `;
-    if (window.lucide) lucide.createIcons();
+    Icons.replace();
   },
 
   /**
@@ -188,7 +184,7 @@ const UI = {
         <p>${this.escapeHtml(message)}</p>
       </div>
     `;
-    if (window.lucide) lucide.createIcons();
+    Icons.replace();
   },
 
   /**

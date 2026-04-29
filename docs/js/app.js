@@ -109,9 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     UI.initSearch(allItems);
 
     // Initialize Lucide icons
-    if (window.lucide) {
-      lucide.createIcons();
-    }
+    Icons.replace();
 
     console.log('LLM-Whisperer Website Loaded Successfully!');
   } catch (error) {
@@ -179,7 +177,7 @@ function renderSkills() {
     section.querySelector('.section:last-child')?.appendChild(buttonContainer);
   }
 
-  if (window.lucide) lucide.createIcons();
+  Icons.replace();
 }
 
 /**
@@ -232,7 +230,7 @@ function renderPipelines() {
     container.appendChild(card);
   });
 
-  if (window.lucide) lucide.createIcons();
+  Icons.replace();
 }
 
 /**
