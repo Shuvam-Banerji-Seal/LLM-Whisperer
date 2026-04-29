@@ -11,6 +11,153 @@ let allPipelines = [];
 let allNotebooks = [];
 let allConfigs = [];
 
+// Content Viewer Modal
+const Modal = {
+  modal: null,
+  contentEl: null,
+  titleEl: null,
+  subtitleEl: null,
+  iconEl: null,
+  githubLink: null,
+
+  init() {
+    this.modal = document.getElementById('content-modal');
+    this.contentEl = document.getElementById('modal-content');
+    this.titleEl = document.getElementById('modal-title');
+    this.subtitleEl = document.getElementById('modal-subtitle');
+    this.iconEl = document.getElementById('modal-icon');
+    this.githubLink = document.getElementById('modal-github-link');
+
+    document.getElementById('modal-close').addEventListener('click', () => this.close());
+    this.modal.addEventListener('click', (e) => {
+      if (e.target === this.modal) this.close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.modal.classList.contains('active')) {
+        this.close();
+      }
+    });
+  },
+
+  async open(item) {
+    this.modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    this.titleEl.textContent = item.name || 'Loading...';
+    this.subtitleEl.textContent = item.category || '';
+    this.iconEl.setAttribute('data-icon', item.icon || 'file');
+    this.githubLink.href = item.url || `https://github.com/${API.repo}/tree/main/${item.path}`;
+
+    this.contentEl.innerHTML = `
+      <div class="modal-loading">
+        <i class="icon" data-icon="loader-2"></i>
+        <p>Loading content...</p>
+      </div>
+    `;
+    Icons.replace();
+
+    if (item.path) {
+      try {
+        const content = await this.fetchContent(item);
+        this.displayContent(content, item);
+      } catch (error) {
+        this.contentEl.innerHTML = `
+          <div class="error" style="margin: 24px;">
+            <i class="icon" data-icon="alert-triangle"></i>
+            <p>Failed to load content: ${error.message}</p>
+            <a href="${item.url}" target="_blank" rel="noopener" class="btn-primary" style="margin-top: 16px; display: inline-flex;">
+              View on GitHub
+            </a>
+          </div>
+        `;
+        Icons.replace();
+      }
+    } else if (item.url) {
+      window.open(item.url, '_blank');
+      this.close();
+    }
+  },
+
+  async fetchContent(item) {
+    const rawUrl = item.url
+      .replace('github.com', 'raw.githubusercontent.com')
+      .replace('/blob/', '/');
+
+    const response = await fetch(rawUrl);
+    if (!response.ok) throw new Error('Failed to fetch file');
+    return await response.text();
+  },
+
+  displayContent(content, item) {
+    const isMarkdown = item.name.endsWith('.md') || item.name.endsWith('.prompt.md');
+    const isPython = item.name.endsWith('.py');
+    const isYaml = item.name.endsWith('.yaml') || item.name.endsWith('.yml');
+
+    let htmlContent;
+
+    if (isMarkdown) {
+      htmlContent = this.renderMarkdown(content);
+    } else if (isPython || isYaml) {
+      htmlContent = this.renderCode(content, isPython ? 'python' : 'yaml');
+    } else {
+      htmlContent = this.renderCode(content, 'text');
+    }
+
+    this.contentEl.innerHTML = `<div class="content-viewer ${isMarkdown ? 'markdown' : ''}">${htmlContent}</div>`;
+    Icons.replace();
+  },
+
+  renderMarkdown(text) {
+    // Simple markdown to HTML conversion
+    let html = text
+      // Escape HTML
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      // Headers
+      .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+      .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+      .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+      // Bold and italic
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      // Code blocks
+      .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
+      // Inline code
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      // Links
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+      // Lists
+      .replace(/^\- (.*$)/gm, '<li>$1</li>')
+      .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+      // Paragraphs
+      .replace(/\n\n/g, '</p><p>')
+      .replace(/\n/g, '<br>');
+
+    // Wrap list items
+    html = html.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');
+    html = html.replace(/<\/ul>\s*<ul>/g, '');
+
+    return `<p>${html}</p>`;
+  },
+
+  renderCode(code, language) {
+    const escaped = code
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    return `<pre><code class="language-${language}">${escaped}</code></pre>`;
+  },
+
+  close() {
+    this.modal.classList.remove('active');
+    document.body.style.overflow = '';
+    this.contentEl.innerHTML = '';
+  }
+};
+
 // Initialize app
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('LLM-Whisperer Website Initializing...');
@@ -20,6 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   UI.initMobileMenu();
   UI.initHeader();
   UI.initNavigation();
+  Modal.init();
 
   // Show loading states
   UI.showLoading('skills-grid');
@@ -105,11 +253,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderConfigs();
     renderDocs();
 
-    // Initialize search
-    UI.initSearch(allItems);
+// Initialize search
+  UI.initSearch(allItems);
 
-    // Initialize Lucide icons
-    Icons.replace();
+  // Add click handlers for item cards (delegated to document)
+  document.addEventListener('item-click', (e) => {
+    Modal.open(e.detail);
+  });
+
+  // Initialize Lucide icons
+  Icons.replace();
 
     console.log('LLM-Whisperer Website Loaded Successfully!');
   } catch (error) {
@@ -142,7 +295,13 @@ function renderSkills() {
     card.className = 'category-card fade-in';
     card.style.animationDelay = `${index * 50}ms`;
     card.onclick = () => {
-      window.open(`https://github.com/${API.repo}/tree/main/skills/${skills[0].categorySlug || catName.toLowerCase()}`, '_blank');
+      Modal.open({
+        name: catName + ' Skills',
+        category: 'Skills',
+        icon: skills[0].icon || 'folder',
+        url: `https://github.com/${API.repo}/tree/main/skills/${skills[0].categorySlug || catName.toLowerCase()}`,
+        path: `skills/${skills[0].categorySlug || catName.toLowerCase()}`
+      });
     };
 
     card.innerHTML = `
@@ -209,7 +368,7 @@ function renderPipelines() {
     card.className = 'item-card fade-in';
     card.style.animationDelay = `${index * 50}ms`;
     card.onclick = () => {
-      window.open(pipe.url, '_blank');
+      Modal.open(pipe);
     };
 
     card.innerHTML = `

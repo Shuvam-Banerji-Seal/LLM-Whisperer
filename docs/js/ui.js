@@ -32,34 +32,42 @@ const UI = {
     Icons.replace();
   },
 
-  /**
-   * Create an item card element
-   */
-  createItemCard(item, index) {
-    const card = document.createElement('div');
-    card.className = 'item-card fade-in';
-    card.style.animationDelay = `${index * 50}ms`;
+/**
+ * Create an item card element
+ */
+createItemCard(item, index) {
+  const card = document.createElement('div');
+  card.className = 'item-card fade-in';
+  card.style.animationDelay = `${index * 50}ms`;
 
-    const icon = item.icon || 'file-text';
-    const url = item.url || `https://github.com/${API.repo}/tree/main/${item.path}`;
+  const icon = item.icon || 'file-text';
+  const url = item.url || `https://github.com/${API.repo}/tree/main/${item.path}`;
 
-    card.innerHTML = `
-      <div class="item-header">
-        <i class="icon" data-icon="${icon}"></i>
-        <a href="${url}" target="_blank" rel="noopener" class="item-title">
-          ${this.escapeHtml(item.name)}
-        </a>
-      </div>
-      ${item.description ? `<p class="item-description">${this.escapeHtml(item.description)}</p>` : ''}
-      <div class="item-meta">
-        ${item.category ? `<span class="badge"><i class="icon" data-icon="folder"></i> ${this.escapeHtml(item.category)}</span>` : ''}
-        ${item.type ? `<span class="badge"><i class="icon" data-icon="${this.getTypeIcon(item.type)}"></i> ${this.escapeHtml(item.type)}</span>` : ''}
-        ${item.language ? `<span class="badge"><i class="icon" data-icon="code-2"></i> ${this.escapeHtml(item.language)}</span>` : ''}
-      </div>
-    `;
+  card.innerHTML = `
+    <div class="item-header">
+      <i class="icon" data-icon="${icon}"></i>
+      <span class="item-title">${this.escapeHtml(item.name)}</span>
+    </div>
+    ${item.description ? `<p class="item-description">${this.escapeHtml(item.description)}</p>` : ''}
+    <div class="item-meta">
+      ${item.category ? `<span class="badge"><i class="icon" data-icon="folder"></i> ${this.escapeHtml(item.category)}</span>` : ''}
+      ${item.type ? `<span class="badge"><i class="icon" data-icon="${this.getTypeIcon(item.type)}"></i> ${this.escapeHtml(item.type)}</span>` : ''}
+      ${item.language ? `<span class="badge"><i class="icon" data-icon="code-2"></i> ${this.escapeHtml(item.language)}</span>` : ''}
+    </div>
+  `;
 
-    return card;
-  },
+  // Make the card clickable to open the modal
+  card.onclick = (e) => {
+    // Don't open modal if clicking the external link
+    if (e.target.tagName === 'A') return;
+
+    // Dispatch custom event that app.js will handle
+    const customEvent = new CustomEvent('item-click', { detail: item, bubbles: true });
+    card.dispatchEvent(customEvent);
+  };
+
+  return card;
+},
 
   /**
    * Render category cards
