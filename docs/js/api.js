@@ -6,20 +6,11 @@ const API = {
   base: 'https://api.github.com',
   repo: 'Shuvam-Banerji-Seal/LLM-Whisperer',
   cache: new Map(),
+  rateLimit: { remaining: 60, reset: 0 },
 
-  // Rate limiting
-  rateLimit: {
-    remaining: 60,
-    reset: 0,
-  },
-
-  /**
-   * Make a request to GitHub API
-   */
   async request(endpoint, options = {}) {
     const url = `${this.base}${endpoint}`;
 
-    // Check cache
     if (this.cache.has(url)) {
       return this.cache.get(url);
     }
@@ -34,7 +25,6 @@ const API = {
         },
       });
 
-      // Update rate limit info
       this.rateLimit.remaining = parseInt(
         response.headers.get('X-RateLimit-Remaining') || '60'
       );
@@ -45,64 +35,54 @@ const API = {
       if (!response.ok) {
         if (response.status === 403 && this.rateLimit.remaining === 0) {
           const resetTime = new Date(this.rateLimit.reset * 1000);
-          throw new Error(
-            `Rate limit exceeded. Resets at ${resetTime.toLocaleTimeString()}`
-          );
+          throw new Error(`Rate limit exceeded. Resets at ${resetTime.toLocaleTimeString()}`);
         }
         throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-
-      // Cache the result (expire after 5 minutes)
       this.cache.set(url, data);
       setTimeout(() => this.cache.delete(url), 5 * 60 * 1000);
-
       return data;
     } catch (error) {
+      if (error.name === 'NetworkError' || error.message.includes('NetworkError')) {
+        console.warn('Network error, using fallback data');
+        return null;
+      }
       console.error('API Request failed:', error);
       throw error;
     }
   },
 
-  /**
-   * Get contents of a directory
-   */
   async getContents(path = '') {
     const endpoint = `/repos/${this.repo}/contents/${path}`;
     return this.request(endpoint);
   },
 
-  /**
-   * Get file content (decoded from base64)
-   */
   async getFileContent(path) {
     const data = await this.getContents(path);
-    if (data.content) {
+    if (data && data.content) {
       return atob(data.content.replace(/\n/g, ''));
     }
     return null;
   },
 
-  /**
-   * Get repository info
-   */
   async getRepoInfo() {
     return this.request(`/repos/${this.repo}`);
   },
 
-  /**
-   * Get all skills from skills/ directory
-   */
   async getSkills() {
     try {
       const skillsDirs = await this.getContents('skills');
+      if (!skillsDirs) return this.getFallbackSkills();
 
       const skills = [];
       for (const dir of skillsDirs) {
         if (dir.type === 'dir') {
           try {
             const files = await this.getContents(dir.path);
+            if (!files) continue;
+
             const promptFiles = files.filter(
               (f) => f.name.endsWith('.prompt.md') || f.name.endsWith('.md')
             );
@@ -127,16 +107,13 @@ const API = {
         }
       }
 
-      return skills;
+      return skills.length > 0 ? skills : this.getFallbackSkills();
     } catch (error) {
-      console.error('Failed to load skills:', error);
+      console.warn('Failed to load skills, using fallback:', error);
       return this.getFallbackSkills();
     }
   },
 
-  /**
-   * Get sample code files
-   */
   async getSampleCode() {
     try {
       const result = [];
@@ -145,6 +122,8 @@ const API = {
       for (const dir of dirs) {
         try {
           const files = await this.getContents(`sample_code/${dir}`);
+          if (!files) continue;
+
           for (const file of files) {
             if (file.type === 'file') {
               result.push({
@@ -162,16 +141,13 @@ const API = {
         }
       }
 
-      return result;
+      return result.length > 0 ? result : this.getFallbackSampleCode();
     } catch (error) {
-      console.error('Failed to load sample code:', error);
+      console.warn('Failed to load sample code, using fallback:', error);
       return this.getFallbackSampleCode();
     }
   },
 
-  /**
-   * Get scripts
-   */
   async getScripts() {
     try {
       const result = [];
@@ -180,6 +156,8 @@ const API = {
       for (const dir of dirs) {
         try {
           const files = await this.getContents(`scripts/${dir}`);
+          if (!files) continue;
+
           for (const file of files) {
             if (file.type === 'file' && file.name.endsWith('.py')) {
               result.push({
@@ -197,35 +175,33 @@ const API = {
         }
       }
 
-      // Also check root scripts
       try {
         const files = await this.getContents('scripts');
-        for (const file of files) {
-          if (file.type === 'file' && file.name.endsWith('.py')) {
-            result.push({
-              name: file.name.replace('.py', '').replace(/_/g, ' '),
-              path: file.path,
-              url: file.html_url,
-              type: 'script',
-              category: 'General',
-              icon: 'terminal',
-            });
+        if (files) {
+          for (const file of files) {
+            if (file.type === 'file' && file.name.endsWith('.py')) {
+              result.push({
+                name: file.name.replace('.py', '').replace(/_/g, ' '),
+                path: file.path,
+                url: file.html_url,
+                type: 'script',
+                category: 'General',
+                icon: 'terminal',
+              });
+            }
           }
         }
       } catch (e) {
         // Ignore
       }
 
-      return result;
+      return result.length > 0 ? result : this.getFallbackScripts();
     } catch (error) {
-      console.error('Failed to load scripts:', error);
-      return [];
+      console.warn('Failed to load scripts, using fallback:', error);
+      return this.getFallbackScripts();
     }
   },
 
-  /**
-   * Get pipelines
-   */
   async getPipelines() {
     try {
       const result = [];
@@ -234,6 +210,8 @@ const API = {
       for (const dir of dirs) {
         try {
           const contents = await this.getContents(`pipelines/${dir}`);
+          if (!contents) continue;
+
           const hasConfigs = contents.some(
             (f) => f.type === 'dir' && f.name === 'configs'
           );
@@ -252,16 +230,13 @@ const API = {
         }
       }
 
-      return result;
+      return result.length > 0 ? result : this.getFallbackPipelines();
     } catch (error) {
-      console.error('Failed to load pipelines:', error);
-      return [];
+      console.warn('Failed to load pipelines, using fallback:', error);
+      return this.getFallbackPipelines();
     }
   },
 
-  /**
-   * Helper: Format name (kebab-case to Title Case)
-   */
   formatName(str) {
     return str
       .split(/[-_]/)
@@ -269,18 +244,16 @@ const API = {
       .join(' ');
   },
 
-  /**
-   * Helper: Get icon for category
-   */
   getIconForCategory(category) {
     const icons = {
       'rag': 'database',
+      'rag-advanced': 'database',
       'agentic': 'users',
       'inference': 'zap',
-      'fine-tuning': 'tuning',
+      'fine-tuning': 'settings',
       'production-ops': 'settings',
       'safety': 'shield',
-      'advanced-architectures': 'building',
+      'advanced-architectures': 'cpu',
       'advanced-reasoning': 'brain',
       'foundational': 'book',
       'llm-engineering': 'code-2',
@@ -289,51 +262,94 @@ const API = {
       'evaluation': 'bar-chart-2',
       'templates': 'layout',
       'workflows': 'git-branch',
+      'agents': 'bot',
+      'code-generation': 'code',
+      'diffusion': 'sparkles',
+      'evaluation': 'clipboard-check',
+      'fast-inference': 'zap',
+      'huggingface': 'heart',
+      'image-generation': 'image',
+      'infrastructure-deployment': 'cloud',
+      'knowledge-systems': 'globe',
+      'long-context': 'text-cursor-input',
+      'model-merging': 'git-merge',
+      'moe': 'layers',
+      'multimodal': 'image',
+      'prompt-engineering': 'message-square',
+      'quantization': 'minimize-2',
+      'security-governance': 'shield',
+      'specialized-ml-techniques': 'cpu',
+      'time-series': 'clock',
+      'training-optimization': 'trending-up',
+      'transformers': 'box',
+      'turboquant': 'zap',
+      'video-generation': 'video',
     };
-    return icons[category] || 'file-text';
+    return icons[category] || 'folder';
   },
 
-  /**
-   * Helper: Get icon for file type
-   */
   getIconForFile(filename) {
     if (filename.endsWith('.py')) return 'file-code';
     if (filename.endsWith('.md')) return 'file-text';
-    if (filename.endsWith('.yaml') || filename.endsWith('.yml')) return 'file-settings';
+    if (filename.endsWith('.yaml') || filename.endsWith('.yml')) return 'file';
     if (filename.endsWith('.ipynb')) return 'notebook';
+    if (filename.endsWith('.json')) return 'file-json';
     return 'file';
   },
 
-  /**
-   * Fallback data if API fails
-   */
   getFallbackSkills() {
-    const categories = [
-      'rag', 'agentic', 'inference', 'fine-tuning', 'production-ops',
-      'safety', 'advanced-architectures', 'advanced-reasoning'
+    return [
+      { name: 'RAG Skills', category: 'RAG', categorySlug: 'rag', type: 'skill', icon: 'database', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/rag' },
+      { name: 'Agentic Skills', category: 'Agentic', categorySlug: 'agentic', type: 'skill', icon: 'users', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/agentic' },
+      { name: 'Inference Skills', category: 'Inference', categorySlug: 'inference', type: 'skill', icon: 'zap', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/inference' },
+      { name: 'Fine-tuning Skills', category: 'Fine-tuning', categorySlug: 'fine-tuning', type: 'skill', icon: 'settings', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/fine-tuning' },
+      { name: 'Production Ops', category: 'Production', categorySlug: 'production-ops', type: 'skill', icon: 'settings', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/production-ops' },
+      { name: 'Safety Skills', category: 'Safety', categorySlug: 'safety', type: 'skill', icon: 'shield', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/safety' },
+      { name: 'Advanced Architectures', category: 'Architectures', categorySlug: 'advanced-architectures', type: 'skill', icon: 'cpu', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/advanced-architectures' },
+      { name: 'Advanced Reasoning', category: 'Reasoning', categorySlug: 'advanced-reasoning', type: 'skill', icon: 'brain', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/advanced-reasoning' },
+      { name: 'Fast Inference', category: 'Fast Inference', categorySlug: 'fast-inference', type: 'skill', icon: 'zap', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/fast-inference' },
+      { name: 'Training Optimization', category: 'Training', categorySlug: 'training-optimization', type: 'skill', icon: 'trending-up', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/training-optimization' },
+      { name: 'Foundational Skills', category: 'Foundational', categorySlug: 'foundational', type: 'skill', icon: 'book', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/foundational' },
+      { name: 'Evaluation Skills', category: 'Evaluation', categorySlug: 'evaluation', type: 'skill', icon: 'clipboard-check', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/skills/evaluation' },
     ];
-
-    const skills = [];
-    categories.forEach((cat) => {
-      skills.push({
-        name: this.formatName(cat),
-        category: this.formatName(cat),
-        categorySlug: cat,
-        type: 'skill',
-        icon: this.getIconForCategory(cat),
-        url: `https://github.com/${this.repo}/tree/main/skills/${cat}`,
-      });
-    });
-
-    return skills;
   },
 
   getFallbackSampleCode() {
     return [
-      { name: 'Minimal RAG', type: 'sample-code', category: 'Minimal', icon: 'database' },
-      { name: 'Minimal Agent', type: 'sample-code', category: 'Minimal', icon: 'users' },
-      { name: 'E2E RAG Pipeline', type: 'sample-code', category: 'End to End', icon: 'git-branch' },
-      { name: 'Tool Patterns', type: 'sample-code', category: 'Agent Patterns', icon: 'tool' },
+      { name: 'minimal_rag.py', category: 'Minimal', type: 'sample-code', icon: 'file-code', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/sample_code/minimal' },
+      { name: 'minimal_agent.py', category: 'Minimal', type: 'sample-code', icon: 'file-code', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/sample_code/minimal' },
+      { name: 'minimal_finetune.py', category: 'Minimal', type: 'sample-code', icon: 'file-code', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/sample_code/minimal' },
+      { name: 'e2e_rag_pipeline.py', category: 'End to End', type: 'sample-code', icon: 'file-code', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/sample_code/end_to_end' },
+      { name: 'e2e_finetune_pipeline.py', category: 'End to End', type: 'sample-code', icon: 'file-code', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/sample_code/end_to_end' },
+      { name: 'e2e_deployment.py', category: 'End to End', type: 'sample-code', icon: 'file-code', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/sample_code/end_to_end' },
+      { name: 'tool_patterns.py', category: 'Agent Patterns', type: 'sample-code', icon: 'file-code', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/sample_code/agent_patterns' },
+      { name: 'planning_patterns.py', category: 'Agent Patterns', type: 'sample-code', icon: 'file-code', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/sample_code/agent_patterns' },
+    ];
+  },
+
+  getFallbackScripts() {
+    return [
+      { name: 'download_dataset.py', category: 'Data', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts/data' },
+      { name: 'validate_data.py', category: 'Data', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts/data' },
+      { name: 'augment_data.py', category: 'Data', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts/data' },
+      { name: 'export_model.py', category: 'Model', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts/model' },
+      { name: 'quantize_model.py', category: 'Model', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts/model' },
+      { name: 'merge_adapters.py', category: 'Model', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts/model' },
+      { name: 'run_benchmark.py', category: 'Eval', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts/eval' },
+      { name: 'judge_evaluation.py', category: 'Eval', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts/eval' },
+      { name: 'build_container.py', category: 'Deploy', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts/deploy' },
+      { name: 'health_check.py', category: 'Deploy', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts/deploy' },
+      { name: 'setup_environment.py', category: 'General', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts' },
+      { name: 'benchmark_inference.py', category: 'General', type: 'script', icon: 'terminal', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/scripts' },
+    ];
+  },
+
+  getFallbackPipelines() {
+    return [
+      { name: 'Data Pipeline', category: 'Pipelines', type: 'pipeline', icon: 'git-branch', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/pipelines/data', hasConfigs: true },
+      { name: 'Training Pipeline', category: 'Pipelines', type: 'pipeline', icon: 'git-branch', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/pipelines/training', hasConfigs: true },
+      { name: 'Evaluation Pipeline', category: 'Pipelines', type: 'pipeline', icon: 'git-branch', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/pipelines/evaluation', hasConfigs: true },
+      { name: 'Deployment Pipeline', category: 'Pipelines', type: 'pipeline', icon: 'git-branch', url: 'https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/tree/main/pipelines/deployment', hasConfigs: true },
     ];
   }
 };
