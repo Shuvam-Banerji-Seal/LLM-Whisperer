@@ -319,6 +319,8 @@ body {
   transform: translateY(-50%);
   color: var(--text-4);
   pointer-events: none;
+  width: 16px;
+  height: 16px;
 }
 
 /* Nav Buttons */
