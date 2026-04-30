@@ -496,7 +496,7 @@ function renderScripts(items) {
   $('#statScripts').textContent = items.length;
 }
 
-function renderCode(items) {
+function renderCodeGrid(items) {
   const grid = $('#codeGrid');
   grid.innerHTML = items.map((item, i) => `
     <div class="item-card lazy" style="animation-delay:${i*30}ms" onclick="Modal.open({name:'${item.name.replace(/'/g,"\\'")}',category:'${item.category||''}',icon:'${item.icon||'fileCode'}',path:'${item.path}',url:'${item.url}'})">
@@ -605,7 +605,7 @@ async function init() {
 
     renderSkills(skills);
     renderScripts(scripts);
-    renderCode(code);
+    renderCodeGrid(code);
     renderPipelines(pipelines);
 
     // Hide loader
