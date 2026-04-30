@@ -223,6 +223,12 @@ const Modal = {
   },
 
   async open(item) {
+    // If this is a directory listing, show file browser
+    if (item.isDir || !item.path) {
+      this.openDir(item);
+      return;
+    }
+
     this.currentPath = item.path;
     this.currentContent = null;
     this.el.classList.add('open');
@@ -251,6 +257,41 @@ const Modal = {
     else if (isPy) this.body.innerHTML = renderCode(content, 'Python');
     else if (isYml) this.body.innerHTML = renderCode(content, 'YAML');
     else this.body.innerHTML = renderCode(content, 'Text');
+  },
+
+  openDir(item) {
+    this.el.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    this.currentPath = null;
+    this.currentContent = null;
+
+    this.title.textContent = item.name;
+    this.subtitle.textContent = item.category || 'Directory';
+    this.icon.innerHTML = getIcon(item.icon || 'folder');
+    $('#modalGithubBtn').href = item.url;
+    $('#modalDownloadBtn').href = item.url;
+
+    // Show file listing
+    const files = item.files || [];
+    if (!files.length) {
+      this.body.innerHTML = `<div class="md-viewer" style="padding:40px;text-align:center;">${getIcon('folder')}<p style="margin-top:12px;color:var(--text-3)">Directory listing not available</p><a href="${item.url}" target="_blank" rel="noopener" style="color:var(--accent-light);margin-top:16px;display:inline-block">View on GitHub</a></div>`;
+      return;
+    }
+
+    this.body.innerHTML = `
+      <div class="md-viewer" style="padding:24px 0;">
+        <p style="color:var(--text-3);margin-bottom:16px;font-size:0.875rem;">${files.length} item${files.length>1?'s':''}</p>
+        ${files.map(f => `
+          <div class="item-card" style="margin-bottom:8px;" onclick="Modal.open({name:'${f.name.replace(/'/g,"\\'")}',category:'${item.name.replace(/'/g,"\\'")}',icon:'${f.icon||'file'}',path:'${f.path}',url:'${f.url}'${f.categorySlug?`,categorySlug:'${f.categorySlug}'`:''}})">
+            <div class="item-icon">${getIcon(f.icon||'file')}</div>
+            <div class="item-info">
+              <div class="item-name">${f.name}</div>
+              <div class="item-path">${f.path}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
   },
 
   close() {
@@ -316,8 +357,8 @@ const Search = {
       return;
     }
 
-    this.results.innerHTML = matches.map(item => `
-      <div class="search-result" onclick="Modal.open(${JSON.stringify(item).replace(/"/g,'&quot;')});Search.close();">
+    this.results.innerHTML = matches.map((item, idx) => `
+      <div class="search-result" data-search-idx="${idx}">
         <div class="search-result-icon">${getIcon(item.icon || 'file')}</div>
         <div class="search-result-info">
           <div class="search-result-name">${item.name}</div>
@@ -325,6 +366,14 @@ const Search = {
         </div>
       </div>
     `).join('');
+
+    // Add click handlers after rendering
+    $$('.search-result', this.results).forEach((el, idx) => {
+      el.onclick = () => {
+        Modal.open(matches[idx]);
+        this.close();
+      };
+    });
   }
 };
 
@@ -408,8 +457,13 @@ function renderSkills(items) {
     (cats[c] = cats[c] || []).push(item);
   });
 
-  grid.innerHTML = Object.entries(cats).map(([cat, skills], i) => `
-    <div class="card lazy" style="animation-delay:${i*50}ms" onclick="Modal.open({name:'${cat.replace(/'/g,"\\'")}',category:'Skills',icon:'${skills[0].icon||'folder'}',path:'${skills[0].categorySlug||''}',url:'${ghUrl('skills/'+(skills[0].categorySlug||cat.toLowerCase()),'dir')}'})">
+  grid.innerHTML = Object.entries(cats).map(([cat, skills], i) => {
+    const dirPath = 'skills/' + (skills[0].categorySlug || cat.toLowerCase().replace(/ /g,'-'));
+    const dirUrl = ghUrl(dirPath, 'dir');
+    // Build files array for directory modal
+    const filesJs = skills.map(s => `{name:'${s.name.replace(/'/g,"\\'")}',path:'${s.path}',url:'${s.url}',icon:'${s.icon||'file'}'}`).join(',');
+    return `
+    <div class="card lazy" style="animation-delay:${i*50}ms" onclick="Modal.open({name:'${cat.replace(/'/g,"\\'")}',category:'Skills',icon:'${skills[0].icon||'folder'}',url:'${dirUrl}',isDir:true,files:[${filesJs}]})">
       <div class="card-icon">${getIcon(skills[0].icon||'folder')}</div>
       <div class="card-title">${cat}</div>
       <div class="card-desc">${skills.length} skill${skills.length>1?'s':''} for LLM engineering</div>
@@ -418,7 +472,7 @@ function renderSkills(items) {
         <span class="tag">Skills</span>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 
   $('#skillsCount').textContent = `${items.length} skills`;
   $('#statSkills').textContent = items.length;
@@ -463,7 +517,7 @@ function renderCode(items) {
 function renderPipelines(items) {
   const grid = $('#pipelinesGrid');
   grid.innerHTML = items.map((item, i) => `
-    <div class="card lazy" style="animation-delay:${i*40}ms">
+    <div class="card lazy" style="animation-delay:${i*40}ms" onclick="window.open('${item.url}','_blank')">
       <div class="card-icon">${getIcon(item.icon||'gitBranch')}</div>
       <div class="card-title">${item.name}</div>
       <div class="card-desc">Data, training, evaluation, and deployment workflows</div>
