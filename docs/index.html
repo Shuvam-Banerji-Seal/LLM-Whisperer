@@ -1,341 +1,259 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LLM-Whisperer - LLM Engineering Hub | RAG, Agents, Fine-tuning, Inference</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>LLM-Whisperer — Production-Ready LLM Engineering Skills & Tools</title>
 
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Comprehensive LLM toolkit with 100+ production-ready skills for RAG systems, agent frameworks, fine-tuning, inference optimization, and evaluation. Built with LangChain, vLLM, Transformers.">
-  <meta name="keywords" content="LLM, RAG, fine-tuning, agents, inference optimization, LangChain, vLLM, transformers, prompt engineering, model evaluation, MLops, PyTorch, Hugging Face">
+  <!-- SEO -->
+  <meta name="description" content="100+ production-ready skills, scripts, and code examples for LLM engineering: RAG, agents, fine-tuning, inference optimization. Built for AI developers.">
+  <meta name="keywords" content="LLM,RAG,agents,fine-tuning,inference,LangChain,vLLM,transformers,skills,scripts">
   <meta name="author" content="Shuvam Banerji Seal">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index,follow">
+  <meta name="theme-color" content="#0a0a0f">
 
-  <!-- Open Graph / Facebook -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://shuvam-banerji-seal.github.io/LLM-Whisperer/">
-  <meta property="og:title" content="LLM-Whisperer - LLM Engineering Hub">
-  <meta property="og:description" content="100+ production-ready skills for RAG, agents, fine-tuning, inference optimization. Complete codebase for building LLM applications.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/Shuvam-Banerji-Seal/LLM-Whisperer/main/assets/og-image.png">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://shuvam-banerji-seal.github.io/LLM-Whisperer/">
-  <meta name="twitter:title" content="LLM-Whisperer - LLM Engineering Hub">
-  <meta name="twitter:description" content="100+ production-ready skills for RAG, agents, fine-tuning, inference optimization. Complete codebase for building LLM applications.">
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/Shuvam-Banerji-Seal/LLM-Whisperer/main/assets/og-image.png">
-
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://shuvam-banerji-seal.github.io/LLM-Whisperer/">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
-
-  <!-- Preconnect for performance -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <meta property="og:title" content="LLM-Whisperer — Production-Ready LLM Engineering">
+  <meta property="og:description" content="100+ skills for RAG, agents, fine-tuning, inference optimization. Ready to use.">
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%238b5cf6'/><path d='M30 70V30l20-8v40l-20 8Z' fill='white' opacity='.3'/><path d='M50 22v40l20 8V30l-20-8Z' fill='white' opacity='.5'/><circle cx='35' cy='28' r='3' fill='white'/><circle cx='45' cy='24' r='3' fill='white'/><circle cx='55' cy='20' r='3' fill='white'/><circle cx='65' cy='16' r='3' fill='white'/></svg>">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header" id="header">
-        <div class="container header-content">
-            <div class="logo">
-                <svg class="logo-svg" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect width="36" height="36" rx="10" fill="url(#g)"/>
-                  <path d="M8 28V12l10-4v16l-10 4Z" fill="#fff" opacity=".15"/>
-                  <path d="M18 8v16l10 4V12L18 8Z" fill="#fff" opacity=".25"/>
-                  <circle cx="12" cy="11" r="1.5" fill="#fff"/>
-                  <circle cx="16" cy="9.5" r="1.5" fill="#fff"/>
-                  <circle cx="20" cy="7.5" r="1.5" fill="#fff"/>
-                  <circle cx="24" cy="6" r="1.5" fill="#fff"/>
-                  <circle cx="12" cy="17" r="1.5" fill="#fff"/>
-                  <circle cx="16" cy="15" r="1.5" fill="#fff"/>
-                  <circle cx="20" cy="13" r="1.5" fill="#fff"/>
-                  <circle cx="24" cy="15" r="1.5" fill="#fff"/>
-                  <defs><linearGradient id="g" x1="0" y1="0" x2="36" y2="36"><stop stop-color="#6c5ce7"/><stop offset="1" stop-color="#a29bfe"/></linearGradient></defs>
-                </svg>
-                <div class="logo-text">
-                    <span class="logo-name">LLM-Whisperer</span>
-                    <span class="logo-tagline">Production LLM Engineering</span>
-                </div>
-            </div>
-            <nav class="nav" id="main-nav">
-                <a href="#skills" class="nav-link" data-section="skills">
-                    <i class="icon" data-icon="brain"></i>
-                    <span>Skills</span>
-                </a>
-                <a href="#sample-code" class="nav-link" data-section="sample-code">
-                    <i class="icon" data-icon="code-2"></i>
-                    <span>Sample Code</span>
-                </a>
-                <a href="#scripts" class="nav-link" data-section="scripts">
-                    <i class="icon" data-icon="terminal"></i>
-                    <span>Scripts</span>
-                </a>
-                <a href="#pipelines" class="nav-link" data-section="pipelines">
-                    <i class="icon" data-icon="git-branch"></i>
-                    <span>Pipelines</span>
-                </a>
-                <a href="#notebooks" class="nav-link" data-section="notebooks">
-                    <i class="icon" data-icon="notebook"></i>
-                    <span>Notebooks</span>
-                </a>
-                <a href="#configs" class="nav-link" data-section="configs">
-                    <i class="icon" data-icon="settings"></i>
-                    <span>Configs</span>
-                </a>
-                <a href="#docs" class="nav-link" data-section="docs">
-                    <i class="icon" data-icon="book-open"></i>
-                    <span>Docs</span>
-                </a>
-            </nav>
-            <div class="header-actions">
-                <div class="search-box">
-                    <i class="icon" data-icon="search"></i>
-                    <input type="text" id="search-input" placeholder="Search skills, code, docs..." autocomplete="off">
-                    <kbd>⌘K</kbd>
-                </div>
-                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-                    <i class="icon" data-icon="sun" id="theme-icon-light"></i>
-                    <i class="icon" data-icon="moon" id="theme-icon-dark"></i>
-                </button>
-                <a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer" class="github-link" target="_blank" rel="noopener">
-                    <i class="icon" data-icon="github"></i>
-                </a>
-                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
-                    <i class="icon" data-icon="menu"></i>
-                </button>
-            </div>
-        </div>
-    </header>
 
-    <!-- Mobile Navigation -->
-    <div class="mobile-nav" id="mobile-nav">
-        <div class="mobile-nav-content">
-            <a href="#skills" class="mobile-nav-link" data-section="skills">
-                <i class="icon" data-icon="brain"></i>
-                <span>Skills</span>
-            </a>
-            <a href="#sample-code" class="mobile-nav-link" data-section="sample-code">
-                <i class="icon" data-icon="code-2"></i>
-                <span>Sample Code</span>
-            </a>
-            <a href="#scripts" class="mobile-nav-link" data-section="scripts">
-                <i class="icon" data-icon="terminal"></i>
-                <span>Scripts</span>
-            </a>
-            <a href="#pipelines" class="mobile-nav-link" data-section="pipelines">
-                <i class="icon" data-icon="git-branch"></i>
-                <span>Pipelines</span>
-            </a>
-            <a href="#notebooks" class="mobile-nav-link" data-section="notebooks">
-                <i class="icon" data-icon="notebook"></i>
-                <span>Notebooks</span>
-            </a>
-            <a href="#configs" class="mobile-nav-link" data-section="configs">
-                <i class="icon" data-icon="settings"></i>
-                <span>Configs</span>
-            </a>
-            <a href="#docs" class="mobile-nav-link" data-section="docs">
-                <i class="icon" data-icon="book-open"></i>
-                <span>Docs</span>
-            </a>
-        </div>
+<!-- ============================================
+     Loading Screen
+     ============================================ -->
+<div class="loading-screen" id="loader">
+  <svg class="loader-ring" viewBox="0 0 64 64">
+    <defs>
+      <linearGradient id="loaderGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#8b5cf6"/>
+        <stop offset="100%" stop-color="#06b6d4"/>
+      </linearGradient>
+    </defs>
+    <circle class="loader-track" cx="32" cy="32" r="28" fill="none" stroke-width="4"/>
+    <circle class="loader-head" cx="32" cy="32" r="28" fill="none" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+  <span class="loader-text">Loading Resources</span>
+</div>
+
+<!-- ============================================
+     Navbar
+     ============================================ -->
+<nav class="nav" id="navbar">
+  <div class="nav-inner">
+    <!-- Logo -->
+    <a href="#" class="nav-logo" onclick="scrollToTop();return false;">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L2 7l10 4 10-4-10-4z"/><path d="M2 17l10 4 10-4"/><path d="M2 12l10 4 10-4"/></svg>
+      </div>
+      <div class="nav-logo-text">
+        <span class="nav-logo-name">LLM-Whisperer</span>
+        <span class="nav-logo-tag">Production Engineering</span>
+      </div>
+    </a>
+
+    <!-- Links -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#skills" class="nav-link" data-section="skills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg><span>Skills</span></a></li>
+      <li><a href="#scripts" class="nav-link" data-section="scripts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg><span>Scripts</span></a></li>
+      <li><a href="#code" class="nav-link" data-section="code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span>Code</span></a></li>
+      <li><a href="#pipelines" class="nav-link" data-section="pipelines"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg><span>Pipelines</span></a></li>
+    </ul>
+
+    <!-- Right -->
+    <div class="nav-right">
+      <div class="nav-search">
+        <svg class="nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="globalSearchInput" placeholder="Search skills, scripts, code..." autocomplete="off">
+      </div>
+      <button class="nav-btn" id="themeToggle" aria-label="Toggle theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+      <a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer" class="nav-github" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+      </a>
+      <button class="nav-btn nav-mobile-toggle" id="mobileToggle" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
+      </button>
     </div>
+  </div>
+</nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-badge">
-                    <i class="icon" data-icon="sparkles"></i>
-                    <span>100+ Skills & Templates</span>
-                </div>
-                <h2 class="hero-title">Build Production LLM Systems Faster</h2>
-                <p class="hero-description">
-                    A comprehensive hub for LLM engineering with reusable skills, fine-tuning strategies,
-                    RAG patterns, and inference optimization. Start minimal, then scale.
-                </p>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <i class="icon" data-icon="brain"></i>
-                        <div>
-                            <span class="stat-value" id="stat-skills">--</span>
-                            <span class="stat-label">Skills</span>
-                        </div>
-                    </div>
-                    <div class="stat">
-                        <i class="icon" data-icon="code-2"></i>
-                        <div>
-                            <span class="stat-value" id="stat-code">--</span>
-                            <span class="stat-label">Code Examples</span>
-                        </div>
-                    </div>
-                    <div class="stat">
-                        <i class="icon" data-icon="terminal"></i>
-                        <div>
-                            <span class="stat-value" id="stat-scripts">--</span>
-                            <span class="stat-label">Scripts</span>
-                        </div>
-                    </div>
-                    <div class="stat">
-                        <i class="icon" data-icon="star"></i>
-                        <div>
-                            <span class="stat-value" id="stat-stars">--</span>
-                            <span class="stat-label">Stars</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-panel">
+    <ul class="mobile-menu-links">
+      <li><a href="#skills" class="mobile-menu-link" data-section="skills"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg>Skills</a></li>
+      <li><a href="#scripts" class="mobile-menu-link" data-section="scripts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>Scripts</a></li>
+      <li><a href="#code" class="mobile-menu-link" data-section="code"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Code</a></li>
+      <li><a href="#pipelines" class="mobile-menu-link" data-section="pipelines"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>Pipelines</a></li>
+    </ul>
+  </div>
+</div>
 
-    <!-- Main Content -->
-    <main class="main">
-        <div class="container">
-            <!-- Search Results -->
-            <section class="section" id="search-results">
-                <div class="section-header">
-                    <i class="icon" data-icon="search"></i>
-                    <h2>Search Results</h2>
-                    <p id="search-results-count"></p>
-                </div>
-                <div class="grid" id="search-results-grid"></div>
-            </section>
+<!-- ============================================
+     Hero
+     ============================================ -->
+<section class="hero">
+  <div class="hero-badge animate-fade-up">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
+    100+ Production-Ready Resources
+  </div>
+  <h1 class="hero-title animate-fade-up" style="animation-delay:0.1s">Build LLM Systems Faster</h1>
+  <p class="hero-desc animate-fade-up" style="animation-delay:0.2s">
+    A curated collection of reusable skills, scripts, code examples, and pipelines for LLM engineering. From RAG to fine-tuning to inference optimization.
+  </p>
+  <div class="hero-stats animate-fade-up" style="animation-delay:0.3s">
+    <div class="stat-card"><span class="stat-value" id="statSkills">0</span><span class="stat-label">Skills</span></div>
+    <div class="stat-card"><span class="stat-value" id="statScripts">0</span><span class="stat-label">Scripts</span></div>
+    <div class="stat-card"><span class="stat-value" id="statCode">0</span><span class="stat-label">Code Examples</span></div>
+    <div class="stat-card"><span class="stat-value" id="statPipelines">0</span><span class="stat-label">Pipelines</span></div>
+  </div>
+</section>
 
-            <!-- Skills Section -->
-            <section class="section" id="skills">
-                <div class="section-header">
-                    <h2><i class="icon" data-icon="brain"></i> Skills Library</h2>
-                    <p>Reusable skills for LLM engineering tasks</p>
-                </div>
-                <div class="grid" id="skills-grid"></div>
-            </section>
+<!-- ============================================
+     Main Content
+     ============================================ -->
+<main class="main-content">
 
-            <!-- Sample Code Section -->
-            <section class="section" id="sample-code">
-                <div class="section-header">
-                    <h2><i class="icon" data-icon="code-2"></i> Sample Code</h2>
-                    <p>Minimal templates, end-to-end examples, and reference apps</p>
-                </div>
-                <div class="grid" id="sample-code-grid"></div>
-            </section>
+  <!-- Skills -->
+  <section class="section" id="skills">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></svg></div>
+        <div class="section-title-text"><h2>Skills Library</h2><p>Reusable prompts and techniques for LLM engineering</p></div>
+      </div>
+      <span class="section-count" id="skillsCount">0 skills</span>
+    </div>
+    <div class="grid grid-3 stagger" id="skillsGrid"></div>
+  </section>
 
-            <!-- Scripts Section -->
-            <section class="section" id="scripts">
-                <div class="section-header">
-                    <h2><i class="icon" data-icon="terminal"></i> Scripts</h2>
-                    <p>Utilities for data, model, evaluation, and deployment</p>
-                </div>
-                <div class="grid" id="scripts-grid"></div>
-            </section>
+  <!-- Scripts -->
+  <section class="section" id="scripts">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg></div>
+        <div class="section-title-text"><h2>Scripts</h2><p>Utilities for data, model, evaluation, and deployment</p></div>
+      </div>
+      <span class="section-count" id="scriptsCount">0 scripts</span>
+    </div>
+    <div class="grid grid-2 stagger" id="scriptsGrid"></div>
+  </section>
 
-            <!-- Pipelines Section -->
-            <section class="section" id="pipelines">
-                <div class="section-header">
-                    <h2><i class="icon" data-icon="git-branch"></i> Pipelines</h2>
-                    <p>Data, training, evaluation, and deployment workflows</p>
-                </div>
-                <div class="grid" id="pipelines-grid"></div>
-            </section>
+  <!-- Code Examples -->
+  <section class="section" id="code">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="section-title-text"><h2>Code Examples</h2><p>Minimal to end-to-end implementations</p></div>
+      </div>
+      <span class="section-count" id="codeCount">0 files</span>
+    </div>
+    <div class="grid grid-2 stagger" id="codeGrid"></div>
+  </section>
 
-            <!-- Notebooks Section -->
-            <section class="section" id="notebooks">
-                <div class="section-header">
-                    <h2><i class="icon" data-icon="notebook"></i> Notebooks</h2>
-                    <p>Exploration, tutorials, and reports</p>
-                </div>
-                <div class="grid" id="notebooks-grid"></div>
-            </section>
+  <!-- Pipelines -->
+  <section class="section" id="pipelines">
+    <div class="section-header">
+      <div class="section-title">
+        <div class="section-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" x2="6" y1="3" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></div>
+        <div class="section-title-text"><h2>Pipelines</h2><p>End-to-end workflows for data, training, eval, deploy</p></div>
+      </div>
+      <span class="section-count" id="pipelinesCount">0 pipelines</span>
+    </div>
+    <div class="grid grid-4 stagger" id="pipelinesGrid"></div>
+  </section>
 
-            <!-- Configs Section -->
-            <section class="section" id="configs">
-                <div class="section-header">
-                    <h2><i class="icon" data-icon="settings"></i> Configurations</h2>
-                    <p>Datasets, environments, models, and runtime configs</p>
-                </div>
-                <div class="grid" id="configs-grid"></div>
-            </section>
+</main>
 
-            <!-- Documentation Section -->
-            <section class="section" id="docs">
-                <div class="section-header">
-                    <h2><i class="icon" data-icon="book-open"></i> Documentation</h2>
-                    <p>Architecture, guides, playbooks, and references</p>
-                </div>
-                <div class="grid" id="docs-grid"></div>
-            </section>
-        </div>
-    </main>
+<!-- ============================================
+     Footer
+     ============================================ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L2 7l10 4 10-4-10-4z"/><path d="M2 17l10 4 10-4"/><path d="M2 12l10 4 10-4"/></svg>
+      <span>LLM-Whisperer</span>
+    </div>
+    <p class="footer-desc">A comprehensive hub for production-grade LLM engineering skills, scripts, and tools.</p>
+    <div class="footer-links">
+      <a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer" class="footer-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>GitHub</a>
+      <a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/blob/main/LICENSE" class="footer-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>License</a>
+      <a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/blob/main/CONTRIBUTING.md" class="footer-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Contributing</a>
+    </div>
+    <p class="footer-copy"> 2026 Shuvam Banerji Seal. MIT License.</p>
+  </div>
+</footer>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-info">
-                    <h3><i class="icon" data-icon="sparkles"></i> LLM-Whisperer</h3>
-                    <p>A comprehensive hub for production-grade LLM engineering</p>
-                </div>
-                <div class="footer-links">
-                    <a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer" target="_blank">
-                        <i class="icon" data-icon="github"></i> GitHub
-                    </a>
-                    <a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/blob/main/LICENSE" target="_blank">
-                        <i class="icon" data-icon="file-text"></i> License
-                    </a>
-                    <a href="https://github.com/Shuvam-Banerji-Seal/LLM-Whisperer/blob/main/CONTRIBUTING.md" target="_blank">
-                        <i class="icon" data-icon="users"></i> Contributing
-                    </a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Shuvam Banerji Seal. Built with <i class="icon" data-icon="heart"></i> for the LLM community.</p>
-            </div>
-        </div>
-    </footer>
-
-<!-- Toast Notification -->
-<div class="toast" id="toast"></div>
-
-<!-- Content Viewer Modal -->
-<div class="modal-overlay" id="content-modal">
-  <div class="modal-container">
+<!-- ============================================
+     Content Modal
+     ============================================ -->
+<div class="modal-overlay" id="contentModal">
+  <div class="modal">
     <div class="modal-header">
-      <div class="modal-title-section">
-        <i class="icon" data-icon="file-text" id="modal-icon"></i>
-        <div>
-          <h3 id="modal-title">Loading...</h3>
-          <span id="modal-subtitle" class="modal-subtitle"></span>
+      <div class="modal-title">
+        <div class="modal-title-icon" id="modalIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div class="modal-title-text">
+          <h3 id="modalTitle">Loading...</h3>
+          <span id="modalSubtitle"></span>
         </div>
       </div>
       <div class="modal-actions">
-        <a href="#" class="modal-btn" id="modal-github-link" target="_blank" rel="noopener">
-          <i class="icon" data-icon="github"></i> View on GitHub
+        <button class="modal-btn modal-btn-ghost" id="modalCopyBtn" title="Copy to clipboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          Copy
+        </button>
+        <a class="modal-btn modal-btn-ghost" id="modalDownloadBtn" title="Download file" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          Download
         </a>
-        <button class="modal-btn modal-btn-close" id="modal-close">
-          <i class="icon" data-icon="x"></i>
+        <a class="modal-btn modal-btn-primary" id="modalGithubBtn" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          GitHub
+        </a>
+        <button class="modal-btn modal-btn-ghost" id="modalCloseBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
     </div>
-    <div class="modal-content" id="modal-content">
-      <div class="modal-loading">
-        <i class="icon" data-icon="loader-2"></i>
-        <p>Loading content...</p>
-      </div>
+    <div class="modal-content" id="modalBody">
+      <div class="modal-loading"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="2" y2="6"/><line x1="12" x2="12" y1="18" y2="22"/><line x1="4.93" x2="7.76" y1="4.93" y2="7.76"/><line x1="16.24" x2="19.07" y1="16.24" y2="19.07"/><line x1="2" x2="6" y1="12" y2="12"/><line x1="18" x2="22" y1="12" y2="12"/><line x1="4.93" x2="7.76" y1="19.07" y2="16.24"/><line x1="16.24" x2="19.07" y1="7.76" y2="4.93"/></svg><p>Loading content...</p></div>
     </div>
   </div>
 </div>
 
-<!-- Scripts -->
-<script src="js/data-loader.js"></script>
-<script src="js/icons.js"></script>
-<script src="js/ui.js"></script>
+<!-- ============================================
+     Search Overlay
+     ============================================ -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-panel">
+    <div class="search-input-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="searchInput" placeholder="Search anything..." autocomplete="off">
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- ============================================
+     Toast Container
+     ============================================ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ============================================
+     Scripts
+     ============================================ -->
+<script src="js/data.json" type="application/json" id="dataJson"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
